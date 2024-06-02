@@ -20,3 +20,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+if 1==1:
+    pass
