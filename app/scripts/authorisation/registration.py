@@ -1,4 +1,4 @@
-import connection
+from connection import connection_db
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .regModule import *
@@ -67,6 +67,7 @@ def registrationDjango(request):
 	
 	returnErrors = errorsDict == {}
 	
+	connection = connection_db()
 	dataBase = connection.cursor()
 	
 	if not role in ['Admin', 'Manager']:
