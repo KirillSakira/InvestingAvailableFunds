@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'style/all.css' %}">
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.ico' %}" type="image/x-icon">
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <title>Главная</title>
+</head>
+<body class="bpreloader">
+    <div id="preloader">
+        <div class="preloader_im">
+            <img src="{% static 'img/logo.svg' %}" alt="">
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <header class="elem col-11 my-5 mx-auto px-5 py-4">
+                <h2 class="logo mb-0"><img src="{% static 'img/logo.svg' %}" alt="Лого">Баблосс</h2>
+                <div class="d-flex justify-content-center ml-5">
+                    <div class="header_user_name mr-3 text-nowrap">Иванов Иван</div>
+                    <div class="header_user_ava"><img src="{% static 'img/avatar.svg' %}" alt=""></div>
+                    <!-- <a href="/logout/" style="padding-left: 30px;">выход</a> -->
+                </div>
+            </header>
+        </div>
+
+        <div class="row">
+            <div class="elem col-11 mx-auto px-5 py-5">
+                <div class="h1 font-weight-bold">Баланс</div>
+                <div class="h1 mt-4">{{balance}} ₽</div>
+                <div class="col_lb h4">{{var_balance}} ₽ ({{var_balance_proc}}%)</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="home_buts col-11 mt-4 mx-auto pt-4 pb-3">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/payment">Пополнить</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/withdraw">Вывести</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/operations">Операции</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/analytic">Аналитика</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto px-5 py-5">
+                <div class="h1 font-weight-bold">Стоимость портфеля</div>
+                <div class="h1 mt-4">{{var_balance_1}} ₽ (<span class="col_lb">{{var_balance_proc_1}}%</span>)</div>
+                <canvas id="webixChart" class="mt-5"></canvas>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto px-5 py-5">
+                <div class="h1 font-weight-bold">Процентное соотношение портфеля</div>
+                <div class="graph_pie row">
+                    <div class=" portfolio_pit_bl col-10 mx-auto col-sm-5 offset-sm-1 my-4">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                    <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
+                        <div class="hportfolio_proc_names mt-5 mt-sm-0">
+                            <div class="h3 w-100">Акции ({{pie_stock}}%)</div>
+                            <div class="h3 w-100">Облигации ({{pie_bonds}}%)</div>
+                            <div class="h3 w-100">Фонды ({{pie_funds}}%)</div>
+                            <div class="h3 w-100">Валюта и металлы ({{pie_curr_metals}}%)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto p-5">
+                <div class="h1 mb-4 font-weight-bold">Акции</div>
+                <div class="profile_securities_cont">
+                    {% for item in stocks_data %}
+                    <div class="mb-5 mt-2 w-100 mx-0 perofile_sec_el">
+                        <div class="prof_sec_1">
+                            <div class="prof_sec_1_1">
+                                <img src="{% static 'logo_org/' %}{{ item.img }}" class="w-100">
+                            </div>
+                            <div class="prof_sec_1_2 pl-3 w-100">
+                                <div class="profile_sec_name h3 text-truncate">{{item.name}}</div>
+                                <div class="col_bvio h4">{{item.short_name}}</div>
+                            </div>
+                        </div>
+                        <div class="prof_sec_2 profile_securities_ta pl-3 pl-lg-4 text-right">
+                            <div class="text-nowrap h3">{{item.price_buy}} ₽</div>
+                            <div class="col_bvio h4">{{item.count_buy}} шт</div>
+                        </div>
+                        <div class="prof_sec_3 profile_securities_ta text-left h3 pl-lg-4 text-lg-center">
+                            <span class="col_bvio">{{item.price_count_buy}}→ </span><span class="text-nowrap">{{item.price_now}} ₽</span>
+                        </div>
+                        <div class="prof_sec_4 profile_securities_ta pl-3 pl-lg-4">
+                            <div class="col_lb text-nowrap h3">{{item.price_end}} ₽</div>
+                            <div class="col_bvio h4">{{item.proc_end}}%</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto p-5">
+                <div class="h1 mb-4 font-weight-bold">Облигации</div>
+                <div class="profile_securities_cont">
+                    {% for item in stocks_data %}
+                    <div class="mb-5 mt-2 w-100 mx-0 perofile_sec_el">
+                        <div class="prof_sec_1">
+                            <div class="prof_sec_1_1">
+                                <img src="{% static 'logo_org/' %}{{ item.img }}" class="w-100">
+                            </div>
+                            <div class="prof_sec_1_2 pl-3 w-100">
+                                <div class="profile_sec_name h3 text-truncate">{{item.name}}</div>
+                                <div class="col_bvio h4">{{item.short_name}}</div>
+                            </div>
+                        </div>
+                        <div class="prof_sec_2 profile_securities_ta pl-3 pl-lg-4 text-right">
+                            <div class="text-nowrap h3">{{item.price_buy}} ₽</div>
+                            <div class="col_bvio h4">{{item.count_buy}} шт</div>
+                        </div>
+                        <div class="prof_sec_3 profile_securities_ta text-left h3 pl-lg-4 text-lg-center">
+                            <span class="col_bvio">{{item.price_count_buy}}→ </span><span class="text-nowrap">{{item.price_now}} ₽</span>
+                        </div>
+                        <div class="prof_sec_4 profile_securities_ta pl-3 pl-lg-4">
+                            <div class="col_lb text-nowrap h3">{{item.price_end}} ₽</div>
+                            <div class="col_bvio h4">{{item.proc_end}}%</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto p-5">
+                <div class="h1 mb-4 font-weight-bold">Фонды</div>
+                <div class="profile_securities_cont">
+                    {% for item in stocks_data %}
+                    <div class="mb-5 mt-2 w-100 mx-0 perofile_sec_el">
+                        <div class="prof_sec_1">
+                            <div class="prof_sec_1_1">
+                                <img src="{% static 'logo_org/' %}{{ item.img }}" class="w-100">
+                            </div>
+                            <div class="prof_sec_1_2 pl-3 w-100">
+                                <div class="profile_sec_name h3 text-truncate">{{item.name}}</div>
+                                <div class="col_bvio h4">{{item.short_name}}</div>
+                            </div>
+                        </div>
+                        <div class="prof_sec_2 profile_securities_ta pl-3 pl-lg-4 text-right">
+                            <div class="text-nowrap h3">{{item.price_buy}} ₽</div>
+                            <div class="col_bvio h4">{{item.count_buy}} шт</div>
+                        </div>
+                        <div class="prof_sec_3 profile_securities_ta text-left h3 pl-lg-4 text-lg-center">
+                            <span class="col_bvio">{{item.price_count_buy}}→ </span><span class="text-nowrap">{{item.price_now}} ₽</span>
+                        </div>
+                        <div class="prof_sec_4 profile_securities_ta pl-3 pl-lg-4">
+                            <div class="col_lb text-nowrap h3">{{item.price_end}} ₽</div>
+                            <div class="col_bvio h4">{{item.proc_end}}%</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto p-5">
+                <div class="h1 mb-4 font-weight-bold">Валюта и металлы</div>
+                <div class="profile_securities_cont">
+                    {% for item in stocks_data %}
+                    <div class="mb-5 mt-2 w-100 mx-0 perofile_sec_el">
+                        <div class="prof_sec_1">
+                            <div class="prof_sec_1_1">
+                                <img src="{% static 'logo_org/' %}{{ item.img }}" class="w-100">
+                            </div>
+                            <div class="prof_sec_1_2 pl-3 w-100">
+                                <div class="profile_sec_name h3 text-truncate">{{item.name}}</div>
+                                <div class="col_bvio h4">{{item.short_name}}</div>
+                            </div>
+                        </div>
+                        <div class="prof_sec_2 profile_securities_ta pl-3 pl-lg-4 text-right">
+                            <div class="text-nowrap h3">{{item.price_buy}} ₽</div>
+                            <div class="col_bvio h4">{{item.count_buy}} шт</div>
+                        </div>
+                        <div class="prof_sec_3 profile_securities_ta text-left h3 pl-lg-4 text-lg-center">
+                            <span class="col_bvio">{{item.price_count_buy}}→ </span><span class="text-nowrap">{{item.price_now}} ₽</span>
+                        </div>
+                        <div class="prof_sec_4 profile_securities_ta pl-3 pl-lg-4">
+                            <div class="col_lb text-nowrap h3">{{item.price_end}} ₽</div>
+                            <div class="col_bvio h4">{{item.proc_end}}%</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        var graph_bar = JSON.parse('{{ graph_bar|escapejs }}'.replace(/'/g, "\"")),
+            graph_pie = JSON.parse('{{ graph_pie|escapejs }}'.replace(/'/g, "\""));
+        $(document).ready(function() {
+            generBar();
+            generPie(); 
+        });
+    </script>
+    <script src="{% static 'js/all150.js' %}"></script>
+    <script src="{% static 'js/core150.js' %}"></script>
+    <script src="{% static 'libs/chart.min.js' %}" type="module"></script>
+    <script src="{% static 'dist/bundle.js' %}"></script>
+</body>
+</html>
