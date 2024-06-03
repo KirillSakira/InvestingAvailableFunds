@@ -125,10 +125,18 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 16rem;
 }
 .logo img{
   width: 2.5rem;
   margin-right: 0.5rem;
+}
+.header_profile_aname{
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  white-space: nowrap;
+  width: calc(100% - 16rem);
 }
 .header_user_ava img{
   width: 3.5rem;

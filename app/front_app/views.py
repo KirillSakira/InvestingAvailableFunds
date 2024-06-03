@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
+from .viewBack.getProfileName import getProfileName
+
 def viewAuth(request):
     if request.session.session_key == None:
         return render(request, 'auth.html')
@@ -15,6 +17,7 @@ def viewRegistration(request):
 
 def viewHome(request):
     data = {
+        'profileName': getProfileName(),
         'balance': '18 638 725,7',
         'var_balance': '8 736 976.33',
         'var_balance_proc': '+19,45',

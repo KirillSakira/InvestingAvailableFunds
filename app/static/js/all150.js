@@ -79,7 +79,7 @@ function generBar(){
                     font: {
                         size: fontSize
                     },
-                    color: '#453F64'
+                    color: '#6E6598'
                 }
             },
             y: {
@@ -87,7 +87,7 @@ function generBar(){
                     font: {
                         size: fontSize
                     },
-                    color: '#453F64'
+                    color: '#6E6598'
                 },
                 display: false
             }
