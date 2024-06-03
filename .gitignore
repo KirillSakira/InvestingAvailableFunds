@@ -22,4 +22,4 @@ dist/
 .ipynb_checkpoints
 
 connection.py
-# babloss/settings.py
+babloss/settings.py
