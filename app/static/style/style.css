@@ -101,6 +101,17 @@ header{
 
 
 
+#pop_chat{
+    position: fixed;
+    right: 1.9rem;
+    bottom: 7.2rem;
+    border-radius: 50%;
+    width: 6.7rem;
+    height: 6.7rem;
+}
+#pop_chat img{
+    width: 100%;
+}
 
 
 @media all and (max-width: 360px){

@@ -16,4 +16,4 @@ def login(request):
 @csrf_exempt
 def doLogout(request):
 	logout(request)
-	return redirect('/')
+	return redirect('/auth/')
