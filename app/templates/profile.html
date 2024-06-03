@@ -1,35 +1,7 @@
-<!DOCTYPE html>
+{% extends 'common.html' %}
 {% load static %}
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'style/all.css' %}">
-    <link rel="stylesheet" href="{% static 'style/style.css' %}">
-    <link rel="shortcut icon" href="{% static 'img/logo.ico' %}" type="image/x-icon">
-    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
-    <title>Личный кабинет</title>
-</head>
-<body class="bpreloader">
-    <div id="preloader">
-        <div class="preloader_im">
-            <img src="{% static 'img/logo.svg' %}" alt="">
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <div class="row">
-            <header class="elem col-11 my-5 mx-auto px-5 py-4">
-                <h2 class="logo mb-0"><img src="{% static 'img/logo.svg' %}" alt="Лого">Баблосс</h2>
-                <div class="header_profile_aname pl-3">
-                    <div class="header_user_name mr-3 text-nowrap">{{profileName}}</div>
-                    <div class="header_user_ava"><img src="{% static 'img/avatar.svg' %}" alt=""></div>
-                </div>
-            </header>
-        </div>
-
+{% block in_title %}Главная{% endblock %}
+{% block in_body %}
         <div class="row">
             <div class="elem col-11 mx-auto px-5 py-5">
                 <div class="h1 font-weight-bold">Баланс</div>
@@ -115,10 +87,4 @@
             </div>
         </div>
     </div>
-    <div id="pop_chat" class="back_lb p-4">
-        <img src="{% static 'img/ico_chat.svg' %}" alt="">
-    </div>
-    <script src="{% static 'js/all150.js' %}"></script>
-    <script src="{% static 'js/core150.js' %}"></script>
-</body>
-</html>
+{% endblock %}

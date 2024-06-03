@@ -108,6 +108,11 @@ header{
     border-radius: 50%;
     width: 6.7rem;
     height: 6.7rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#pop_chat:hover{
+  filter: brightness(115%);
 }
 #pop_chat img{
     width: 100%;
