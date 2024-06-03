@@ -132,7 +132,7 @@ header{
     }
 
     .perofile_sec_el {
-        grid-template-columns: 5fr 6fr 3fr 3fr;
+        grid-template-columns: 5fr 6fr 15rem 15rem;
         grid-template-rows: auto;
         height: auto;
     }
