@@ -15,6 +15,22 @@ def viewRegistration(request):
     else:
         return HttpResponseRedirect("/")
 
+def viewProfile(request):
+    data = {
+        'email': 'asdas@asdasd.asd',
+        'gender': 'Мужской',
+        'name': 'asdasd asdasdasda sdasdasds',
+        'phone': '+79192837475',
+        'sn_passport': '03 03 030303',
+        'address': 'ewwwwwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwww wwwwwwwwww23ew',
+        'birday': '01.01.1010'
+    }
+    if request.session.session_key != None:
+        return render(request, 'profile.html', data)
+    else:
+        return render(request, 'profile.html', data)
+        # return HttpResponseRedirect("/auth/")
+
 def viewHome(request):
     data = {
         'profileName': getProfileName(),

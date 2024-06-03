@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'style/all.css' %}">
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.ico' %}" type="image/x-icon">
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <title>Личный кабинет</title>
+</head>
+<body class="bpreloader">
+    <div id="preloader">
+        <div class="preloader_im">
+            <img src="{% static 'img/logo.svg' %}" alt="">
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <header class="elem col-11 my-5 mx-auto px-5 py-4">
+                <h2 class="logo mb-0"><img src="{% static 'img/logo.svg' %}" alt="Лого">Баблосс</h2>
+                <div class="header_profile_aname pl-3">
+                    <div class="header_user_name mr-3 text-nowrap">{{profileName}}</div>
+                    <div class="header_user_ava"><img src="{% static 'img/avatar.svg' %}" alt=""></div>
+                </div>
+            </header>
+        </div>
+
+        <div class="row">
+            <div class="elem col-11 mx-auto px-5 py-5">
+                <div class="h1 font-weight-bold">Баланс</div>
+                <div class="row">
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="email" name="email" value="{{email}}" maxlength="100" autocomplete="off" disabled required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Email</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="gender" name="gender" value="{{gender}}" maxlength="100" autocomplete="off" disabled required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Пол</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="name" name="name" value="{{name}}" maxlength="100" autocomplete="off" disabled required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">ФИО</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="phone" name="phone" value="{{phone}}" maxlength="100" autocomplete="off" disabled required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Телефон</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="sn_passport" name="sn_passport" value="{{sn_passport}}" maxlength="100" autocomplete="off" disabled required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Серия и номер паспорта</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="address" name="address" value="{{address}}" maxlength="100" autocomplete="off" disabled required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Адрес</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="birday" name="birday" value="{{birday}}" maxlength="100" autocomplete="off" disabled required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Дата рождения</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 d-flex align-items-end">
+                        <button class="h3 py-3 mt-5 mt-sm-0"><a href="/logout/">выход</a></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button class="h3 py-3 mt-4 mt-sm-5 back_red">Удалить профиль</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/all150.js' %}"></script>
+    <script src="{% static 'js/core150.js' %}"></script>
+</body>
+</html>

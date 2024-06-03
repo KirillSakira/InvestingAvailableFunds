@@ -60,6 +60,22 @@ body{
   color: #F1EDFD;
 }
 
+.back_bvio{
+  background-color: #6E6598;
+}
+.back_vio{
+  background-color: #634FED;
+}
+.back_lb{
+  background-color: #3AA1FF;
+}
+.back_red{
+  background-color: #FF523A;
+}
+.back_white{
+  background-color: #F1EDFD;
+}
+
 .container-fluid{
   max-width: 1558px !important;
 }
@@ -227,7 +243,8 @@ input{
   text-overflow: ellipsis;
 }
 input:valid ~ .place_podinp,
-input:focus ~ .place_podinp{
+input:focus ~ .place_podinp,
+input:disabled ~ .place_podinp{
   bottom: 100%;
   font-size: 1.3rem;
   color: #6E6598;
