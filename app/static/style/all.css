@@ -44,38 +44,6 @@ body{
   font-size: 2rem;
 }
 
-.col_bvio{
-  color: #6E6598;
-}
-.col_vio{
-  color: #634FED;
-}
-.col_lb{
-  color: #3AA1FF;
-}
-.col_red{
-  color: #FF523A;
-}
-.col_white{
-  color: #F1EDFD;
-}
-
-.back_bvio{
-  background-color: #6E6598;
-}
-.back_vio{
-  background-color: #634FED;
-}
-.back_lb{
-  background-color: #3AA1FF;
-}
-.back_red{
-  background-color: #FF523A;
-}
-.back_white{
-  background-color: #F1EDFD;
-}
-
 .container-fluid{
   max-width: 1558px !important;
 }
@@ -128,11 +96,8 @@ body{
 }
 
 
-.container-fluid{
-  max-width: 1450px;
-}
 .elem{
-  border-radius: 30.5px;
+  border-radius: 2.3rem;
   background: #19172E;
 }
 .logo{
@@ -146,20 +111,6 @@ body{
 .logo img{
   width: 2.5rem;
   margin-right: 0.5rem;
-}
-.header_profile_aname{
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  white-space: nowrap;
-  width: calc(100% - 16rem);
-}
-.header_user_ava img{
-  width: 3.2rem;
-}
-.header_user_name {
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 h3{
   margin: 0;
@@ -178,7 +129,7 @@ a:hover{
   font-size: 3rem;
 }
 button{
-  border-radius: 35px;
+  border-radius: 2.5rem;
   background: #634FED;
   border: none;
   outline: none;
@@ -274,16 +225,11 @@ input:disabled ~ .place_podinp{
 .bord_inp:after{
   right: 50%;
 }   
-input:focus ~ .bord_inp:before,
-input:focus ~.bord_inp:after{
+input:not(.auth_inp_o):focus ~ .bord_inp:before,
+input:not(.auth_inp_o):focus ~.bord_inp:after{
   width: 50%;
 }
 
-
-#pieChart{
-  max-width: 220px;
-  max-height: 220px;
-}
 
 @media all and (min-width: 576px){
   #pieChart{
