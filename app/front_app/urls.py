@@ -7,5 +7,6 @@ urlpatterns = [
     path('auth/', views.viewAuth, name='auth'),
     path('registration/', views.viewRegistration, name='registration'),
     path('profile/', views.viewProfile, name='profile'),
+    path('payment/', views.viewPayment, name='payment'),
     path('', views.viewHome, name='/auth/')
 ] 

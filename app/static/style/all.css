@@ -155,7 +155,7 @@ body{
   width: calc(100% - 16rem);
 }
 .header_user_ava img{
-  width: 3.5rem;
+  width: 3.2rem;
 }
 .header_user_name {
     overflow: hidden;

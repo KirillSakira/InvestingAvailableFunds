@@ -1,0 +1,22 @@
+{% extends 'common.html' %}
+{% load static %}
+{% block in_title %}Пополнение{% endblock %}
+{% block in_body %}
+        <div class="row">
+            <div class="elem col-11 col-lg-8 mx-auto px-5 py-5">
+                <div class="h1 font-weight-bold">Пополнение</div>
+                <div class="row">
+                    <div class="col-11 mx-auto">
+                        <div class="inputs_bl">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="email" name="email" value="{{email}}" autocomplete="off" required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Email</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
