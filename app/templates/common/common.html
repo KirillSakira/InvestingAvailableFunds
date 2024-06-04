@@ -6,14 +6,21 @@
         <title>{% block in_title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        {% if in_slick %}
+            <link rel="stylesheet" type="text/css" href="{% static 'libs/slick/slick/slick.css' %}"/>
+            <link rel="stylesheet" type="text/css" href="{% static 'libs/slick/slick/slick-theme.css' %}"/>
+        {% endif %}
         <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'style/all.css' %}">
         <link rel="stylesheet" href="{% static 'style/style.css' %}">
         <link rel="shortcut icon" href="{% static 'img/logo.ico' %}" type="image/x-icon">
         <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+        {% if in_slick %}
+            <script type="text/javascript" src="{% static 'libs/slick/slick/slick.min.js' %}"></script>
+        {% endif %}
         {% block in_head %}{% endblock %}
     </head>
-    <body class="bpreloader">
+    <body class="bpreloader {% block in_body_class %}{% endblock %}">
         <div id="preloader">
             <div class="preloader_im">
                 <img src="{% static 'img/logo.svg' %}" alt="">
@@ -39,14 +46,6 @@
         </div>
 
         {% if in_scripts_graph %}
-            <script>
-                var graph_bar = JSON.parse('{{ graph_bar|escapejs }}'.replace(/'/g, "\"")),
-                    graph_pie = JSON.parse('{{ graph_pie|escapejs }}'.replace(/'/g, "\""));
-                $(document).ready(function() {
-                    generBar();
-                    generPie(); 
-                });
-            </script>
             <script src="{% static 'libs/chart.min.js' %}" type="module"></script>
             <script src="{% static 'dist/bundle.js' %}"></script>
         {% endif %}

@@ -87,18 +87,6 @@ header{
     border-radius: 50%;
     transform: translateY(-50%);
 }
-.hportfolio_proc_names > div:nth-child(1):before{
-    background: #634FED;
-}
-.hportfolio_proc_names > div:nth-child(2):before{
-    background: #3AA1FF;
-}
-.hportfolio_proc_names > div:nth-child(3):before{
-    background: #FF523A;
-}
-.hportfolio_proc_names > div:nth-child(4):before{
-    background: #F1EDFD;
-}
 
 .portfolio_pit_bl{
     display: flex;
@@ -211,7 +199,7 @@ header{
     height: 2.2rem;
     border-radius: 50%;
     border: 0.5rem #fff solid;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 .ccheckbox input:checked ~ .checkbox {
     background-color: #3AA1FF;
@@ -226,6 +214,36 @@ header{
 #pieChart{
     max-width: 220px;
     max-height: 220px;
+}
+
+.slick-prev:active,
+.slick-next:active{
+    /* top: unset !important; */
+}
+.slick-prev:before,
+.slick-next:before{
+    content: '';
+    display: block;
+    height: 150px;
+    width: 20px;
+    background-size: 100% auto !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+.slick-prev:before{
+    background: url(../img/chev_prev.svg);
+}
+.slick-next:before{
+    background: url(../img/chev_next.svg);
+}
+.banalytic .container-fluid{
+    width: 90% !important;
+}
+.slick-prev{
+    left: -3.2rem;
+}
+.slick-next{
+    right: -3.2rem;
 }
 
 @media all and (max-width: 360px){
@@ -295,5 +313,16 @@ header{
     }
     .hportfolio_proc_names > div:not(:last-child){
         margin-bottom: 3rem;
+    }
+    
+    .slick-prev, 
+    .slick-next{
+        width: 4.4rem;
+    }
+    .slick-prev{
+        left: -4.2rem;
+    }
+    .slick-next{
+        right: -3.8rem;
     }
 }

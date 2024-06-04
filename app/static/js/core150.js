@@ -29,3 +29,14 @@ if(pathname[1] == 'payment'){
         $('.auth_inp_o_date').val(val);
     });
 }
+
+
+if(pathname[1] == 'analytic'){
+    $('.analytic_slick').slick({
+        dots: false,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1
+      });
+
+}

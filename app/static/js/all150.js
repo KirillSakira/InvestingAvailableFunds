@@ -41,23 +41,25 @@ var vw = window.innerWidth,
     vh = window.innerHeight;
 
 
-var barChart;
+var barChart = [];
+var barChartData = [];
 
-//круговая bar
-function generBar(){
-    let canvas = document.getElementById('webixChart')
+//bar
+function generBar(elem, dataPie, con = 0){
+    let canvas = document.getElementById(elem)
         ctx = canvas.getContext('2d'),
         fontSize = parseInt($('html').css('font-size')) * 1.2;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if(barChart)
-        barChart.destroy();
-    barChart = new Chart(ctx, {
+    if(barChart[con])
+        barChart[con].destroy();
+
+    barChart[con] = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: graph_bar['month'],
+        labels: dataPie['month'],
         datasets: [{
-            data: graph_bar['count'],
+            data: dataPie['count'],
             backgroundColor: '#634FED',
             borderRadius: 20,
             barPercentage: 0.9,
@@ -94,25 +96,30 @@ function generBar(){
         }
     }
     });
+    barChartData[con] = {
+        'elem': elem,
+        'dataPie': dataPie,
+        'con': con
+    }
 }
 
 window.addEventListener('resize', (e) => {
     if(window.innerWidth == vw) return;
-    vw = window.innerWidth
-    vh = window.innerHeight
-    // if(typeof(graph_bar) !== 'undefined') generBar();
+    vw = window.innerWidth;
+    vh = window.innerHeight;
+    barChartData.forEach((item) => generBar(item.elem, item.dataPie, item.con));
 });
 
 
 //круговая диаграмма
-function generPie(){
-    var ctx = document.getElementById('pieChart').getContext('2d');
+function generPie(elem, dataPie){
+    var ctx = document.getElementById(elem).getContext('2d');
     new Chart(ctx, {
         type: 'doughnut',
         data: {
             datasets: [{
-            data: graph_pie.map(obj => obj.count),
-            backgroundColor: graph_pie.map(obj => obj.color),
+            data: dataPie.map(obj => obj.count),
+            backgroundColor: dataPie.map(obj => obj.color),
             borderWidth: 0,
             borderRadius: 1000,
             }]
