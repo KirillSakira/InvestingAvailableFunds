@@ -4,12 +4,12 @@
 {% block in_body %}
     <div class="row">
         <div class="elem col-11 col-sm-10 col-lg-8 mx-auto px-5 py-5">
-            <div class="h1 font-weight-bold">{% block in_pay_type_name %}{% endblock %}</div>
+            <div class="h1 font-weight-bold">{{in_pay_type_name}}</div>
             <div class="payment row">
                 <div class="payment1 col-12 col-sm-11 mx-auto">
                     <div class="inputs_bl">
                         <div class="inp_bl inp_bl_o">
-                            <label class="place_imp_zag h4 mb-3">{% block in_pay_zag1 %}{% endblock %}</label>
+                            <label class="place_imp_zag h4 mb-3">{{in_pay_zag1}}</label>
                             <input type="text" class="auth_inp auth_inp_o auth_inp_o_sum back_lvio h2 px-3 px-sm-5 py-4" id="summa" name="summa" autocomplete="off" required>
                             <span class="bord_inp"></span>
                         </div>
@@ -48,7 +48,7 @@
                             </label>
                         </div>
                         <div class="col-12 col-sm-6 order-sm-1">
-                            {% block in_pay_but %}{% endblock %}
+                            {{in_pay_but}}
                         </div>
                     </div>
                 </div>

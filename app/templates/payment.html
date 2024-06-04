@@ -1,4 +1,4 @@
-{% extends './common/comPayment.html' %}
-{% block in_pay_type_name %}Пополнить{% endblock %}
-{% block in_pay_zag1 %}Сумма пополнения{% endblock %}
-{% block in_pay_but %}<button class="py-3">Пополнить</button>{% endblock %}
+{% include './common/comPayment.html' with 
+in_pay_type_name="Пополнить" 
+in_pay_zag1="Сумма пополнения" 
+in_pay_but="<button class='py-3'>Пополнить</button>"%}

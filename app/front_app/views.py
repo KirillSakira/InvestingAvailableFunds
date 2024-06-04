@@ -192,3 +192,33 @@ def viewWithdraw(request):
     else:
         return render(request, 'withdraw.html')
         # return HttpResponseRedirect("/auth/")
+
+
+def viewOperations(request):
+    data = {
+        'operations_data': [
+            {
+                'type': 'Пополнение',
+                'date': '01.01.2021 15:30',
+                'price': '+7 895',
+                'proc': '+3'
+            },
+            {
+                'type': 'Снятие',
+                'date': '01.10.2021 15:30',
+                'price': '-5 895',
+                'proc': '-2'
+            },
+            {
+                'type': 'Пополнение',
+                'date': '01.01.2023 15:30',
+                'price': '+1 895',
+                'proc': '+1'
+            },
+        ]
+    }
+    if request.session.session_key != None:
+        return render(request, 'operations.html', data)
+    else:
+        return render(request, 'operations.html', data)
+        # return HttpResponseRedirect("/auth/")

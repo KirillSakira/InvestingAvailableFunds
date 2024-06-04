@@ -62,128 +62,28 @@
     <div class="row">
         <div class="elem col-11 my-3 mx-auto p-5">
             <div class="h1 mb-4 font-weight-bold">Акции</div>
-            <div class="profile_securities_cont">
-                {% for item in stocks_data %}
-                <div class="mb-5 mt-2 w-100 mx-0 perofile_sec_el">
-                    <div class="prof_sec_1">
-                        <div class="prof_sec_1_1">
-                            <img src="{% static 'logo_org/' %}{{ item.img }}" class="w-100">
-                        </div>
-                        <div class="prof_sec_1_2 pl-3 w-100">
-                            <div class="profile_sec_name h3 text-truncate">{{item.name}}</div>
-                            <div class="col_bvio h4">{{item.short_name}}</div>
-                        </div>
-                    </div>
-                    <div class="prof_sec_2 profile_securities_ta pl-3 pl-lg-4 text-right w-100 pr-4 pr-lg-2">
-                        <div class="text-nowrap h3">{{item.price_buy}} ₽</div>
-                        <div class="col_bvio h4">{{item.count_buy}} шт</div>
-                    </div>
-                    <div class="prof_sec_3 profile_securities_ta text-left h3 pl-lg-4 text-lg-right">
-                        <span class="col_bvio">{{item.price_count_buy}}→ </span><span class="text-nowrap">{{item.price_now}} ₽</span>
-                    </div>
-                    <div class="prof_sec_4 profile_securities_ta pl-3 pl-lg-4 w-100 pr-4 pr-lg-2">
-                        <div class="col_lb text-nowrap h3">{{item.price_end}} ₽</div>
-                        <div class="col_bvio h4">{{item.proc_end}}%</div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+            {% include "common/comSecurities.html" with stockss_data=stocks_data %}
         </div>
     </div>
 
     <div class="row">
         <div class="elem col-11 my-3 mx-auto p-5">
             <div class="h1 mb-4 font-weight-bold">Облигации</div>
-            <div class="profile_securities_cont">
-                {% for item in stocks_data %}
-                <div class="mb-5 mt-2 w-100 mx-0 perofile_sec_el">
-                    <div class="prof_sec_1">
-                        <div class="prof_sec_1_1">
-                            <img src="{% static 'logo_org/' %}{{ item.img }}" class="w-100">
-                        </div>
-                        <div class="prof_sec_1_2 pl-3 w-100">
-                            <div class="profile_sec_name h3 text-truncate">{{item.name}}</div>
-                            <div class="col_bvio h4">{{item.short_name}}</div>
-                        </div>
-                    </div>
-                    <div class="prof_sec_2 profile_securities_ta pl-3 pl-lg-4 text-right w-100 pr-4 pr-lg-2">
-                        <div class="text-nowrap h3">{{item.price_buy}} ₽</div>
-                        <div class="col_bvio h4">{{item.count_buy}} шт</div>
-                    </div>
-                    <div class="prof_sec_3 profile_securities_ta text-left h3 pl-lg-4 text-lg-center">
-                        <span class="col_bvio">{{item.price_count_buy}}→ </span><span class="text-nowrap">{{item.price_now}} ₽</span>
-                    </div>
-                    <div class="prof_sec_4 profile_securities_ta pl-3 pl-lg-4 w-100 pr-4 pr-lg-2">
-                        <div class="col_lb text-nowrap h3">{{item.price_end}} ₽</div>
-                        <div class="col_bvio h4">{{item.proc_end}}%</div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+            {% include "common/comSecurities.html" with stockss_data=stocks_data %}
         </div>
     </div>
 
     <div class="row">
         <div class="elem col-11 my-3 mx-auto p-5">
             <div class="h1 mb-4 font-weight-bold">Фонды</div>
-            <div class="profile_securities_cont">
-                {% for item in stocks_data %}
-                <div class="mb-5 mt-2 w-100 mx-0 perofile_sec_el">
-                    <div class="prof_sec_1">
-                        <div class="prof_sec_1_1">
-                            <img src="{% static 'logo_org/' %}{{ item.img }}" class="w-100">
-                        </div>
-                        <div class="prof_sec_1_2 pl-3 w-100">
-                            <div class="profile_sec_name h3 text-truncate">{{item.name}}</div>
-                            <div class="col_bvio h4">{{item.short_name}}</div>
-                        </div>
-                    </div>
-                    <div class="prof_sec_2 profile_securities_ta pl-3 pl-lg-4 text-right w-100 pr-4 pr-lg-2">
-                        <div class="text-nowrap h3">{{item.price_buy}} ₽</div>
-                        <div class="col_bvio h4">{{item.count_buy}} шт</div>
-                    </div>
-                    <div class="prof_sec_3 profile_securities_ta text-left h3 pl-lg-4 text-lg-center">
-                        <span class="col_bvio">{{item.price_count_buy}}→ </span><span class="text-nowrap">{{item.price_now}} ₽</span>
-                    </div>
-                    <div class="prof_sec_4 profile_securities_ta pl-3 pl-lg-4 w-100 pr-4 pr-lg-2">
-                        <div class="col_lb text-nowrap h3">{{item.price_end}} ₽</div>
-                        <div class="col_bvio h4">{{item.proc_end}}%</div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+            {% include "common/comSecurities.html" with stockss_data=stocks_data %}
         </div>
     </div>
 
     <div class="row">
         <div class="elem col-11 my-3 mx-auto p-5">
             <div class="h1 mb-4 font-weight-bold">Валюта и металлы</div>
-            <div class="profile_securities_cont">
-                {% for item in stocks_data %}
-                <div class="mb-5 mt-2 w-100 mx-0 perofile_sec_el">
-                    <div class="prof_sec_1">
-                        <div class="prof_sec_1_1">
-                            <img src="{% static 'logo_org/' %}{{ item.img }}" class="w-100">
-                        </div>
-                        <div class="prof_sec_1_2 pl-3 w-100">
-                            <div class="profile_sec_name h3 text-truncate">{{item.name}}</div>
-                            <div class="col_bvio h4">{{item.short_name}}</div>
-                        </div>
-                    </div>
-                    <div class="prof_sec_2 profile_securities_ta pl-3 pl-lg-4 text-right w-100 pr-4 pr-lg-2">
-                        <div class="text-nowrap h3">{{item.price_buy}} ₽</div>
-                        <div class="col_bvio h4">{{item.count_buy}} шт</div>
-                    </div>
-                    <div class="prof_sec_3 profile_securities_ta text-left h3 pl-lg-4 text-lg-center">
-                        <span class="col_bvio">{{item.price_count_buy}}→ </span><span class="text-nowrap">{{item.price_now}} ₽</span>
-                    </div>
-                    <div class="prof_sec_4 profile_securities_ta pl-3 pl-lg-4 w-100 pr-4 pr-lg-2">
-                        <div class="col_lb text-nowrap h3">{{item.price_end}} ₽</div>
-                        <div class="col_bvio h4">{{item.proc_end}}%</div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+            {% include "common/comSecurities.html" with stockss_data=stocks_data %}
         </div>
     </div>
 {% endblock %}
