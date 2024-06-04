@@ -3,17 +3,20 @@ from django.http import HttpResponseRedirect
 
 from .viewBack.getProfileName import getProfileName
 
+
 def viewAuth(request):
     if request.session.session_key == None:
         return render(request, 'auth.html')
     else:
         return HttpResponseRedirect("/")
 
+
 def viewRegistration(request):
     if request.session.session_key == None:
         return render(request, 'registration.html')
     else:
         return HttpResponseRedirect("/")
+
 
 def viewProfile(request):
     data = {
@@ -31,6 +34,7 @@ def viewProfile(request):
     else:
         return render(request, 'profile.html', data)
         # return HttpResponseRedirect("/auth/")
+
 
 def viewHome(request):
     data = {
@@ -173,9 +177,18 @@ def viewHome(request):
         return render(request, 'index.html', data)
         # return HttpResponseRedirect("/auth/")
 
+
 def viewPayment(request):
     if request.session.session_key != None:
         return render(request, 'payment.html')
     else:
         return render(request, 'payment.html')
+        # return HttpResponseRedirect("/auth/")
+    
+
+def viewWithdraw(request):
+    if request.session.session_key != None:
+        return render(request, 'withdraw.html')
+    else:
+        return render(request, 'withdraw.html')
         # return HttpResponseRedirect("/auth/")

@@ -1,88 +1,87 @@
-{% extends 'common.html' %}
+{% extends './common/common.html' %}
 {% load static %}
 {% block in_title %}Профиль{% endblock %}
 {% block in_body %}
-        <div class="row">
-            <div class="elem col-11 mx-auto px-5 py-5">
-                <div class="h1 font-weight-bold">Баланс</div>
-                <div class="row">
-                    <div class="col-12 col-sm-6">
-                        <div class="inputs_bl">
-                            <div class="inp_bl">
-                                <input type="text" class="auth_inp" id="email" name="email" value="{{email}}" autocomplete="off" disabled required>
-                                <span class="bord_inp"></span>
-                                <label class="place_podinp">Email</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <div class="inputs_bl">
-                            <div class="inp_bl">
-                                <input type="text" class="auth_inp" id="gender" name="gender" value="{{gender}}" autocomplete="off" disabled required>
-                                <span class="bord_inp"></span>
-                                <label class="place_podinp">Пол</label>
-                            </div>
+    <div class="row">
+        <div class="elem col-11 mx-auto px-5 py-5">
+            <div class="h1 font-weight-bold">Баланс</div>
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="inputs_bl">
+                        <div class="inp_bl">
+                            <input type="text" class="auth_inp" id="email" name="email" value="{{email}}" autocomplete="off" disabled required>
+                            <span class="bord_inp"></span>
+                            <label class="place_podinp">Email</label>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-sm-6">
-                        <div class="inputs_bl">
-                            <div class="inp_bl">
-                                <input type="text" class="auth_inp" id="name" name="name" value="{{name}}" autocomplete="off" disabled required>
-                                <span class="bord_inp"></span>
-                                <label class="place_podinp">ФИО</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <div class="inputs_bl">
-                            <div class="inp_bl">
-                                <input type="text" class="auth_inp" id="phone" name="phone" value="{{phone}}" autocomplete="off" disabled required>
-                                <span class="bord_inp"></span>
-                                <label class="place_podinp">Телефон</label>
-                            </div>
+                <div class="col-12 col-sm-6">
+                    <div class="inputs_bl">
+                        <div class="inp_bl">
+                            <input type="text" class="auth_inp" id="gender" name="gender" value="{{gender}}" autocomplete="off" disabled required>
+                            <span class="bord_inp"></span>
+                            <label class="place_podinp">Пол</label>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-sm-6">
-                        <div class="inputs_bl">
-                            <div class="inp_bl">
-                                <input type="text" class="auth_inp" id="sn_passport" name="sn_passport" value="{{sn_passport}}" autocomplete="off" disabled required>
-                                <span class="bord_inp"></span>
-                                <label class="place_podinp">Серия и номер паспорта</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <div class="inputs_bl">
-                            <div class="inp_bl">
-                                <input type="text" class="auth_inp" id="address" name="address" value="{{address}}" autocomplete="off" disabled required>
-                                <span class="bord_inp"></span>
-                                <label class="place_podinp">Адрес</label>
-                            </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="inputs_bl">
+                        <div class="inp_bl">
+                            <input type="text" class="auth_inp" id="name" name="name" value="{{name}}" autocomplete="off" disabled required>
+                            <span class="bord_inp"></span>
+                            <label class="place_podinp">ФИО</label>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-sm-6">
-                        <div class="inputs_bl">
-                            <div class="inp_bl">
-                                <input type="text" class="auth_inp" id="birday" name="birday" value="{{birday}}" autocomplete="off" disabled required>
-                                <span class="bord_inp"></span>
-                                <label class="place_podinp">Дата рождения</label>
-                            </div>
+                <div class="col-12 col-sm-6">
+                    <div class="inputs_bl">
+                        <div class="inp_bl">
+                            <input type="text" class="auth_inp" id="phone" name="phone" value="{{phone}}" autocomplete="off" disabled required>
+                            <span class="bord_inp"></span>
+                            <label class="place_podinp">Телефон</label>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6 d-flex align-items-end">
-                        <button class="h3 py-3 mt-5 mt-sm-0"><a href="/logout/">выход</a></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="inputs_bl">
+                        <div class="inp_bl">
+                            <input type="text" class="auth_inp" id="sn_passport" name="sn_passport" value="{{sn_passport}}" autocomplete="off" disabled required>
+                            <span class="bord_inp"></span>
+                            <label class="place_podinp">Серия и номер паспорта</label>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <button class="h3 py-3 mt-4 mt-sm-5 back_red">Удалить профиль</button>
+                <div class="col-12 col-sm-6">
+                    <div class="inputs_bl">
+                        <div class="inp_bl">
+                            <input type="text" class="auth_inp" id="address" name="address" value="{{address}}" autocomplete="off" disabled required>
+                            <span class="bord_inp"></span>
+                            <label class="place_podinp">Адрес</label>
+                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="inputs_bl">
+                        <div class="inp_bl">
+                            <input type="text" class="auth_inp" id="birday" name="birday" value="{{birday}}" autocomplete="off" disabled required>
+                            <span class="bord_inp"></span>
+                            <label class="place_podinp">Дата рождения</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 d-flex align-items-end">
+                    <button class="h3 py-3 mt-5 mt-sm-0"><a href="/logout/">выход</a></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="h3 py-3 mt-4 mt-sm-5 back_red">Удалить профиль</button>
                 </div>
             </div>
         </div>

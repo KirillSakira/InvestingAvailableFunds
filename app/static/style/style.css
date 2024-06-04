@@ -197,46 +197,24 @@ header{
 
 
 
-.custom-checkbox {
+.ccheckbox {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
-
-.custom-checkbox .checkbox {
-    margin-right: 10px;
+.ccheckbox input{
+    display: none;
 }
-
-.custom-checkbox input {
-    -webkit-appearance: none;
-    position: absolute;
-                       
-}
-
-.checkbox {
+.ccheckbox .checkbox {
     position: relative;
-    width: 20px;
-    height: 20px;
-    border: 2px solid red;
-    background: red;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 0.5rem #fff solid;
+    transition: 0.3s;
 }
-
-.checkmark { 
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: auto;
-    display: none; 
-}
-
-.custom-checkbox input:checked ~ .checkbox .checkmark {
-    display: block; 
-}
-
-.custom-checkbox input:checked ~ .checkbox {
-    background: blue;
-    border: 2px solid blue;
+.ccheckbox input:checked ~ .checkbox {
+    background-color: #3AA1FF;
 }
 
 
