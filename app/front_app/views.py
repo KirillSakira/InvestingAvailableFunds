@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.conf import settings
 
 from .viewBack.getProfileName import getProfileName
+from .viewBack.getColorImg import getColorImg
 
 
 def viewAuth(request):
@@ -39,23 +41,47 @@ def viewProfile(request):
 def viewHome(request):
     data = {
         'profileName': getProfileName(),
+        'in_scripts_graph': True,
+        
+        'profileName': getProfileName(),
         'balance': '18 638 725,7',
         'var_balance': '8 736 976.33',
         'var_balance_proc': '+19,45',
         'var_balance_1': '18 638 725,7',
         'var_balance_proc_1': '+19,56',
-        'pie_stock': '30',
-        'pie_bonds': '25',
-        'pie_funds': '25',
-        'pie_curr_metals': '20',
-        'graph_pie': [100, 200, 300, 300],
         'graph_bar': {
             'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
             'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
         },
+        'graph_pie': [
+            {
+                'name': 'Акции',
+                'count': '100',
+                'proc': '10',
+                'color': '#3AA1FF'
+            },
+            {
+                'name': 'Облигации',
+                'count': '250',
+                'proc': '25',
+                'color': '#FF523A'
+            },
+            {
+                'name': 'Фонды',
+                'count': '250',
+                'proc': '25',
+                'color': '#F1EDFD'
+            },
+            {
+                'name': 'Валюта и металлы',
+                'count': '200',
+                'proc': '20',
+                'color': '#634FED'
+            }
+        ],
         'stocks_data': [
             {
-                'img': 's1.png', #имя
+                'img': 's1', #имя
                 'name': 'Норильский никель', #имя
                 'short_name': 'GMKN', #сокращенное имя
                 'price_buy': '15 975 876,66', #цена покупки
@@ -66,7 +92,7 @@ def viewHome(request):
                 'proc_end': '+3' #в процентах
             },
             {
-                'img': 's2.png',
+                'img': 's2',
                 'name': 'ТКС Холдинг',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -77,7 +103,7 @@ def viewHome(request):
                 'proc_end': '-33,78'
             },
             {
-                'img': 's3.png',
+                'img': 's3',
                 'name': 'Яндекс',
                 'short_name': 'YNDX',
                 'price_buy': '4 155,96',
@@ -88,7 +114,7 @@ def viewHome(request):
                 'proc_end': '+17,92'
             },
             {
-                'img': 's2.png',
+                'img': 's2',
                 'name': 'ТКС Холдинг',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -99,7 +125,7 @@ def viewHome(request):
                 'proc_end': '-33,78'
             },
             {
-                'img': 's3.png',
+                'img': 's3',
                 'name': 'Яндекс',
                 'short_name': 'YNDX',
                 'price_buy': '4 155,96',
@@ -179,23 +205,30 @@ def viewHome(request):
 
 
 def viewPayment(request):
+    data = {
+        'profileName': getProfileName()
+    }
     if request.session.session_key != None:
-        return render(request, 'payment.html')
+        return render(request, 'payment.html', data)
     else:
-        return render(request, 'payment.html')
+        return render(request, 'payment.html', data)
         # return HttpResponseRedirect("/auth/")
     
 
 def viewWithdraw(request):
+    data = {
+        'profileName': getProfileName()
+    }
     if request.session.session_key != None:
-        return render(request, 'withdraw.html')
+        return render(request, 'withdraw.html', data)
     else:
-        return render(request, 'withdraw.html')
+        return render(request, 'withdraw.html', data)
         # return HttpResponseRedirect("/auth/")
 
 
 def viewOperations(request):
     data = {
+        'profileName': getProfileName(),
         'operations_data': [
             {
                 'type': 'Пополнение',
@@ -221,4 +254,82 @@ def viewOperations(request):
         return render(request, 'operations.html', data)
     else:
         return render(request, 'operations.html', data)
+        # return HttpResponseRedirect("/auth/")
+
+
+def viewAnalytic(request):
+    stocks_data = [
+        {
+            'count': '100',
+            'proc': '10',
+            'img': 's1', #имя
+            'name': 'Норильский никель', #имя
+            'short_name': 'GMKN', #сокращенное имя
+            'price_buy': '15 975 876,66', #цена покупки
+            'price_now': '16 200 000,31', #текущая цена
+            'price_count_buy': '15 975 876,66', #цена всех купленных
+            'count_buy': '10', #количество купленных
+            'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
+            'proc_end': '+3' #в процентах
+        },
+        {
+            'count': '250',
+            'proc': '25',
+            'img': 's2',
+            'name': 'ТКС Холдинг',
+            'short_name': 'TKSG',
+            'price_buy': '2 798,45',
+            'price_now': '1 598,89',
+            'price_count_buy': '7 994,45',
+            'count_buy': '5',
+            'price_end': '-5 997,8',
+            'proc_end': '-33,78'
+        },
+        {
+            'count': '250',
+            'proc': '25',
+            'img': 's3',
+            'name': 'Яндекс',
+            'short_name': 'YNDX',
+            'price_buy': '4 155,96',
+            'price_now': '4 161,4',
+            'price_count_buy': '12 448,2',
+            'count_buy': '3',
+            'price_end': '+8 544,78',
+            'proc_end': '+17,92'
+        },
+        {
+            'count': '200',
+            'proc': '20',
+            'img': 's2',
+            'name': 'ТКС Холдинг',
+            'short_name': 'TKSG',
+            'price_buy': '2 798,45',
+            'price_now': '1 598,89',
+            'price_count_buy': '7 994,45',
+            'count_buy': '5',
+            'price_end': '-5 997,8',
+            'proc_end': '-33,78'
+        }
+    ]
+    stocks_data_icos = getColorImg([obj['img'] for obj in stocks_data])
+    for obj, col in zip(stocks_data, stocks_data_icos):
+        obj['color'] = col
+
+    data = {
+        'profileName': getProfileName(),
+        'in_scripts_graph': True,
+        
+        'var_balance_1': '18 638 725,7',
+        'var_balance_proc_1': '+19,56',
+        'graph_bar': {
+            'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
+        },
+        'graph_pie': stocks_data,
+    }
+    if request.session.session_key != None:
+        return render(request, 'analytic.html', data)
+    else:
+        return render(request, 'analytic.html', data)
         # return HttpResponseRedirect("/auth/")

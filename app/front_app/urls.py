@@ -10,5 +10,6 @@ urlpatterns = [
     path('payment/', views.viewPayment, name='payment'),
     path('withdraw/', views.viewWithdraw, name='withdraw'),
     path('operations/', views.viewOperations, name='operations'),
+    path('analytic/', views.viewAnalytic, name='analytic'),
     path('', views.viewHome, name='/auth/')
 ] 

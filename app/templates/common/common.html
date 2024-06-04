@@ -38,8 +38,20 @@
             <img src="{% static 'img/ico_chat.svg' %}" alt="">
         </div>
 
+        {% if in_scripts_graph %}
+            <script>
+                var graph_bar = JSON.parse('{{ graph_bar|escapejs }}'.replace(/'/g, "\"")),
+                    graph_pie = JSON.parse('{{ graph_pie|escapejs }}'.replace(/'/g, "\""));
+                $(document).ready(function() {
+                    generBar();
+                    generPie(); 
+                });
+            </script>
+            <script src="{% static 'libs/chart.min.js' %}" type="module"></script>
+            <script src="{% static 'dist/bundle.js' %}"></script>
+        {% endif %}
         <script src="{% static 'js/all150.js' %}"></script>
         <script src="{% static 'js/core150.js' %}"></script>
-        {% block in_scripts %}{% endblock %}
+
     </body>
 </html>

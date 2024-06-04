@@ -137,7 +137,9 @@ button{
   width: 100%;
   cursor: pointer;
   transition: 0.3s;
-  padding: 1.5rem;
+}
+button a{
+  display: block;
 }
 button:hover{
   filter: brightness(115%);
@@ -228,12 +230,4 @@ input:disabled ~ .place_podinp{
 input:not(.auth_inp_o):focus ~ .bord_inp:before,
 input:not(.auth_inp_o):focus ~.bord_inp:after{
   width: 50%;
-}
-
-
-@media all and (min-width: 576px){
-  #pieChart{
-    max-width: 470px;
-    max-height: unset;
-  }
 }

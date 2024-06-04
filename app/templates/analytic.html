@@ -1,0 +1,33 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}Аналитика{% endblock %}
+{% block in_body %}
+    <div class="row">
+        <div class="elem col-11 mx-auto px-5 py-5">
+            <div class="h1 mb-4 font-weight-bold">Акции</div>
+            {% include "common/comSecurities.html" with stocks_data=graph_pie %}
+        </div>
+    </div>
+{{images_with_colors}}
+    <div class="row">
+        <div class="elem col-11 my-3 mx-auto px-5 py-5">
+            <div class="h1 font-weight-bold">Акции</div>
+            <div class="h1 mt-4">{{var_balance_1}} ₽ (<span class="col_lb">{{var_balance_proc_1}}%</span>)</div>
+            <canvas id="webixChart" class="mt-5"></canvas>
+            
+            <div class="h1 font-weight-bold mt-5">Процентное соотношение портфеля</div>
+            <div class="graph_pie row">
+                <div class="portfolio_pit_bl col-10 mx-auto col-sm-5 offset-sm-1 my-4 mt-md-5">
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
+                    <div class="hportfolio_proc_names mt-5 mt-sm-0">
+                        {% for item in graph_pie %}
+                            <div class="h3 w-100"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

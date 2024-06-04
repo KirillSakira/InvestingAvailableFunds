@@ -111,8 +111,8 @@ function generPie(){
         type: 'doughnut',
         data: {
             datasets: [{
-            data: graph_pie,
-            backgroundColor: ['#3AA1FF', '#FF523A', '#F1EDFD', '#634FED'],
+            data: graph_pie.map(obj => obj.count),
+            backgroundColor: graph_pie.map(obj => obj.color),
             borderWidth: 0,
             borderRadius: 1000,
             }]
