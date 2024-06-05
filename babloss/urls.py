@@ -23,6 +23,8 @@ urlpatterns = [
     path('login/', login, name="auth"),
     path('reg/', registration, name='reg'),
     path('logout/', doLogout, name='logout'),
+    path('refill/', refill, name='refill'),
+    path('', ..., name=''),
 
     path('', include('app.front_app.urls')),
 ]
