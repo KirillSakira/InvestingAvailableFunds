@@ -94,7 +94,7 @@ header{
 }
 
 .profile_securities_cont{
-    max-height: 40rem;
+    max-height: 34rem;
     overflow-y: auto;
 }
 
@@ -171,10 +171,10 @@ header{
     
 /* payment */
 .payment2 > div:first-child{
-    width: 33rem;
+    width: 25.5rem;
 }
 .payment2 > div:last-child{
-    width: 14rem;
+    width: 10rem;
 }
 .payment3{
     margin-top: 2rem;
@@ -250,6 +250,7 @@ header{
     html{
         font-size: 7px;
     }
+    
 }
 @media all and (min-width: 576px){
     html{
@@ -261,7 +262,13 @@ header{
     }
 
     .auth_inp_o{
-        font-size: 2.5rem;
+        font-size: 2.35rem;
+    }
+    .payment2 > div:first-child{
+        width: 34.5rem;
+    }
+    .payment2 > div:last-child{
+        width: 14rem;
     }
 
     .operation_el{

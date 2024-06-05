@@ -6,7 +6,7 @@
         <div class="elem col-11 col-sm-10 col-lg-8 mx-auto px-5 py-5">
             <div class="h1 font-weight-bold">{{in_pay_title}}</div>
             <div class="payment row">
-                <div class="payment1 col-12 col-sm-11 mx-auto">
+                <div class="payment1 col-12 col-sm-11 mx-auto px-0">
                     <div class="inputs_bl">
                         <div class="inp_bl inp_bl_o">
                             <label class="place_imp_zag h4 mb-3">{{in_pay_zag1}}</label>
@@ -16,12 +16,12 @@
                         <div class="error_podinp"></div>
                     </div>
                 </div>
-                <div class="payment2 col-12 col-sm-11 mx-auto d-flex justify-content-between">
+                <div class="payment2 col-12 col-sm-11 mx-auto px-0 d-flex justify-content-between">
                     <div class="">
                         <div class="inputs_bl">
                             <div class="inp_bl inp_bl_o">
                                 <label class="place_imp_zag h4 mb-3">Номер карты</label>
-                                <input type="text" class="auth_inp auth_inp_o auth_inp_o_num back_lvio h2 px-3 px-sm-5 py-4" id="summa" name="summa" maxlength="19" autocomplete="off" required>
+                                <input type="text" class="auth_inp auth_inp_o auth_inp_o_num back_lvio h2 px-3 px-sm-5 py-4" id="card_num" name="card_num" maxlength="19" autocomplete="off" required>
                                 <span class="bord_inp"></span>
                             </div>
                             <div class="error_podinp"></div>
@@ -31,18 +31,18 @@
                         <div class="inputs_bl">
                             <div class="inp_bl inp_bl_o">
                                 <label class="place_imp_zag h4 mb-3">Срок карты</label>
-                                <input type="text" class="auth_inp auth_inp_o auth_inp_o_date back_lvio h2 px-3 px-sm-5 py-4 text-center" id="summa" name="summa" maxlength="5" autocomplete="off" required>
+                                <input type="text" class="auth_inp auth_inp_o auth_inp_o_date back_lvio h2 px-3 px-sm-5 py-4 text-center" id="card_date" name="card_date" maxlength="5" autocomplete="off" required>
                                 <span class="bord_inp"></span>
                             </div>
                             <div class="error_podinp"></div>
                         </div>
                     </div>
                 </div>
-                <div class="payment3 col-12 col-sm-11 mx-auto">
+                <div class="payment3 col-12 col-sm-11 mx-auto px-0">
                     <div class="row">
-                        <div class="col-12 col-sm-6 order-sm-2 mb-4 mb-sm-0">
+                        <div class="col-12 col-sm-6 order-sm-2 mb-4 mb-sm-0 text-sm-right">
                             <label class="ccheckbox h4 mb-0 h-100 justify-content-sm-end"> 
-                                <input type="checkbox">
+                                <input type="checkbox" id="card_save" name="card_save">
                                 <div class="checkbox mr-3"></div>
                                 Запомнить эту карту
                             </label>

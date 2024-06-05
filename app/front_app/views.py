@@ -309,8 +309,21 @@ def viewAnalytic(request):
             {
                 'count': '200',
                 'proc': '20',
-                'img': 's2',
-                'name': 'ТКС Холдинг',
+                'img': 'b1',
+                'name': 'руру1',
+                'short_name': 'TKSG',
+                'price_buy': '2 798,45',
+                'price_now': '1 598,89',
+                'price_count_buy': '7 994,45',
+                'count_buy': '5',
+                'price_end': '-5 997,8',
+                'proc_end': '-33,78'
+            },
+            {
+                'count': '200',
+                'proc': '20',
+                'img': 'b2',
+                'name': 'руру2',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
                 'price_now': '1 598,89',

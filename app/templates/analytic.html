@@ -134,7 +134,6 @@
 
   
     <script>
-        console.log('{{ stocs.bar|escapejs }}')
         var graph_bar_stocs = JSON.parse('{{ stocs.bar|escapejs }}'.replace(/'/g, "\"")),
             graph_pie_stocs = JSON.parse('{{ stocs.pie|escapejs }}'.replace(/'/g, "\"")),
             graph_bar_bonds = JSON.parse('{{ bonds.bar|escapejs }}'.replace(/'/g, "\"")),
