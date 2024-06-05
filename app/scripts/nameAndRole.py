@@ -13,6 +13,8 @@ def nameAndRoleBack(request):
 	dataBase.execute(f'select id_employee, id_ent from users where id_user={data[0]}')
 	data = dataBase.fetchAll()[0]
 	if (data[0] == None):
+		dataBase.close()
+		connection.close()
 		return returnJson({
 			'name': name,
 			'role': 'enterprise'
@@ -26,6 +28,8 @@ def nameAndRoleBack(request):
 			role = 'Admin'
 		else:
 			role = 'Manager'
+		dataBase.close()
+		connection.close()
 		return returnJson({
 			'name': name,
 			'role': role
