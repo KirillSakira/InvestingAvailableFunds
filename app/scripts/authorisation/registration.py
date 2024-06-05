@@ -1,9 +1,9 @@
 from connection import connection_db
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from .regModule import *
+from app.scripts.funcs import *
 
-def registrationDjango(request):
+def registrationBack(request):
 	
 	role = request.POST.get('role')
 	username = request.POST.get('login')
