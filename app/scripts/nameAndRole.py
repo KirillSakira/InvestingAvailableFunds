@@ -8,10 +8,10 @@ def nameAndRoleBack(request):
 	dataBase = connection.cursor()
 	name = request.user.last_name + request.user.first_name
 	dataBase.execute(f'select id_user, patronimic from auth_user where id={request.user.id}')
-	data = dataBase.fetchAll()[0]
+	data = dataBase.fetchall()[0]
 	name += data[1]
 	dataBase.execute(f'select id_employee, id_ent from users where id_user={data[0]}')
-	data = dataBase.fetchAll()[0]
+	data = dataBase.fetchall()[0]
 	if (data[0] == None):
 		dataBase.close()
 		connection.close()
@@ -21,9 +21,9 @@ def nameAndRoleBack(request):
 		})
 	else:
 		dataBase.execute(f'select id_post from employees where id_employee={data[1]}')
-		data = dataBase.fetchAll()[0][0]
+		data = dataBase.fetchall()[0][0]
 		dataBase.execute(f'select post_name from posts where id_post={data}')
-		role = dataBase.fetchAll()[0][0]
+		role = dataBase.fetchall()[0][0]
 		if role == 'Администратор':
 			role = 'Admin'
 		else:
