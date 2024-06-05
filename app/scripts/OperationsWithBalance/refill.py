@@ -1,3 +1,4 @@
+from connection import connection_db
 from app.scripts.funcs import returnJson
 import psycopg2
 from django.contrib.sessions.models import Session
@@ -27,7 +28,8 @@ def refillBack(request):
         return returnJson(status='Error', message='Необходимо авторизоваться.')
 
     user_id = request.user.id
-    connection = psycopg2.connect("dbname=test4 user=postgres password=1234 host=localhost port=5432")
+
+    connection = connection_db()
     cursor = connection.cursor()
 
     cursor.execute(f"select id_enterprise from Users where user_id='{user_id}'")
