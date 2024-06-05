@@ -2,6 +2,17 @@ html{
   font-size: 8px;
 }
 
+.modal-dialog{
+    max-width: 54.4rem;
+    margin: auto;
+}
+.modal-content{
+    border-radius: 2.5rem;
+}
+.modal-footer{
+    border-top: none;
+}
+
 .col_lvio{
     background-color: #453F64;
 }
