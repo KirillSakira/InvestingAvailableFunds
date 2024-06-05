@@ -1,21 +1,21 @@
 {% extends './common/common.html' %}
 {% load static %}
 {% block in_title %}Аналитика{% endblock %}
+{% block in_body_class %}banalytic{% endblock %}
 {% block in_body %}
-    {% block in_body_class %}banalytic{% endblock %}
     <div class="analytic_slick">
         <div>
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 mb-4 font-weight-bold">Акции</div>
-                    {% include "common/comSecurities.html" with stocks_data=graph_pie_stocs %}
+                    {% include "common/comSecurities.html" with stocks_data=stocs.pie %}
                 </div>
             </div>
 
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 font-weight-bold">Акции</div>
-                    <div class="h1 mt-4">{{var_balance_1}} ₽ (<span class="col_lb">{{var_balance_proc_1}}%</span>)</div>
+                    <div class="h1 mt-4">{{stocs.counts.count}} ₽ (<span class="col_lb">{{stocs.counts.proc}}%</span>)</div>
                     <canvas id="stocsBar" class="mt-5"></canvas>
                     
                     <div class="h1 font-weight-bold mt-5">Процентное соотношение портфеля</div>
@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
                             <div class="hportfolio_proc_names mt-5 mt-sm-0">
-                                {% for item in graph_pie_stocs %}
+                                {% for item in stocs.pie %}
                                     <div class="h3 w-100"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
                                 {% endfor %}
                             </div>
@@ -40,14 +40,14 @@
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 mb-4 font-weight-bold">Облигации</div>
-                    {% include "common/comSecurities.html" with stocks_data=graph_pie_bonds %}
+                    {% include "common/comSecurities.html" with stocks_data=bonds.pie %}
                 </div>
             </div>
 
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 font-weight-bold">Облигации</div>
-                    <div class="h1 mt-4">{{var_balance_1}} ₽ (<span class="col_lb">{{var_balance_proc_1}}%</span>)</div>
+                    <div class="h1 mt-4">{{bonds.counts.count}} ₽ (<span class="col_lb">{{bonds.counts.proc}}%</span>)</div>
                     <canvas id="bondsBar" class="mt-5"></canvas>
                     
                     <div class="h1 font-weight-bold mt-5">Процентное соотношение портфеля</div>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
                             <div class="hportfolio_proc_names mt-5 mt-sm-0">
-                                {% for item in graph_pie_bonds %}
+                                {% for item in bonds.pie %}
                                     <div class="h3 w-100"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
                                 {% endfor %}
                             </div>
@@ -72,14 +72,14 @@
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 mb-4 font-weight-bold">Фонды</div>
-                    {% include "common/comSecurities.html" with stocks_data=graph_pie_funds %}
+                    {% include "common/comSecurities.html" with stocks_data=funds.pie %}
                 </div>
             </div>
 
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 font-weight-bold">Фонды</div>
-                    <div class="h1 mt-4">{{var_balance_1}} ₽ (<span class="col_lb">{{var_balance_proc_1}}%</span>)</div>
+                    <div class="h1 mt-4">{{funds.counts.count}} ₽ (<span class="col_lb">{{funds.counts.proc}}%</span>)</div>
                     <canvas id="fundsBar" class="mt-5"></canvas>
                     
                     <div class="h1 font-weight-bold mt-5">Процентное соотношение портфеля</div>
@@ -89,7 +89,7 @@
                         </div>
                         <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
                             <div class="hportfolio_proc_names mt-5 mt-sm-0">
-                                {% for item in graph_pie_funds %}
+                                {% for item in funds.pie %}
                                     <div class="h3 w-100"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
                                 {% endfor %}
                             </div>
@@ -104,14 +104,14 @@
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 mb-4 font-weight-bold">Валюта и металлы</div>
-                    {% include "common/comSecurities.html" with stocks_data=graph_pie_curr_metals %}
+                    {% include "common/comSecurities.html" with stocks_data=curr_metals.pie %}
                 </div>
             </div>
 
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 font-weight-bold">Валюта и металлы</div>
-                    <div class="h1 mt-4">{{var_balance_1}} ₽ (<span class="col_lb">{{var_balance_proc_1}}%</span>)</div>
+                    <div class="h1 mt-4">{{curr_metals.counts.count}} ₽ (<span class="col_lb">{{curr_metals.counts.proc}}%</span>)</div>
                     <canvas id="curr_metalsBar" class="mt-5"></canvas>
                     
                     <div class="h1 font-weight-bold mt-5">Процентное соотношение портфеля</div>
@@ -121,7 +121,7 @@
                         </div>
                         <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
                             <div class="hportfolio_proc_names mt-5 mt-sm-0">
-                                {% for item in graph_pie_curr_metals %}
+                                {% for item in curr_metals.pie %}
                                     <div class="h3 w-100"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
                                 {% endfor %}
                             </div>
@@ -134,14 +134,15 @@
 
   
     <script>
-        var graph_bar_stocs = JSON.parse('{{ graph_bar_stocs|escapejs }}'.replace(/'/g, "\"")),
-            graph_pie_stocs = JSON.parse('{{ graph_pie_stocs|escapejs }}'.replace(/'/g, "\"")),
-            graph_bar_bonds = JSON.parse('{{ graph_bar_bonds|escapejs }}'.replace(/'/g, "\"")),
-            graph_pie_bonds = JSON.parse('{{ graph_pie_bonds|escapejs }}'.replace(/'/g, "\"")),
-            graph_bar_funds = JSON.parse('{{ graph_bar_funds|escapejs }}'.replace(/'/g, "\"")),
-            graph_pie_funds = JSON.parse('{{ graph_pie_funds|escapejs }}'.replace(/'/g, "\"")),
-            graph_bar_curr_metals = JSON.parse('{{ graph_bar_curr_metals|escapejs }}'.replace(/'/g, "\"")),
-            graph_pie_curr_metals = JSON.parse('{{ graph_pie_curr_metals|escapejs }}'.replace(/'/g, "\""));
+        console.log('{{ stocs.bar|escapejs }}')
+        var graph_bar_stocs = JSON.parse('{{ stocs.bar|escapejs }}'.replace(/'/g, "\"")),
+            graph_pie_stocs = JSON.parse('{{ stocs.pie|escapejs }}'.replace(/'/g, "\"")),
+            graph_bar_bonds = JSON.parse('{{ bonds.bar|escapejs }}'.replace(/'/g, "\"")),
+            graph_pie_bonds = JSON.parse('{{ bonds.pie|escapejs }}'.replace(/'/g, "\"")),
+            graph_bar_funds = JSON.parse('{{ funds.bar|escapejs }}'.replace(/'/g, "\"")),
+            graph_pie_funds = JSON.parse('{{ funds.pie|escapejs }}'.replace(/'/g, "\"")),
+            graph_bar_curr_metals = JSON.parse('{{ curr_metals.bar|escapejs }}'.replace(/'/g, "\"")),
+            graph_pie_curr_metals = JSON.parse('{{ curr_metals.pie|escapejs }}'.replace(/'/g, "\""));
         $(document).ready(function() {
             generBar('stocsBar', graph_bar_stocs, 1);
             generPie('stocsPie', graph_pie_stocs); 

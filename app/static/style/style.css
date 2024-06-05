@@ -225,7 +225,7 @@ header{
     content: '';
     display: block;
     height: 150px;
-    width: 20px;
+    width: 100%;
     background-size: 100% auto !important;
     background-repeat: no-repeat !important;
     background-position: center !important;
@@ -275,6 +275,17 @@ header{
     .profile_sec_img{
         max-width: 45px;
     }
+    
+    .slick-prev, 
+    .slick-next{
+        width: 3.5rem;
+    }
+    .slick-prev{
+        left: -4.2rem;
+    }
+    .slick-next{
+        right: -4.2rem;
+    }
 }
 
 @media all and (min-width: 992px){
@@ -320,9 +331,9 @@ header{
         width: 4.4rem;
     }
     .slick-prev{
-        left: -4.2rem;
+        left: -5.2rem;
     }
     .slick-next{
-        right: -3.8rem;
+        right: -5.2rem;
     }
 }

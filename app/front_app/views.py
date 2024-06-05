@@ -257,236 +257,276 @@ def viewOperations(request):
 
 
 def viewAnalytic(request):
-    stocks_data = [
-        {
-            'count': '100',
-            'proc': '10',
-            'img': 's1', #имя
-            'name': 'Норильский никель', #имя
-            'short_name': 'GMKN', #сокращенное имя
-            'price_buy': '15 975 876,66', #цена покупки
-            'price_now': '16 200 000,31', #текущая цена
-            'price_count_buy': '15 975 876,66', #цена всех купленных
-            'count_buy': '10', #количество купленных
-            'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
-            'proc_end': '+3' #в процентах
+    stocks_data = {
+        'counts': {
+            'count': '28 638 725,7',
+            'proc': '+19,56'
         },
-        {
-            'count': '250',
-            'proc': '25',
-            'img': 's2',
-            'name': 'ТКС Холдинг',
-            'short_name': 'TKSG',
-            'price_buy': '2 798,45',
-            'price_now': '1 598,89',
-            'price_count_buy': '7 994,45',
-            'count_buy': '5',
-            'price_end': '-5 997,8',
-            'proc_end': '-33,78'
+        'bar': {
+            'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
         },
-        {
-            'count': '250',
-            'proc': '25',
-            'img': 's3',
-            'name': 'Яндекс',
-            'short_name': 'YNDX',
-            'price_buy': '4 155,96',
-            'price_now': '4 161,4',
-            'price_count_buy': '12 448,2',
-            'count_buy': '3',
-            'price_end': '+8 544,78',
-            'proc_end': '+17,92'
-        },
-        {
-            'count': '200',
-            'proc': '20',
-            'img': 's2',
-            'name': 'ТКС Холдинг',
-            'short_name': 'TKSG',
-            'price_buy': '2 798,45',
-            'price_now': '1 598,89',
-            'price_count_buy': '7 994,45',
-            'count_buy': '5',
-            'price_end': '-5 997,8',
-            'proc_end': '-33,78'
-        }
-    ]
-    stocks_data_icos = getColorImg([obj['img'] for obj in stocks_data])
-    for obj, col in zip(stocks_data, stocks_data_icos):
+        'pie': [
+            {
+                'count': '100',
+                'proc': '10',
+                'img': 's1', #имя
+                'name': 'Норильский никель', #имя
+                'short_name': 'GMKN', #сокращенное имя
+                'price_buy': '15 975 876,66', #цена покупки
+                'price_now': '16 200 000,31', #текущая цена
+                'price_count_buy': '15 975 876,66', #цена всех купленных
+                'count_buy': '10', #количество купленных
+                'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
+                'proc_end': '+3' #в процентах
+            },
+            {
+                'count': '250',
+                'proc': '25',
+                'img': 's2',
+                'name': 'ТКС Холдинг',
+                'short_name': 'TKSG',
+                'price_buy': '2 798,45',
+                'price_now': '1 598,89',
+                'price_count_buy': '7 994,45',
+                'count_buy': '5',
+                'price_end': '-5 997,8',
+                'proc_end': '-33,78'
+            },
+            {
+                'count': '250',
+                'proc': '25',
+                'img': 's3',
+                'name': 'Яндекс',
+                'short_name': 'YNDX',
+                'price_buy': '4 155,96',
+                'price_now': '4 161,4',
+                'price_count_buy': '12 448,2',
+                'count_buy': '3',
+                'price_end': '+8 544,78',
+                'proc_end': '+17,92'
+            },
+            {
+                'count': '200',
+                'proc': '20',
+                'img': 's2',
+                'name': 'ТКС Холдинг',
+                'short_name': 'TKSG',
+                'price_buy': '2 798,45',
+                'price_now': '1 598,89',
+                'price_count_buy': '7 994,45',
+                'count_buy': '5',
+                'price_end': '-5 997,8',
+                'proc_end': '-33,78'
+            }
+        ]
+    }
+    stocks_data_icos = getColorImg([obj['img'] for obj in stocks_data['pie']])
+    for obj, col in zip(stocks_data['pie'], stocks_data_icos):
         obj['color'] = col
 
-    bonds_data = [
-        {
-            'count': '100',
-            'proc': '10',
-            'img': 's1', #имя
-            'name': 'Норильский никель', #имя
-            'short_name': 'GMKN', #сокращенное имя
-            'price_buy': '15 975 876,66', #цена покупки
-            'price_now': '16 200 000,31', #текущая цена
-            'price_count_buy': '15 975 876,66', #цена всех купленных
-            'count_buy': '10', #количество купленных
-            'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
-            'proc_end': '+3' #в процентах
+    bonds_data = {
+        'counts': {
+            'count': '38 638 725,7',
+            'proc': '+19,56'
         },
-        {
-            'count': '250',
-            'proc': '25',
-            'img': 's2',
-            'name': 'ТКС Холдинг',
-            'short_name': 'TKSG',
-            'price_buy': '2 798,45',
-            'price_now': '1 598,89',
-            'price_count_buy': '7 994,45',
-            'count_buy': '5',
-            'price_end': '-5 997,8',
-            'proc_end': '-33,78'
+        'bar': {
+            'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
         },
-        {
-            'count': '250',
-            'proc': '25',
-            'img': 's3',
-            'name': 'Яндекс',
-            'short_name': 'YNDX',
-            'price_buy': '4 155,96',
-            'price_now': '4 161,4',
-            'price_count_buy': '12 448,2',
-            'count_buy': '3',
-            'price_end': '+8 544,78',
-            'proc_end': '+17,92'
-        },
-        {
-            'count': '200',
-            'proc': '20',
-            'img': 's2',
-            'name': 'ТКС Холдинг',
-            'short_name': 'TKSG',
-            'price_buy': '2 798,45',
-            'price_now': '1 598,89',
-            'price_count_buy': '7 994,45',
-            'count_buy': '5',
-            'price_end': '-5 997,8',
-            'proc_end': '-33,78'
-        }
-    ]
-    bonds_data_icos = getColorImg([obj['img'] for obj in bonds_data])
-    for obj, col in zip(bonds_data, bonds_data_icos):
+        'pie': [
+            {
+                'count': '100',
+                'proc': '10',
+                'img': 's1', #имя
+                'name': 'Норильский никель', #имя
+                'short_name': 'GMKN', #сокращенное имя
+                'price_buy': '15 975 876,66', #цена покупки
+                'price_now': '16 200 000,31', #текущая цена
+                'price_count_buy': '15 975 876,66', #цена всех купленных
+                'count_buy': '10', #количество купленных
+                'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
+                'proc_end': '+3' #в процентах
+            },
+            {
+                'count': '250',
+                'proc': '25',
+                'img': 's2',
+                'name': 'ТКС Холдинг',
+                'short_name': 'TKSG',
+                'price_buy': '2 798,45',
+                'price_now': '1 598,89',
+                'price_count_buy': '7 994,45',
+                'count_buy': '5',
+                'price_end': '-5 997,8',
+                'proc_end': '-33,78'
+            },
+            {
+                'count': '250',
+                'proc': '25',
+                'img': 's3',
+                'name': 'Яндекс',
+                'short_name': 'YNDX',
+                'price_buy': '4 155,96',
+                'price_now': '4 161,4',
+                'price_count_buy': '12 448,2',
+                'count_buy': '3',
+                'price_end': '+8 544,78',
+                'proc_end': '+17,92'
+            },
+            {
+                'count': '200',
+                'proc': '20',
+                'img': 's2',
+                'name': 'ТКС Холдинг',
+                'short_name': 'TKSG',
+                'price_buy': '2 798,45',
+                'price_now': '1 598,89',
+                'price_count_buy': '7 994,45',
+                'count_buy': '5',
+                'price_end': '-5 997,8',
+                'proc_end': '-33,78'
+            }
+        ]
+    }
+    bonds_data_icos = getColorImg([obj['img'] for obj in bonds_data['pie']])
+    for obj, col in zip(bonds_data['pie'], bonds_data_icos):
         obj['color'] = col
 
-    funds_data = [
-        {
-            'count': '100',
-            'proc': '10',
-            'img': 's1', #имя
-            'name': 'Норильский никель', #имя
-            'short_name': 'GMKN', #сокращенное имя
-            'price_buy': '15 975 876,66', #цена покупки
-            'price_now': '16 200 000,31', #текущая цена
-            'price_count_buy': '15 975 876,66', #цена всех купленных
-            'count_buy': '10', #количество купленных
-            'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
-            'proc_end': '+3' #в процентах
+    funds_data = {
+        'counts': {
+            'count': '48 638 725,7',
+            'proc': '+19,56'
         },
-        {
-            'count': '250',
-            'proc': '25',
-            'img': 's2',
-            'name': 'ТКС Холдинг',
-            'short_name': 'TKSG',
-            'price_buy': '2 798,45',
-            'price_now': '1 598,89',
-            'price_count_buy': '7 994,45',
-            'count_buy': '5',
-            'price_end': '-5 997,8',
-            'proc_end': '-33,78'
+        'bar': {
+            'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
         },
-        {
-            'count': '250',
-            'proc': '25',
-            'img': 's3',
-            'name': 'Яндекс',
-            'short_name': 'YNDX',
-            'price_buy': '4 155,96',
-            'price_now': '4 161,4',
-            'price_count_buy': '12 448,2',
-            'count_buy': '3',
-            'price_end': '+8 544,78',
-            'proc_end': '+17,92'
-        },
-        {
-            'count': '200',
-            'proc': '20',
-            'img': 's2',
-            'name': 'ТКС Холдинг',
-            'short_name': 'TKSG',
-            'price_buy': '2 798,45',
-            'price_now': '1 598,89',
-            'price_count_buy': '7 994,45',
-            'count_buy': '5',
-            'price_end': '-5 997,8',
-            'proc_end': '-33,78'
-        }
-    ]
-    funds_data_icos = getColorImg([obj['img'] for obj in funds_data])
-    for obj, col in zip(funds_data, funds_data_icos):
+        'pie': [
+            {
+                'count': '100',
+                'proc': '10',
+                'img': 's1', #имя
+                'name': 'Норильский никель', #имя
+                'short_name': 'GMKN', #сокращенное имя
+                'price_buy': '15 975 876,66', #цена покупки
+                'price_now': '16 200 000,31', #текущая цена
+                'price_count_buy': '15 975 876,66', #цена всех купленных
+                'count_buy': '10', #количество купленных
+                'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
+                'proc_end': '+3' #в процентах
+            },
+            {
+                'count': '250',
+                'proc': '25',
+                'img': 's2',
+                'name': 'ТКС Холдинг',
+                'short_name': 'TKSG',
+                'price_buy': '2 798,45',
+                'price_now': '1 598,89',
+                'price_count_buy': '7 994,45',
+                'count_buy': '5',
+                'price_end': '-5 997,8',
+                'proc_end': '-33,78'
+            },
+            {
+                'count': '250',
+                'proc': '25',
+                'img': 's3',
+                'name': 'Яндекс',
+                'short_name': 'YNDX',
+                'price_buy': '4 155,96',
+                'price_now': '4 161,4',
+                'price_count_buy': '12 448,2',
+                'count_buy': '3',
+                'price_end': '+8 544,78',
+                'proc_end': '+17,92'
+            },
+            {
+                'count': '200',
+                'proc': '20',
+                'img': 's2',
+                'name': 'ТКС Холдинг',
+                'short_name': 'TKSG',
+                'price_buy': '2 798,45',
+                'price_now': '1 598,89',
+                'price_count_buy': '7 994,45',
+                'count_buy': '5',
+                'price_end': '-5 997,8',
+                'proc_end': '-33,78'
+            }
+        ]
+    }
+    funds_data_icos = getColorImg([obj['img'] for obj in funds_data['pie']])
+    for obj, col in zip(funds_data['pie'], funds_data_icos):
         obj['color'] = col
 
-    curr_metals_data = [
-        {
-            'count': '100',
-            'proc': '10',
-            'img': 's1', #имя
-            'name': 'Норильский никель', #имя
-            'short_name': 'GMKN', #сокращенное имя
-            'price_buy': '15 975 876,66', #цена покупки
-            'price_now': '16 200 000,31', #текущая цена
-            'price_count_buy': '15 975 876,66', #цена всех купленных
-            'count_buy': '10', #количество купленных
-            'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
-            'proc_end': '+3' #в процентах
+    curr_metals_data = {
+        'counts': {
+            'count': '58 638 725,7',
+            'proc': '+19,56'
         },
-        {
-            'count': '250',
-            'proc': '25',
-            'img': 's2',
-            'name': 'ТКС Холдинг',
-            'short_name': 'TKSG',
-            'price_buy': '2 798,45',
-            'price_now': '1 598,89',
-            'price_count_buy': '7 994,45',
-            'count_buy': '5',
-            'price_end': '-5 997,8',
-            'proc_end': '-33,78'
+        'bar': {
+            'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
         },
-        {
-            'count': '250',
-            'proc': '25',
-            'img': 's3',
-            'name': 'Яндекс',
-            'short_name': 'YNDX',
-            'price_buy': '4 155,96',
-            'price_now': '4 161,4',
-            'price_count_buy': '12 448,2',
-            'count_buy': '3',
-            'price_end': '+8 544,78',
-            'proc_end': '+17,92'
-        },
-        {
-            'count': '200',
-            'proc': '20',
-            'img': 's2',
-            'name': 'ТКС Холдинг',
-            'short_name': 'TKSG',
-            'price_buy': '2 798,45',
-            'price_now': '1 598,89',
-            'price_count_buy': '7 994,45',
-            'count_buy': '5',
-            'price_end': '-5 997,8',
-            'proc_end': '-33,78'
-        }
-    ]
-    curr_metals_data_icos = getColorImg([obj['img'] for obj in curr_metals_data])
-    for obj, col in zip(curr_metals_data, curr_metals_data_icos):
+        'pie': [
+            {
+                'count': '100',
+                'proc': '10',
+                'img': 's1', #имя
+                'name': 'Норильский никель', #имя
+                'short_name': 'GMKN', #сокращенное имя
+                'price_buy': '15 975 876,66', #цена покупки
+                'price_now': '16 200 000,31', #текущая цена
+                'price_count_buy': '15 975 876,66', #цена всех купленных
+                'count_buy': '10', #количество купленных
+                'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
+                'proc_end': '+3' #в процентах
+            },
+            {
+                'count': '250',
+                'proc': '25',
+                'img': 's2',
+                'name': 'ТКС Холдинг',
+                'short_name': 'TKSG',
+                'price_buy': '2 798,45',
+                'price_now': '1 598,89',
+                'price_count_buy': '7 994,45',
+                'count_buy': '5',
+                'price_end': '-5 997,8',
+                'proc_end': '-33,78'
+            },
+            {
+                'count': '250',
+                'proc': '25',
+                'img': 's3',
+                'name': 'Яндекс',
+                'short_name': 'YNDX',
+                'price_buy': '4 155,96',
+                'price_now': '4 161,4',
+                'price_count_buy': '12 448,2',
+                'count_buy': '3',
+                'price_end': '+8 544,78',
+                'proc_end': '+17,92'
+            },
+            {
+                'count': '200',
+                'proc': '20',
+                'img': 's2',
+                'name': 'ТКС Холдинг',
+                'short_name': 'TKSG',
+                'price_buy': '2 798,45',
+                'price_now': '1 598,89',
+                'price_count_buy': '7 994,45',
+                'count_buy': '5',
+                'price_end': '-5 997,8',
+                'proc_end': '-33,78'
+            }
+        ]
+    }
+    curr_metals_data_icos = getColorImg([obj['img'] for obj in curr_metals_data['pie']])
+    for obj, col in zip(curr_metals_data['pie'], curr_metals_data_icos):
         obj['color'] = col
 
     data = {
@@ -494,28 +534,10 @@ def viewAnalytic(request):
         'in_scripts_graph': True,
         'in_slick': True,
         
-        'var_balance_1': '18 638 725,7',
-        'var_balance_proc_1': '+19,56',
-        'graph_bar_stocs': {
-            'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-            'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
-        },
-        'graph_pie_stocs': stocks_data,
-        'graph_bar_bonds': {
-            'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-            'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
-        },
-        'graph_pie_bonds': bonds_data,
-        'graph_bar_funds': {
-            'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-            'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
-        },
-        'graph_pie_funds': funds_data,
-        'graph_bar_curr_metals': {
-            'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-            'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
-        },
-        'graph_pie_curr_metals': curr_metals_data
+        'stocs': stocks_data,
+        'bonds': bonds_data,
+        'funds': funds_data,
+        'curr_metals': curr_metals_data
     }
     if request.session.session_key != None:
         return render(request, 'analytic.html', data)

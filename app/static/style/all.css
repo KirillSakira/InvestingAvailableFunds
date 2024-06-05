@@ -144,7 +144,7 @@ button a{
 button:hover{
   filter: brightness(115%);
 }
-button:active{
+button:not(.slick-prev, .slick-next):active{
   transform: scale(0.99);
 }
 
