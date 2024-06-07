@@ -4,7 +4,6 @@ html{
 
 .modal-dialog{
     max-width: 54.4rem;
-    margin: auto;
 }
 .modal-content{
     border-radius: 2.5rem;
@@ -166,7 +165,7 @@ header{
 #pop_chat{
     position: fixed;
     right: 1.9rem;
-    bottom: 7.2rem;
+    bottom: 1.9rem;
     border-radius: 50%;
     width: 6.7rem;
     height: 6.7rem;
@@ -221,10 +220,12 @@ header{
 
 
 
-
+.canvas_bar{
+    max-height: 35rem;
+}
 #pieChart{
-    max-width: 220px;
-    max-height: 220px;
+    max-width: 24rem;
+    max-height: 24rem;
 }
 
 .slick-prev:active,
