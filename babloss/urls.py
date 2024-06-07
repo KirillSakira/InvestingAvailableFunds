@@ -24,7 +24,6 @@ urlpatterns = [
     path('reg/', registration, name='reg'),
     path('logout/', doLogout, name='logout'),
     path('refill/', refill, name='refill'),
-    path('nameAndRole/', nameAndRole, name='nameAndRole'),
 
     path('', include('app.front_app.urls')),
 ]

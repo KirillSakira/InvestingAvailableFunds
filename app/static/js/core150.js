@@ -123,9 +123,50 @@ function generPie(elem, dataPie){
         options: {
             cutout: '90%',
             rotation: -10 * Math.PI,
+            onHover: (event, chartElement) => {
+                const items = document.querySelectorAll('.legend-item');
+                items.forEach(item => item.classList.remove('highlight'));
+
+                if (chartElement.length > 0) {
+                    $('.hportfolio_proc_names').removeClass('pieHoverGraphParent');
+                    const index = chartElement[0].index;
+                    $('.pie_item_chart').removeClass('pieHoverGraph');
+                    $('.hportfolio_proc_names').addClass('pieHoverGraphParent');
+                    $('.pie_item-' + index).addClass('pieHoverGraph');
+                }
+            }
         }
     });
 }
+$('.canvas_pie').on('mouseout', function() {
+    $('.hportfolio_proc_names').removeClass('pieHoverGraphParent');
+    $('.pie_item_chart').removeClass('pieHoverGraph');
+});
+
+
+// document.getElementById('pieChart').addEventListener('mousemove', function(evt) {
+//     const points = pieChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
+
+//     if (points.length) {
+//         const firstPoint = points[0];
+//         const labelIndex = firstPoint.index;
+
+//         document.querySelectorAll('.legend-item').forEach(function(item, index) {
+//             if (index === labelIndex) {
+//                 item.classList.add('highlight');
+//             } else {
+//                 item.classList.remove('highlight');
+//             }
+//         });
+//     } else {
+//         document.querySelectorAll('.legend-item').forEach(function(item) {
+//             item.classList.remove('highlight');
+//         });
+//     }
+// });
+
+
+
 
 
 if(pathname[1] == 'payment'){

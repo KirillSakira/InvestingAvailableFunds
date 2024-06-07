@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
-from .viewBack.getProfileName import getProfileName
+from .viewBack.getUserData import getUserData
 from .viewBack.getColorImg import getColorImg
 
 
@@ -21,7 +21,7 @@ def viewRegistration(request):
 
 def viewProfile(request):
     data = {
-        'profileName': getProfileName(),
+        'userData': getUserData(request),
         'email': 'asdas@asdasd.asd',
         'gender': 'Мужской',
         'name': 'asdasd asdasdasda sdasdasds',
@@ -39,10 +39,9 @@ def viewProfile(request):
 
 def viewHome(request):
     data = {
-        'profileName': getProfileName(),
+        'userData': getUserData(request),
         'in_scripts_graph': True,
         
-        'profileName': getProfileName(),
         'balance': '18 638 725,7',
         'var_balance': '8 736 976.33',
         'var_balance_proc': '+19,45',
@@ -205,7 +204,7 @@ def viewHome(request):
 
 def viewPayment(request):
     data = {
-        'profileName': getProfileName()
+        'userData': getUserData(request)
     }
     if request.session.session_key != None:
         return render(request, 'payment.html', data)
@@ -216,7 +215,7 @@ def viewPayment(request):
 
 def viewWithdraw(request):
     data = {
-        'profileName': getProfileName()
+        'userData': getUserData(request)
     }
     if request.session.session_key != None:
         return render(request, 'withdraw.html', data)
@@ -227,7 +226,7 @@ def viewWithdraw(request):
 
 def viewOperations(request):
     data = {
-        'profileName': getProfileName(),
+        'userData': getUserData(request),
         'operations_data': [
             {
                 'type': 'Пополнение',
@@ -543,7 +542,7 @@ def viewAnalytic(request):
         obj['color'] = col
 
     data = {
-        'profileName': getProfileName(),
+        'userData': getUserData(request),
         'in_scripts_graph': True,
         'in_slick': True,
         

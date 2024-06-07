@@ -80,6 +80,9 @@ header{
     align-items: center;
 }
 
+.hportfolio_proc_names{
+    transition: 0.3s;
+}
 .hportfolio_proc_names > div{
     position: relative;
     padding-left: 2.7rem;
@@ -96,6 +99,12 @@ header{
     height: 1.6rem;
     border-radius: 50%;
     transform: translateY(-50%);
+}
+.pie_item_chart{
+    transition: 0.3s;
+}
+.pieHoverGraphParent > .pie_item_chart:not(.pieHoverGraph){
+    opacity: 0.5;
 }
 
 .portfolio_pit_bl{
@@ -156,9 +165,6 @@ header{
     padding-left: 10px;
     overflow: hidden;
 }
-
-
-
 
 
 

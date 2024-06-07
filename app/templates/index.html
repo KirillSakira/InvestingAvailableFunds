@@ -45,12 +45,12 @@
             <div class="h1 font-weight-bold">Процентное соотношение портфеля</div>
             <div class="graph_pie row">
                 <div class="portfolio_pit_bl col-10 mx-auto col-sm-5 offset-sm-1 my-4 mt-md-5">
-                    <canvas id="pieChart"></canvas>
+                    <canvas id="pieChart" class="canvas_pie"></canvas>
                 </div>
                 <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
                     <div class="hportfolio_proc_names mt-5 mt-sm-0">
                         {% for item in graph_pie %}
-                            <div class="h3 w-100"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
+                            <div class="h3 w-100 pie_item_chart pie_item-{{ forloop.counter0 }}"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
                         {% endfor %}
                     </div>
                 </div>
