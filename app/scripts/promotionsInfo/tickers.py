@@ -1,11 +1,11 @@
 from tinkoff.invest import Client, RequestError
-from connection import connection_db
+import psycopg2
 
 f = open('token.txt', 'r')
 TOKEN = f.read()
 f.close()
 
-connection = connection_db()
+connection = psycopg2.connect("dbname=test6 user=postgres password=1234 host=localhost port=5432")
 dataBase = connection.cursor()
 
 dataBase.execute('select s.ticker, c.catalog_name from securities s join catalogs c on s.id_catalog = c.id_catalog;')
