@@ -144,32 +144,7 @@ $('.canvas_pie').on('mouseout', function() {
 });
 
 
-// document.getElementById('pieChart').addEventListener('mousemove', function(evt) {
-//     const points = pieChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
-
-//     if (points.length) {
-//         const firstPoint = points[0];
-//         const labelIndex = firstPoint.index;
-
-//         document.querySelectorAll('.legend-item').forEach(function(item, index) {
-//             if (index === labelIndex) {
-//                 item.classList.add('highlight');
-//             } else {
-//                 item.classList.remove('highlight');
-//             }
-//         });
-//     } else {
-//         document.querySelectorAll('.legend-item').forEach(function(item) {
-//             item.classList.remove('highlight');
-//         });
-//     }
-// });
-
-
-
-
-
-if(pathname[1] == 'payment'){
+if(pathname[1] == 'payment' || pathname[1] == 'withdraw'){
     let val_sum = '';
     function in_inp_sum(){
     }
@@ -181,7 +156,6 @@ if(pathname[1] == 'payment'){
             formatted = formatted ? formatted + ' ₽' : '';
             input.prop("selectionStart");
             input.val(formatted);
-            console.log(val);
             if (formatted.endsWith(' ₽')) {
                 let newCursorPosition = formatted.length - 2;
                 input.prop("selectionStart", newCursorPosition);
@@ -197,6 +171,45 @@ if(pathname[1] == 'payment'){
     $('.auth_inp_o_date').on('keyup, input', function(e){
         let val = $('.auth_inp_o_date').val().replace(/[^0-9]/g, '').substr(0, 4).replace(/(\d{2})(\d{2})/g, '$1/$2').trim();
         $('.auth_inp_o_date').val(val);
+    });
+
+
+    
+    $('form#doPayment').on('submit', function(e){
+        e.preventDefault();
+        if(blocked_button) return;
+        clearForm();
+
+        blocked_button = true;
+        if($('#summa').val().trim() == '') err('.summa', 'Введите сумму пополнения');
+        if($('#card_num').val().trim() == '') err('.card_num', 'Введите номер карты');
+        if($('#card_date').val().trim() == '') err('.card_date', 'Введите срок карты');
+        console.log(blocked_button, errs)
+        if(blocked_button && !errs){
+            let params = $(this).serialize();
+            request("/refill/", params, function(result){
+                try{
+                    response = JSON.parse(result);
+                    if(response.result == 'fail'){
+                        err('form', response.description);
+                        return;
+                    }
+                    res = JSON.parse(response.result);
+                    if(res['status'] == 'success'){
+                        window.location.href = '/';
+                        clearForm();
+                        blocked_button = false;
+                        return;
+                    }
+
+                    err('form', res.message);
+                }
+                catch(e){
+                    err('form', 'Неожиданная ошибка');
+                }
+            });
+        }
+        blocked_button = false;
     });
 }
 

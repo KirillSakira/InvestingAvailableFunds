@@ -50,13 +50,21 @@ html{
     background-color: #F1EDFD;
 }
 
-.inp_bl_o{
+.inp_bl_o > div:first-child{
     margin-top: 2rem;
+}
+.inp_bl_o > .error_podinp{
+    margin-left: 1rem;
+    margin-top: 0rem;
+    font-size: 1.3rem;
 }
 .inp_bl_o input{
     border: none;
     border-radius: 1.7rem;
+}
 
+#error_message:not(:empty){
+    padding-top: 1rem;
 }
 
 .header_profile_aname{

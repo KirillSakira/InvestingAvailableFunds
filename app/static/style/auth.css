@@ -31,9 +31,9 @@ button#reg{
 #auth{
   margin-top: 3.5rem;
 }
-#error_message{
-  color: red;
-  text-align: center;
+#error_message:not(:empty){
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 .op0{
   opacity: 0;

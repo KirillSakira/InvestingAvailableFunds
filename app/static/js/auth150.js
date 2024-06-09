@@ -9,34 +9,6 @@ const nameInput = {
     'phone': 'Номер телефона'
 }
 
-function inInp(element){
-    let el = $(element.target).parent().parent();
-    $(el).removeClass('error');
-    $(el).find('.error_podinp').text('');
-}
-
-function err(el, val){
-    let interval = 100;
-    if(el != 'form'){
-        $(el).addClass('error');
-        $(el).find('.error_podinp').text(val);
-    }
-    else{
-        $(el).find('h3').text(val);
-    }
-    $(el).animate({left: '-20px'}, interval);
-    setTimeout(() => $(el).animate({left: '15px'}, interval), interval);
-    setTimeout(() => $(el).animate({left: '-10px'}, interval), interval * 2);
-    setTimeout(() => $(el).animate({left: '5px'}, interval), interval * 3);
-    setTimeout(() => $(el).animate({left: '0px'}, interval), interval * 4);
-    setTimeout(() => blocked_button = false, interval * 5);
-}
-
-function clearForm(){
-    $('.inputs_bl').removeClass('error');
-    $('.error_podinp').text('');
-}
-
 $('input').on('input', (e) => inInp(e));
 $('input').on('change', (e) => inInp(e));
 
@@ -57,7 +29,7 @@ $(document).ready(function() {
             if(item.value.trim() == '') err('.' + item.id, 'Введите ' + nameInput[item.id]);
         });
         
-        if(blocked_button){
+        if(blocked_button && !errs){
             let params = $(this).serialize();
             request("/login/", params, function(result){
                 try{
@@ -81,6 +53,7 @@ $(document).ready(function() {
                 }
             });
         }
+        blocked_button = false;
     });
 
     $('form#registration_form').on('submit', function(e){
@@ -93,7 +66,7 @@ $(document).ready(function() {
             if(item.value.trim() == '') err('.' + item.id, 'Введите ' + nameInput[item.id]);
         });
         
-        if(blocked_button){
+        if(blocked_button && !errs){
             let params = $.param({'login': $('#email').val()}) + '&' + $(this).serialize();
             request("/reg/", params, function(result){
                 try{
@@ -120,5 +93,6 @@ $(document).ready(function() {
                 }
             });
         }
+        blocked_button = false;
     });
 });
