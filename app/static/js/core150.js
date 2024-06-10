@@ -225,4 +225,5 @@ if(pathname[1] == 'analytic'){
         console.log($(window).scrollTop(), $('.header').height())
         $('.slick-arrow').css('top', 'calc(50vh + ' + ($(window).scrollTop() - $('.header').height())  + 'px');
     });
+    $(window).scroll();
 }
