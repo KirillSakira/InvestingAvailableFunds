@@ -5,7 +5,7 @@ def getUserData(request):
 	# connection = connection_db()
 	# dataBase = connection.cursor()
 	# name = request.user.last_name + request.user.first_name
-	# dataBase.execute(f'select id_user, patronimic from auth_user where id={request.user.id}')
+	# dataBase.execute(f'select id_user, patronymic from auth_user where id={request.user.id}')
 	# data = dataBase.fetchall()[0]
 	# name += data[1]
 	# dataBase.execute(f'select id_employee, id_enterprise from users where id_user={data[0]}')

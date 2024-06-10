@@ -56,13 +56,13 @@ def registrationBack(request):
 	
 		last_name, first_name, *args = splitName
 		
-		patronimic = 'Null'
+		patronymic = 'Null'
 		
 		if args != []:
-			patronimic = args[0]
+			patronymic = args[0]
 		
 	
-		if len(first_name) > 150 or len(last_name) > 150 or len(patronimic) > 150:
+		if len(first_name) > 150 or len(last_name) > 150 or len(patronymic) > 150:
 			errorsDict['name'] = 'ФИО слишком длинное'
 	
 	returnErrors = errorsDict == {}
@@ -130,7 +130,7 @@ def registrationBack(request):
 	
 	dataBase.execute(f'update auth_user set id_user={idUser} where username=\'{username}\'')
 	
-	dataBase.execute(f'update auth_user set patronimic=\'{patronimic}\' where username=\'{username}\'')
+	dataBase.execute(f'update auth_user set patronymic=\'{patronymic}\' where username=\'{username}\'')
 	
 	connection.commit()
 	dataBase.close()
