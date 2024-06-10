@@ -43,7 +43,6 @@ var vw = window.innerWidth,
 
 function inInp(element){
     errs = false;
-    console.log('aaaaaaaa')
     let el = $(element.target).parent().parent();
     $(el).removeClass('error');
     $(el).find('.error_podinp').text('');

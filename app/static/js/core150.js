@@ -126,9 +126,9 @@ function generPie(elem, dataPie){
             onHover: (event, chartElement) => {
                 const items = document.querySelectorAll('.legend-item');
                 items.forEach(item => item.classList.remove('highlight'));
-
+                $('.hportfolio_proc_names').removeClass('pieHoverGraphParent');
+                
                 if (chartElement.length > 0) {
-                    $('.hportfolio_proc_names').removeClass('pieHoverGraphParent');
                     const index = chartElement[0].index;
                     $('.pie_item_chart').removeClass('pieHoverGraph');
                     $('.hportfolio_proc_names').addClass('pieHoverGraphParent');
@@ -184,7 +184,6 @@ if(pathname[1] == 'payment' || pathname[1] == 'withdraw'){
         if($('#summa').val().trim() == '') err('.summa', 'Введите сумму пополнения');
         if($('#card_num').val().trim() == '') err('.card_num', 'Введите номер карты');
         if($('#card_date').val().trim() == '') err('.card_date', 'Введите срок карты');
-        console.log(blocked_button, errs)
         if(blocked_button && !errs){
             let params = $(this).serialize();
             request("/refill/", params, function(result){
