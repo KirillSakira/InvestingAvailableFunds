@@ -8,7 +8,7 @@ def getUserData(request):
 	# dataBase.execute(f'select id_user, patronimic from auth_user where id={request.user.id}')
 	# data = dataBase.fetchall()[0]
 	# name += data[1]
-	# dataBase.execute(f'select id_employee, id_ent from users where id_user={data[0]}')
+	# dataBase.execute(f'select id_employee, id_enterprise from users where id_user={data[0]}')
 	# data = dataBase.fetchall()[0]
 	# if (data[0] == None):
 	# 	dataBase.close()

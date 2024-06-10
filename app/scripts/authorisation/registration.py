@@ -96,7 +96,7 @@ def registrationBack(request):
 		if not returnErrors:
 			dataBase.execute(insertsql('enterprises', [title, typeProperty, address, phone]))
 			
-			idEnterprise = getId(dataBase, 'enterprises', 'id_ent')
+			idEnterprise = getId(dataBase, 'enterprises', 'id_enterprise')
 	else:
 		if role == 'Admin':
 			dataBase.execute('insert into employees values (default, 1)')
