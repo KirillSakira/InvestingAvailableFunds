@@ -275,6 +275,18 @@ header{
     right: -3.2rem;
 }
 
+
+/* manager */
+.cloneBl{
+    display: none;
+}
+.newClientEmail{
+    display: none;
+}
+#mAddEmail_form .inputs_bl.error + div:last-child{
+    margin-bottom: 2rem;
+}
+
 @media all and (max-width: 360px){
     html{
         font-size: 7px;

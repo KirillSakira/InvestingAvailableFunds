@@ -152,6 +152,10 @@ button:not(.slick-prev, .slick-next):active{
   color: red;
   text-align: center;
 }
+#success_message{
+  color: green;
+  text-align: center;
+}
 
 .inp_bl{
   position: relative;

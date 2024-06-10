@@ -50,8 +50,15 @@
             <script src="{% static 'libs/chart.min.js' %}" type="module"></script>
             <script src="{% static 'dist/bundle.js' %}"></script>
         {% endif %}
-        <script src="{% static 'js/all150.js' %}"></script>
-        <script src="{% static 'js/core150.js' %}"></script>
+        <script src="{% static 'js/all.js' %}"></script>
+        <script src="{% static 'js/core.js' %}"></script>
+
+        {% if userData.role == 'enterprise' %}
+            <script src="{% static 'js/core_enterprise_5x78w291.js' %}"></script>
+        {% endif %}
+        {% if userData.role == 'Manager' %}
+            <script src="{% static 'js/core_Manager_vn37db38.js' %}"></script>
+        {% endif %}
 
     </body>
 </html>

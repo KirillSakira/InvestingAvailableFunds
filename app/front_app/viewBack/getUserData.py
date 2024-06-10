@@ -33,6 +33,6 @@ def getUserData(request):
 	# 		'role': role
 	# 	})
     return {
-			'name': 'Иванов Иван Иванович',
-			'role': 'user'
+		'name': 'Иванов Иван Иванович',
+		'role': 'enterprise'
 	}

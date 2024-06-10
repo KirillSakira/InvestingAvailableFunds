@@ -56,7 +56,7 @@ function err(el, val){
         $(el).find('.error_podinp').text(val);
     }
     else{
-        $(el).find('h3').text(val);
+        $(el).find('#error_message').text(val);
     }
     $(el).animate({left: '-20px'}, interval);
     setTimeout(() => $(el).animate({left: '15px'}, interval), interval);
