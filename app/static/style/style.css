@@ -242,6 +242,9 @@ header{
     max-height: 24rem;
 }
 
+.slick-arrow{
+    top: 50vh;
+}
 .slick-prev:active,
 .slick-next:active{
     /* top: unset !important; */

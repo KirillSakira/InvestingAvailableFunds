@@ -127,7 +127,7 @@ function generPie(elem, dataPie){
                 const items = document.querySelectorAll('.legend-item');
                 items.forEach(item => item.classList.remove('highlight'));
                 $('.hportfolio_proc_names').removeClass('pieHoverGraphParent');
-                
+
                 if (chartElement.length > 0) {
                     const index = chartElement[0].index;
                     $('.pie_item_chart').removeClass('pieHoverGraph');
@@ -219,6 +219,10 @@ if(pathname[1] == 'analytic'){
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1
-      });
+    });
 
+    $(window).on("scroll", function(e){
+        console.log($(window).scrollTop(), $('.header').height())
+        $('.slick-arrow').css('top', 'calc(50vh + ' + ($(window).scrollTop() - $('.header').height())  + 'px');
+    });
 }
