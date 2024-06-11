@@ -2,35 +2,81 @@
 {% load static %}
 {% block in_title %}Главная{% endblock %}
 {% block in_body %}
-    <div class="row">
-        <div class="elem col-11 mx-auto px-5 py-5">
-            <div class="h1 font-weight-bold">Баланс</div>
-            <div class="h1 mt-4">{{balance}} ₽</div>
-            <div class="col_lb h4">{{var_balance}} ₽ ({{var_balance_proc}}%)</div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="home_buts col-11 mt-4 mx-auto pt-4 pb-3">
-            <div class="row">
-                <div class="col-12 col-md-6 col-xl-3 mb-4">
-                    <button class="h3"><a href="/payment" class="p-4">Пополнить</a></button>
-                </div>
-                
-                <div class="col-12 col-md-6 col-xl-3 mb-4">
-                    <button class="h3"><a href="/withdraw" class="p-4">Вывести</a></button>
-                </div>
-                
-                <div class="col-12 col-md-6 col-xl-3 mb-4">
-                    <button class="h3"><a href="/operations" class="p-4">Операции</a></button>
-                </div>
-                
-                <div class="col-12 col-md-6 col-xl-3 mb-4">
-                    <button class="h3"><a href="/analytic" class="p-4">Аналитика</a></button>
+    
+    {% if userData.role == 'enterprise' %}
+        <div class="row">
+            <div class="elem col-11 mx-auto px-5 py-5">
+                <div class="h1 font-weight-bold">Баланс</div>
+                <div class="h1 mt-4">{{balance}} ₽</div>
+                <div class="col_lb h4">{{var_balance}} ₽ ({{var_balance_proc}}%)</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="home_buts col-11 mt-4 mx-auto pt-4 pb-3">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/payment" class="p-4">Пополнить</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/withdraw" class="p-4">Вывести</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/operations" class="p-4">Операции</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/analytic" class="p-4">Аналитика</a></button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
+    
+    {% if userData.role == 'Manager' %}
+        <div class="row">
+            <div class="elem col-11 mx-auto px-5 pt-5 pb-3">
+                <div class="row">
+                    <div class="col">
+                        <div class="h1 font-weight-bold">Баланс</div>
+                        <div class="h1 mt-4">{{balance}} ₽</div>
+                        <div class="col_lb h4">{{var_balance}} ₽ ({{var_balance_proc}}%)</div>
+                    </div>
+                    <div class="col d-grid align-items-start">
+                        <div class="h1 font-weight-bold text-right">{{enterprise_name}}</div>
+                        <div class="h_home_but text-right">
+                            <button class="h3 mt-3"><a href="/operations/{{id}}/" class="p-4">Операции</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="home_buts col-11 mt-4 mx-auto pt-4 pb-3">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3 h-100"><a href="/payment" class="p-4">Торговля</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3 h-100"><a href="/withdraw" class="p-4">Аналитика</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3 h-100"><a href="/operations" class="p-4">История торговли</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3 h-100"><a href="/analytic" class="p-4">Отвязать аккаунт</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
     <div class="row">
         <div class="elem col-11 my-3 mx-auto px-5 py-5">
@@ -85,16 +131,15 @@
             {% include "common/comSecurities.html" with stockss_data=stocks_data %}
         </div>
     </div>
+{% endblock %}
 
-
-    {% block in_script %}
-        <script>
-            var graph_bar = JSON.parse('{{ graph_bar|escapejs }}'.replace(/'/g, "\"")),
-                graph_pie = JSON.parse('{{ graph_pie|escapejs }}'.replace(/'/g, "\""));
-            $(document).ready(function() {
-                generBar('webixChart', graph_bar);
-                generPie('pieChart', graph_pie); 
-            });
-        </script>
-    {% endblock %}
+{% block in_script %}
+<script>
+    var graph_bar = JSON.parse('{{ graph_bar|escapejs }}'.replace(/'/g, "\"")),
+        graph_pie = JSON.parse('{{ graph_pie|escapejs }}'.replace(/'/g, "\""));
+    $(document).ready(function() {
+        generBar('webixChart', graph_bar);
+        generPie('pieChart', graph_pie); 
+    });
+</script>
 {% endblock %}

@@ -12,5 +12,10 @@ urlpatterns = [
     path('operations/', views.viewOperations, name='operations'),
     path('operations/<int:id>/', views.viewOperationsDetail, name='operationsDetail'),
     path('analytic/', views.viewAnalytic, name='analytic'),
-    path('', views.viewHome, name='/auth/')
+
+
+    path('enterprise/<int:id>/', views.viewEnterprise, name='enterprise'),
+
+
+    path('', views.viewHome, name='/')
 ] 

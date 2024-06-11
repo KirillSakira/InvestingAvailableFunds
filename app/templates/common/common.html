@@ -46,6 +46,8 @@
             <img src="{% static 'img/ico_chat.svg' %}" alt="">
         </div>
 
+        
+        {% block in_script %}{% endblock %}
         {% if in_scripts_graph %}
             <script src="{% static 'libs/chart.min.js' %}" type="module"></script>
             <script src="{% static 'dist/bundle.js' %}"></script>

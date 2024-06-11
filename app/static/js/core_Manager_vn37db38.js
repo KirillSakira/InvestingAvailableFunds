@@ -37,6 +37,7 @@ if(pathname[1] == ''){
                         clearForm();
 
                         let html = cloneClientBlock.html()
+                        .replace('$id', response.id)
                         .replace('$name', response.name)
                         .replace('$balance', response.balance)
                         .replace('$balance_proc', response.balance_proc)
@@ -61,8 +62,7 @@ if(pathname[1] == ''){
     });
 }
 
-if(pathname[1] == 'operations'){
-    $('.operation_el').on('click', function(){
-        window.open('/operations/' + this.getAttribute('data-id'), '_blank');
-    });
-}
+$('.el_hoverer').on('click', function(){
+    if(['', 'operations'].indexOf(pathname[1]) !== -1)
+        window.open('/enterprise/' + this.getAttribute('data-id'), '_blank');
+});

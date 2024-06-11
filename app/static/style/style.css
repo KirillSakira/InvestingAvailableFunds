@@ -251,10 +251,7 @@ header{
 .slick-arrow{
     top: 50vh;
     height: unset;
-}
-.slick-prev:active,
-.slick-next:active{
-    /* top: unset !important; */
+    transition: none !important;
 }
 .slick-prev:before,
 .slick-next:before{
@@ -294,15 +291,19 @@ header{
     margin-bottom: 2rem;
 }
 
-body.operations_list .operation_el{
+.el_hoverer{
     transition: 0.3s;
     cursor: pointer;
 }
-body.operations_list .operation_el:hover{
+.el_hoverer:hover{
     transform: scale(1.01);
     border-radius: 2rem;
     transition: 0.3s;
     filter: brightness(1.2);
+}
+
+.h_home_but button{
+    max-width: 330px;
 }
 
 @media all and (max-width: 360px){

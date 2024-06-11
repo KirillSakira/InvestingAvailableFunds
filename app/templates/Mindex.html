@@ -47,7 +47,7 @@
     <div id="mClientsList">
         {% for item in users %}
             <div class="row">
-                <div class="elem col-11 mx-auto my-2 px-5 py-4">
+                <div class="elem el_hoverer col-11 mx-auto my-2 px-5 py-4" data-id="{{item.id}}">
                     <div class="row align-items-center">
                         <div class="col-12 col-sm-6">
                             <div class="h1">{{item.name}}</div>
@@ -68,7 +68,7 @@
 
         <div class="cloneBl cloneClientBlock">
             <div class="row">
-                <div class="elem col-11 mx-auto my-2 px-5 py-4">
+                <div class="elem el_hoverer col-11 mx-auto my-2 px-5 py-4" data-id="$id">
                     <div class="row align-items-center">
                         <div class="col-12 col-sm-6">
                             <div class="h1">$name</div>

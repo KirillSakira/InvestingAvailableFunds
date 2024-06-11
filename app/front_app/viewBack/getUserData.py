@@ -34,5 +34,5 @@ def getUserData(request):
 	# 	})
     return {
 		'name': 'Иванов Иван Иванович',
-		'role': 'enterprise'
+		'role': 'Manager'
 	}
