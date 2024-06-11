@@ -59,19 +59,19 @@
             <div class="home_buts col-11 mt-4 mx-auto pt-4 pb-3">
                 <div class="row">
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
-                        <button class="h3 h-100"><a href="/payment" class="p-4">Торговля</a></button>
+                        <button class="h3 h-100"><a href="/trade/{{id}}/" class="p-4">Торговля</a></button>
                     </div>
                     
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
-                        <button class="h3 h-100"><a href="/withdraw" class="p-4">Аналитика</a></button>
+                        <button class="h3 h-100"><a href="/analytic/{{id}}/" class="p-4">Аналитика</a></button>
                     </div>
                     
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
-                        <button class="h3 h-100"><a href="/operations" class="p-4">История торговли</a></button>
+                        <button class="h3 h-100"><a href="/tradeHistory/{{id}}/" class="p-4">История торговли</a></button>
                     </div>
                     
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
-                        <button class="h3 h-100"><a href="/analytic" class="p-4">Отвязать аккаунт</a></button>
+                        <button class="h3 p-4 h-100">Отвязать аккаунт</button>
                     </div>
                 </div>
             </div>
@@ -107,28 +107,28 @@
     <div class="row">
         <div class="elem col-11 my-3 mx-auto p-5">
             <div class="h1 mb-4 font-weight-bold">Акции</div>
-            {% include "common/comSecurities.html" with stockss_data=stocks_data %}
+            {% include "common/comSecurities.html" with sec_data=stocks_data %}
         </div>
     </div>
 
     <div class="row">
         <div class="elem col-11 my-3 mx-auto p-5">
             <div class="h1 mb-4 font-weight-bold">Облигации</div>
-            {% include "common/comSecurities.html" with stockss_data=stocks_data %}
+            {% include "common/comSecurities.html" with sec_data=stocks_data %}
         </div>
     </div>
 
     <div class="row">
         <div class="elem col-11 my-3 mx-auto p-5">
             <div class="h1 mb-4 font-weight-bold">Фонды</div>
-            {% include "common/comSecurities.html" with stockss_data=stocks_data %}
+            {% include "common/comSecurities.html" with sec_data=stocks_data %}
         </div>
     </div>
 
     <div class="row">
         <div class="elem col-11 my-3 mx-auto p-5">
             <div class="h1 mb-4 font-weight-bold">Валюта и металлы</div>
-            {% include "common/comSecurities.html" with stockss_data=stocks_data %}
+            {% include "common/comSecurities.html" with sec_data=stocks_data %}
         </div>
     </div>
 {% endblock %}

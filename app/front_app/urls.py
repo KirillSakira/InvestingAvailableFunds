@@ -15,6 +15,9 @@ urlpatterns = [
 
 
     path('enterprise/<int:id>/', views.viewEnterprise, name='enterprise'),
+    path('tradeHistory/<int:id>/', views.viewTradeHistory, name='tradeHistory'),
+    path('analytic/<int:id>/', views.viewAnalytic, name='Manalytic'),
+    path('trade/<int:id>/', views.viewTrade, name='trade'),
 
 
     path('', views.viewHome, name='/')

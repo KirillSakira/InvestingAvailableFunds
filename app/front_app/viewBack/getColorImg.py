@@ -5,7 +5,7 @@ import io
 def getColorImg(image_paths):
     dominant_colors = []
     for image_path in image_paths:
-        image = Image.open(f'app/static/logo_org/{image_path}.png')
+        image = Image.open(f'app/static/logo_org/{image_path}')
         image_bytes = io.BytesIO()
         image.save(image_bytes, format='PNG')
         image_bytes.seek(0)

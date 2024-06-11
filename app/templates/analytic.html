@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 mb-4 font-weight-bold">Акции</div>
-                    {% include "common/comSecurities.html" with stocks_data=stocs.pie %}
+                    {% include "common/comSecurities.html" with sec_data=stocs.pie %}
                 </div>
             </div>
 
@@ -40,7 +40,7 @@
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 mb-4 font-weight-bold">Облигации</div>
-                    {% include "common/comSecurities.html" with stocks_data=bonds.pie %}
+                    {% include "common/comSecurities.html" with sec_data=bonds.pie %}
                 </div>
             </div>
 
@@ -72,7 +72,7 @@
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 mb-4 font-weight-bold">Фонды</div>
-                    {% include "common/comSecurities.html" with stocks_data=funds.pie %}
+                    {% include "common/comSecurities.html" with sec_data=funds.pie %}
                 </div>
             </div>
 
@@ -104,7 +104,7 @@
             <div class="row">
                 <div class="elem col-11 my-3 mx-auto px-5 py-5">
                     <div class="h1 mb-4 font-weight-bold">Валюта и металлы</div>
-                    {% include "common/comSecurities.html" with stocks_data=curr_metals.pie %}
+                    {% include "common/comSecurities.html" with sec_data=curr_metals.pie %}
                 </div>
             </div>
 

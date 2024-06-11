@@ -71,7 +71,7 @@ def viewHome(request):
             ],
             'stocks_data': [
                 {
-                    'img': 's1', #имя
+                    'img': 's1.png', #имя
                     'name': 'Норильский никель', #имя
                     'short_name': 'GMKN', #сокращенное имя
                     'price_buy': '15 975 876,66', #цена покупки
@@ -82,7 +82,7 @@ def viewHome(request):
                     'proc_end': '+3' #в процентах
                 },
                 {
-                    'img': 's2',
+                    'img': 's2.png',
                     'name': 'ТКС Холдинг',
                     'short_name': 'TKSG',
                     'price_buy': '2 798,45',
@@ -93,7 +93,7 @@ def viewHome(request):
                     'proc_end': '-33,78'
                 },
                 {
-                    'img': 's3',
+                    'img': 's3.png',
                     'name': 'Яндекс',
                     'short_name': 'YNDX',
                     'price_buy': '4 155,96',
@@ -104,7 +104,7 @@ def viewHome(request):
                     'proc_end': '+17,92'
                 },
                 {
-                    'img': 's2',
+                    'img': 's2.png',
                     'name': 'ТКС Холдинг',
                     'short_name': 'TKSG',
                     'price_buy': '2 798,45',
@@ -115,7 +115,7 @@ def viewHome(request):
                     'proc_end': '-33,78'
                 },
                 {
-                    'img': 's3',
+                    'img': 's3.png',
                     'name': 'Яндекс',
                     'short_name': 'YNDX',
                     'price_buy': '4 155,96',
@@ -343,7 +343,8 @@ def viewOperationsDetail(request, id):
         return ret(request, 'MoperationsDetail.html', data)
 
 
-def viewAnalytic(request):
+def viewAnalytic(request, id=None):
+    userData = getUserData(request)
     stocks_data = {
         'counts': {
             'count': '28 638 725,7',
@@ -357,7 +358,7 @@ def viewAnalytic(request):
             {
                 'count': '100',
                 'proc': '10',
-                'img': 's1', #имя
+                'img': 's1.png', #имя
                 'name': 'Норильский никель', #имя
                 'short_name': 'GMKN', #сокращенное имя
                 'price_buy': '15 975 876,66', #цена покупки
@@ -370,7 +371,7 @@ def viewAnalytic(request):
             {
                 'count': '250',
                 'proc': '25',
-                'img': 's2',
+                'img': 's2.png',
                 'name': 'ТКС Холдинг',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -383,7 +384,7 @@ def viewAnalytic(request):
             {
                 'count': '250',
                 'proc': '25',
-                'img': 's3',
+                'img': 's3.png',
                 'name': 'Яндекс',
                 'short_name': 'YNDX',
                 'price_buy': '4 155,96',
@@ -396,7 +397,7 @@ def viewAnalytic(request):
             {
                 'count': '200',
                 'proc': '20',
-                'img': 'b1',
+                'img': 'b1.png',
                 'name': 'руру1',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -409,7 +410,7 @@ def viewAnalytic(request):
             {
                 'count': '200',
                 'proc': '20',
-                'img': 'b2',
+                'img': 'b2.png',
                 'name': 'руру2',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -438,7 +439,7 @@ def viewAnalytic(request):
             {
                 'count': '100',
                 'proc': '10',
-                'img': 's1', #имя
+                'img': 's1.png', #имя
                 'name': 'Норильский никель', #имя
                 'short_name': 'GMKN', #сокращенное имя
                 'price_buy': '15 975 876,66', #цена покупки
@@ -451,7 +452,7 @@ def viewAnalytic(request):
             {
                 'count': '250',
                 'proc': '25',
-                'img': 's2',
+                'img': 's2.png',
                 'name': 'ТКС Холдинг',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -464,7 +465,7 @@ def viewAnalytic(request):
             {
                 'count': '250',
                 'proc': '25',
-                'img': 's3',
+                'img': 's3.png',
                 'name': 'Яндекс',
                 'short_name': 'YNDX',
                 'price_buy': '4 155,96',
@@ -477,7 +478,7 @@ def viewAnalytic(request):
             {
                 'count': '200',
                 'proc': '20',
-                'img': 's2',
+                'img': 's2.png',
                 'name': 'ТКС Холдинг',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -506,7 +507,7 @@ def viewAnalytic(request):
             {
                 'count': '100',
                 'proc': '10',
-                'img': 's1', #имя
+                'img': 's1.png', #имя
                 'name': 'Норильский никель', #имя
                 'short_name': 'GMKN', #сокращенное имя
                 'price_buy': '15 975 876,66', #цена покупки
@@ -519,7 +520,7 @@ def viewAnalytic(request):
             {
                 'count': '250',
                 'proc': '25',
-                'img': 's2',
+                'img': 's2.png',
                 'name': 'ТКС Холдинг',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -532,7 +533,7 @@ def viewAnalytic(request):
             {
                 'count': '250',
                 'proc': '25',
-                'img': 's3',
+                'img': 's3.png',
                 'name': 'Яндекс',
                 'short_name': 'YNDX',
                 'price_buy': '4 155,96',
@@ -545,7 +546,7 @@ def viewAnalytic(request):
             {
                 'count': '200',
                 'proc': '20',
-                'img': 's2',
+                'img': 's2.png',
                 'name': 'ТКС Холдинг',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -574,7 +575,7 @@ def viewAnalytic(request):
             {
                 'count': '100',
                 'proc': '10',
-                'img': 's1', #имя
+                'img': 's1.png', #имя
                 'name': 'Норильский никель', #имя
                 'short_name': 'GMKN', #сокращенное имя
                 'price_buy': '15 975 876,66', #цена покупки
@@ -587,7 +588,7 @@ def viewAnalytic(request):
             {
                 'count': '250',
                 'proc': '25',
-                'img': 's2',
+                'img': 's2.png',
                 'name': 'ТКС Холдинг',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -600,7 +601,7 @@ def viewAnalytic(request):
             {
                 'count': '250',
                 'proc': '25',
-                'img': 's3',
+                'img': 's3.png',
                 'name': 'Яндекс',
                 'short_name': 'YNDX',
                 'price_buy': '4 155,96',
@@ -613,7 +614,7 @@ def viewAnalytic(request):
             {
                 'count': '200',
                 'proc': '20',
-                'img': 's2',
+                'img': 's2.png',
                 'name': 'ТКС Холдинг',
                 'short_name': 'TKSG',
                 'price_buy': '2 798,45',
@@ -630,7 +631,7 @@ def viewAnalytic(request):
         obj['color'] = col
 
     data = {
-        'userData': getUserData(request),
+        'userData': userData,
         'in_scripts_graph': True,
         'in_slick': True,
         
@@ -697,7 +698,7 @@ def viewEnterprise(request, id):
             ],
             'stocks_data': [
                 {
-                    'img': 's1', #имя
+                    'img': 's1.png', #имя
                     'name': 'Норильский никель', #имя
                     'short_name': 'GMKN', #сокращенное имя
                     'price_buy': '15 975 876,66', #цена покупки
@@ -708,7 +709,7 @@ def viewEnterprise(request, id):
                     'proc_end': '+3' #в процентах
                 },
                 {
-                    'img': 's2',
+                    'img': 's2.png',
                     'name': 'ТКС Холдинг',
                     'short_name': 'TKSG',
                     'price_buy': '2 798,45',
@@ -719,7 +720,7 @@ def viewEnterprise(request, id):
                     'proc_end': '-33,78'
                 },
                 {
-                    'img': 's3',
+                    'img': 's3.png',
                     'name': 'Яндекс',
                     'short_name': 'YNDX',
                     'price_buy': '4 155,96',
@@ -730,7 +731,7 @@ def viewEnterprise(request, id):
                     'proc_end': '+17,92'
                 },
                 {
-                    'img': 's2',
+                    'img': 's2.png',
                     'name': 'ТКС Холдинг',
                     'short_name': 'TKSG',
                     'price_buy': '2 798,45',
@@ -741,7 +742,7 @@ def viewEnterprise(request, id):
                     'proc_end': '-33,78'
                 },
                 {
-                    'img': 's3',
+                    'img': 's3.png',
                     'name': 'Яндекс',
                     'short_name': 'YNDX',
                     'price_buy': '4 155,96',
@@ -816,3 +817,255 @@ def viewEnterprise(request, id):
         return ret(request, 'index.html', data)
     else:
         return ret(request, '/auth.html')
+
+def viewTradeHistory(request, id):
+    userData = getUserData(request)
+
+    if userData['role'] == 'Manager':
+        data = {
+            'userData': userData,
+            'id': id,
+            'sec_data': [
+                {
+                    'img': 's1.png', #имя
+                    'name': 'Норильский никель', #имя
+                    'short_name': 'GMKN', #сокращенное имя
+                    'price_buy': '15 975 876,66', #цена покупки
+                    'price_now': '16 200 000,31', #текущая цена
+                    'price_count_buy': '15 975 876,66', #цена всех купленных
+                    'count_buy': '10', #количество купленных
+                    'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
+                    'proc_end': '+3' #в процентах
+                },
+                {
+                    'img': 's2.png',
+                    'name': 'ТКС Холдинг',
+                    'short_name': 'TKSG',
+                    'price_buy': '2 798,45',
+                    'price_now': '1 598,89',
+                    'price_count_buy': '7 994,45',
+                    'count_buy': '5',
+                    'price_end': '-5 997,8',
+                    'proc_end': '-33,78'
+                },
+                {
+                    'img': 's3.png',
+                    'name': 'Яндекс',
+                    'short_name': 'YNDX',
+                    'price_buy': '4 155,96',
+                    'price_now': '4 161,4',
+                    'price_count_buy': '12 448,2',
+                    'count_buy': '3',
+                    'price_end': '+8 544,78',
+                    'proc_end': '+17,92'
+                },
+                {
+                    'img': 's2.png',
+                    'name': 'ТКС Холдинг',
+                    'short_name': 'TKSG',
+                    'price_buy': '2 798,45',
+                    'price_now': '1 598,89',
+                    'price_count_buy': '7 994,45',
+                    'count_buy': '5',
+                    'price_end': '-5 997,8',
+                    'proc_end': '-33,78'
+                },
+                {
+                    'img': 's3.png',
+                    'name': 'Яндекс',
+                    'short_name': 'YNDX',
+                    'price_buy': '4 155,96',
+                    'price_now': '4 161,4',
+                    'price_count_buy': '12 448,2',
+                    'count_buy': '3',
+                    'price_end': '+8 544,78',
+                    'proc_end': '+17,92'
+                }
+            ]
+        }
+        return ret(request, 'tradeHistory.html', data)
+    else:
+        return ret(request, '/auth.html')
+
+
+def viewTrade(request, id):
+    userData = getUserData(request)
+
+    if userData['role'] == 'Manager':
+        data = {
+            'userData': userData,
+            'stocks_data': [
+                {
+                    'img': 's1.png', #имя
+                    'name': 'Норильский никель', #имя
+                    'short_name': 'GMKN', #сокращенное имя
+                    'price_buy': '15 975 876,66', #цена покупки
+                    'price_now': '16 200 000,31', #текущая цена
+                    'price_count_buy': '15 975 876,66', #цена всех купленных
+                    'count_buy': '10', #количество купленных
+                    'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
+                    'proc_end': '+3' #в процентах
+                },
+                {
+                    'img': 's2.png',
+                    'name': 'ТКС Холдинг',
+                    'short_name': 'TKSG',
+                    'price_buy': '2 798,45',
+                    'price_now': '1 598,89',
+                    'price_count_buy': '7 994,45',
+                    'count_buy': '5',
+                    'price_end': '-5 997,8',
+                    'proc_end': '-33,78'
+                },
+                {
+                    'img': 's3.png',
+                    'name': 'Яндекс',
+                    'short_name': 'YNDX',
+                    'price_buy': '4 155,96',
+                    'price_now': '4 161,4',
+                    'price_count_buy': '12 448,2',
+                    'count_buy': '3',
+                    'price_end': '+8 544,78',
+                    'proc_end': '+17,92'
+                },
+                {
+                    'img': 's2.png',
+                    'name': 'ТКС Холдинг',
+                    'short_name': 'TKSG',
+                    'price_buy': '2 798,45',
+                    'price_now': '1 598,89',
+                    'price_count_buy': '7 994,45',
+                    'count_buy': '5',
+                    'price_end': '-5 997,8',
+                    'proc_end': '-33,78'
+                },
+                {
+                    'img': 's3.png',
+                    'name': 'Яндекс',
+                    'short_name': 'YNDX',
+                    'price_buy': '4 155,96',
+                    'price_now': '4 161,4',
+                    'price_count_buy': '12 448,2',
+                    'count_buy': '3',
+                    'price_end': '+8 544,78',
+                    'proc_end': '+17,92'
+                }
+            ],
+            'bonds_data': [
+                {
+                    'img': 's1.png', #имя
+                    'name': 'Норильский никель', #имя
+                    'short_name': 'GMKN', #сокращенное имя
+                    'price_buy': '15 975 876,66', #цена покупки
+                    'price_now': '16 200 000,31', #текущая цена
+                    'price_count_buy': '15 975 876,66', #цена всех купленных
+                    'count_buy': '10', #количество купленных
+                    'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
+                    'proc_end': '+3' #в процентах
+                },
+                {
+                    'img': 's3.png',
+                    'name': 'Яндекс',
+                    'short_name': 'YNDX',
+                    'price_buy': '4 155,96',
+                    'price_now': '4 161,4',
+                    'price_count_buy': '12 448,2',
+                    'count_buy': '3',
+                    'price_end': '+8 544,78',
+                    'proc_end': '+17,92'
+                },
+                {
+                    'img': 's2.png',
+                    'name': 'ТКС Холдинг',
+                    'short_name': 'TKSG',
+                    'price_buy': '2 798,45',
+                    'price_now': '1 598,89',
+                    'price_count_buy': '7 994,45',
+                    'count_buy': '5',
+                    'price_end': '-5 997,8',
+                    'proc_end': '-33,78'
+                },
+                {
+                    'img': 's3.png',
+                    'name': 'Яндекс',
+                    'short_name': 'YNDX',
+                    'price_buy': '4 155,96',
+                    'price_now': '4 161,4',
+                    'price_count_buy': '12 448,2',
+                    'count_buy': '3',
+                    'price_end': '+8 544,78',
+                    'proc_end': '+17,92'
+                }
+            ],
+            'funds_data': [
+                {
+                    'img': 's1.png', #имя
+                    'name': 'Норильский никель', #имя
+                    'short_name': 'GMKN', #сокращенное имя
+                    'price_buy': '15 975 876,66', #цена покупки
+                    'price_now': '16 200 000,31', #текущая цена
+                    'price_count_buy': '15 975 876,66', #цена всех купленных
+                    'count_buy': '10', #количество купленных
+                    'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
+                    'proc_end': '+3' #в процентах
+                },
+                {
+                    'img': 's2.png',
+                    'name': 'ТКС Холдинг',
+                    'short_name': 'TKSG',
+                    'price_buy': '2 798,45',
+                    'price_now': '1 598,89',
+                    'price_count_buy': '7 994,45',
+                    'count_buy': '5',
+                    'price_end': '-5 997,8',
+                    'proc_end': '-33,78'
+                },
+                {
+                    'img': 's2.png',
+                    'name': 'ТКС Холдинг',
+                    'short_name': 'TKSG',
+                    'price_buy': '2 798,45',
+                    'price_now': '1 598,89',
+                    'price_count_buy': '7 994,45',
+                    'count_buy': '5',
+                    'price_end': '-5 997,8',
+                    'proc_end': '-33,78'
+                },
+                {
+                    'img': 's3.png',
+                    'name': 'Яндекс',
+                    'short_name': 'YNDX',
+                    'price_buy': '4 155,96',
+                    'price_now': '4 161,4',
+                    'price_count_buy': '12 448,2',
+                    'count_buy': '3',
+                    'price_end': '+8 544,78',
+                    'proc_end': '+17,92'
+                }
+            ],
+            'curr_metals_data': [
+                {
+                    'img': 's2.png',
+                    'name': 'ТКС Холдинг',
+                    'short_name': 'TKSG',
+                    'price_buy': '2 798,45',
+                    'price_now': '1 598,89',
+                    'price_count_buy': '7 994,45',
+                    'count_buy': '5',
+                    'price_end': '-5 997,8',
+                    'proc_end': '-33,78'
+                },
+                {
+                    'img': 's3.png',
+                    'name': 'Яндекс',
+                    'short_name': 'YNDX',
+                    'price_buy': '4 155,96',
+                    'price_now': '4 161,4',
+                    'price_count_buy': '12 448,2',
+                    'count_buy': '3',
+                    'price_end': '+8 544,78',
+                    'proc_end': '+17,92'
+                }
+            ]
+        }
+        return ret(request, 'trade.html', data)

@@ -306,6 +306,13 @@ header{
     max-width: 330px;
 }
 
+.selActive{
+    background: #3AA1FF;
+}
+.tabs{
+    display: none;
+}
+
 @media all and (max-width: 360px){
     html{
         font-size: 7px;

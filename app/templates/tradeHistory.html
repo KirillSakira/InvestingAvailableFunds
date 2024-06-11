@@ -1,0 +1,11 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}История торговли{% endblock %}
+{% block in_body %}
+    <div class="row">
+        <div class="elem col-11 mx-auto px-5 py-5">
+            <div class="h1 mb-4 font-weight-bold">История торговли</div>
+            {% include "common/comSecurities.html" with sec_data=sec_data %}
+        </div>
+    </div>
+{% endblock %}
