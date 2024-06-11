@@ -60,3 +60,9 @@ if(pathname[1] == ''){
         blocked_button = false;
     });
 }
+
+if(pathname[1] == 'operations'){
+    $('.operation_el').on('click', function(){
+        window.open('/operations/' + this.getAttribute('data-id'), '_blank');
+    });
+}

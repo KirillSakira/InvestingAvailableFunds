@@ -249,34 +249,96 @@ def viewWithdraw(request):
 
 
 def viewOperations(request):
-    data = {
-        'userData': getUserData(request),
-        'operations_data': [
-            {
-                'type': 'Пополнение',
-                'date': '01.01.2021 15:30',
-                'price': '+7 895',
-                'proc': '+3'
-            },
-            {
-                'type': 'Снятие',
-                'date': '01.10.2021 15:30',
-                'price': '-5 895',
-                'proc': '-2'
-            },
-            {
-                'type': 'Пополнение',
-                'date': '01.01.2023 15:30',
-                'price': '+1 895',
-                'proc': '+1'
-            },
-        ]
-    }
-    if request.session.session_key != None:
-        return render(request, 'operations.html', data)
-    else:
-        return render(request, 'operations.html', data)
-        # return HttpResponseRedirect("/auth/")
+    userData = getUserData(request)
+    if userData['role'] == 'enterprise':
+        data = {
+            'userData': userData,
+            'operations_data': [
+                {
+                    'type': 'Пополнение',
+                    'date': '01.01.2021 15:30',
+                    'price': '+7 895',
+                    'proc': '+3'
+                },
+                {
+                    'type': 'Снятие',
+                    'date': '01.10.2021 15:30',
+                    'price': '-5 895',
+                    'proc': '-2'
+                },
+                {
+                    'type': 'Пополнение',
+                    'date': '01.01.2023 15:30',
+                    'price': '+1 895',
+                    'proc': '+1'
+                }
+            ]
+        }
+        return ret(request, 'operations.html', data)
+    elif userData['role'] == 'Manager':
+        data = {
+            'userData': userData,
+            'bodyClass': 'operations_list',
+            'operations_data': [
+                {
+                    'id': '1',
+                    'type': 'Пополнение',
+                    'date': '01.01.2021 15:30',
+                    'name': 'Паровозов А. Д.',
+                    'price': '+7 895',
+                    'proc': '+3'
+                },
+                {
+                    'id': '2',
+                    'type': 'Снятие',
+                    'date': '01.10.2021 15:30',
+                    'name': 'Карапузиков И. В.',
+                    'price': '-5 895',
+                    'proc': '-2'
+                },
+                {
+                    'id': '3',
+                    'type': 'Пополнение',
+                    'date': '01.01.2023 15:30',
+                    'name': 'Валялько Д. К.',
+                    'price': '+1 895',
+                    'proc': '+1'
+                }
+            ]
+        }
+        return ret(request, 'operations.html', data)
+    
+def viewOperationsDetail(request, id):
+    userData = getUserData(request)
+
+    #по url получаем id пользователя и выдаем инфу
+
+    if userData['role'] == 'Manager':
+        data = {
+            'userData': userData,
+            'name': 'Паровозов А. Д.',
+            'operations_data': [
+                {
+                    'type': 'Пополнение',
+                    'date': '01.01.2021 15:30',
+                    'price': '+7 895',
+                    'proc': '+3'
+                },
+                {
+                    'type': 'Снятие',
+                    'date': '01.10.2021 15:30',
+                    'price': '-5 895',
+                    'proc': '-2'
+                },
+                {
+                    'type': 'Пополнение',
+                    'date': '01.01.2023 15:30',
+                    'price': '+1 895',
+                    'proc': '+1'
+                }
+            ]
+        }
+        return ret(request, 'MoperationsDetail.html', data)
 
 
 def viewAnalytic(request):

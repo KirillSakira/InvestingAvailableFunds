@@ -12,8 +12,11 @@ html{
     border-top: none;
 }
 
+.col_lbvoi{
+    color: #19172E;
+}
 .col_lvio{
-    background-color: #453F64;
+    color: #453F64;
 }
 .col_bvio{
     color: #6E6598;
@@ -31,6 +34,9 @@ html{
     color: #F1EDFD;
 }
 
+.back_lbvoi{
+    background-color: #19172E;
+}
 .back_lvio{
     background-color: #453F64;
 }
@@ -244,6 +250,7 @@ header{
 
 .slick-arrow{
     top: 50vh;
+    height: unset;
 }
 .slick-prev:active,
 .slick-next:active{
@@ -285,6 +292,17 @@ header{
 }
 #mAddEmail_form .inputs_bl.error + div:last-child{
     margin-bottom: 2rem;
+}
+
+body.operations_list .operation_el{
+    transition: 0.3s;
+    cursor: pointer;
+}
+body.operations_list .operation_el:hover{
+    transform: scale(1.01);
+    border-radius: 2rem;
+    transition: 0.3s;
+    filter: brightness(1.2);
 }
 
 @media all and (max-width: 360px){
