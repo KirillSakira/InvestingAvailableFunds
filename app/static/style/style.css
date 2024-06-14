@@ -313,6 +313,14 @@ header{
     display: none;
 }
 
+.nomh .profile_securities_cont,
+.list_data{
+    max-height: unset;
+    min-height: 23rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 @media all and (max-width: 360px){
     html{
         font-size: 7px;

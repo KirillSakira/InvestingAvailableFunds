@@ -98,7 +98,7 @@ function generBar(elem, dataPie, con = 0){
 }
 
 window.addEventListener('resize', (e) => {
-    if(window.innerWidth == vw) return;
+    if(window.innerWidth == vw && window.innerHeight == vh) return;
     vw = window.innerWidth;
     vh = window.innerHeight;
     barChartData.forEach((item) => generBar(item.elem, item.dataPie, item.con));
@@ -139,3 +139,17 @@ $('.canvas_pie').on('mouseout', function() {
     $('.hportfolio_proc_names').removeClass('pieHoverGraphParent');
     $('.pie_item_chart').removeClass('pieHoverGraph');
 });
+
+if(pathname[1] == 'analytic'){
+    $('.analytic_slick').slick({
+        dots: false,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1
+    });
+
+    $(window).on("scroll", function(e){
+        $('.slick-arrow').css('top', 'calc(50vh + ' + ($(window).scrollTop() - $('.header').height())  + 'px');
+    });
+    $(window).scroll();
+}

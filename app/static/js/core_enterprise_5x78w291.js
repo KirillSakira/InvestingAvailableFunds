@@ -65,18 +65,3 @@ if(pathname[1] == 'payment' || pathname[1] == 'withdraw'){
         blocked_button = false;
     });
 }
-
-
-if(pathname[1] == 'analytic'){
-    $('.analytic_slick').slick({
-        dots: false,
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1
-    });
-
-    $(window).on("scroll", function(e){
-        $('.slick-arrow').css('top', 'calc(50vh + ' + ($(window).scrollTop() - $('.header').height())  + 'px');
-    });
-    $(window).scroll();
-}

@@ -83,3 +83,21 @@ if(pathname[1] == 'trade'){
         }
     });
 }
+
+function resizeHe(){
+    if(['operations', 'tradeHistory'].indexOf(pathname[1]) !== -1){
+        $('.nomh > div > div:nth-child(2)').css('max-height', 'calc(100vh - ' + ($('.header').height() + $('.nomh > div > div.h1').height()) + 'px - 10.5rem)');
+    }
+    if(pathname[1] == 'trade'){
+        $('.nomh > div > div:nth-child(2)').css('max-height', 'calc(100vh - ' + ($('.header').height() + $('.tradeSels').height() + $('.nomh > div > div.h1').height()) + 'px - 13rem)');
+    }
+}
+resizeHe();
+
+
+window.addEventListener('resize', (e) => {
+    if(window.innerWidth == vw && window.innerHeight == vh) return;
+    vw = window.innerWidth;
+    vh = window.innerHeight;
+    resizeHe();
+});
