@@ -1,4 +1,4 @@
-from babloss.app.scripts.authorisation.regModule import returnJson
+from app.scripts.funcs import returnJson
 import psycopg2
 from django.contrib.sessions.models import Session
 from django.utils.dateparse import parse_date

@@ -55,12 +55,13 @@ def registrationBack(request):
 	else:
 	
 		last_name, first_name, *args = splitName
-		
-		patronymic = 'Null'
+
+		last_name = last_name.capitalize()
+		first_name = first_name.capitalize()
+		patronymic = ''
 		
 		if args != []:
-			patronymic = args[0]
-		
+			patronymic = args[0].capitalize()
 	
 		if len(first_name) > 150 or len(last_name) > 150 or len(patronymic) > 150:
 			errorsDict['name'] = 'ФИО слишком длинное'
@@ -105,6 +106,8 @@ def registrationBack(request):
 			dataBase.execute('insert into employees values (default, 2)')
 		
 		idEmployee = getId(dataBase, 'employees', 'id_employee')
+
+		returnErrors = errorsDict != {}
 	
 	if returnErrors:
 		dataBase.close()
@@ -129,8 +132,9 @@ def registrationBack(request):
 	login(request, user)
 	
 	dataBase.execute(f'update auth_user set id_user={idUser} where username=\'{username}\'')
-	
-	dataBase.execute(f'update auth_user set patronymic=\'{patronymic}\' where username=\'{username}\'')
+
+	if patronymic != '':
+		dataBase.execute(f'update auth_user set patronymic=\'{patronymic}\' where username=\'{username}\'')
 	
 	connection.commit()
 	dataBase.close()
