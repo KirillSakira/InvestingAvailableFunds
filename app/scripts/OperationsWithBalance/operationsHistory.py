@@ -30,9 +30,10 @@ def history(request):
         if(operationStatus):
             operationTypes = ['Вывод', 'Пополнение']
             operationData = {
-                'Тип операции': operationTypes[int(operationType)],
-                'Дата и время операции': operationDate,
-                'Сумма операции': operationAmount
+                'type': operationTypes[int(operationType)],
+                'date': operationDate,
+                'price': operationAmount,
+                'proc': ''
             }
             data.append(operationData)
     cursor.close()
