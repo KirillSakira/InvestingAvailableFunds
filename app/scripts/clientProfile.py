@@ -7,24 +7,26 @@ def private_profile(request):
     cursor = connection.cursor()
 
     cursor.execute(f"select * from auth_user where id='{id}'")
-    last_name = cursor.fetchall()[0][6]
-    first_name = cursor.fetchall()[0][5]
-    patronymic = cursor.fetchall()[0][12]
-    email = cursor.fetchall()[0][7]
-    id_user = cursor.fetchall()[0][11]
+    data = cursor.fetchall()
+    last_name = data[0][6]
+    first_name = data[0][5]
+    patronymic = data[0][12]
+    email = data[0][7]
+    id_user = data[0][11]
 
     cursor.execute(f"select id_enterprise from Users where id_user='{id_user}'")
     id_enterprise = cursor.fetchall()[0][0]
 
     cursor.execute(f"select * from Enterprises where id_enterprise='{id_enterprise}'")
-    phone = cursor.fetchall()[0][4]
-    address = cursor.fetchall()[0][3]
+    data = cursor.fetchall()
+    phone = data[0][4]
+    address = data[0][3]
 
     data = {
         'email': email,
-        'ФИО': (last_name + ' ' + first_name + ' ' + patronymic).strip(),
-        'Телефон': phone,
-        'Адрес': address
+        'name': (last_name + ' ' + first_name + ' ' + patronymic).strip(),
+        'phone': phone,
+        'address': address
     }
 
     cursor.close()

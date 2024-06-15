@@ -4,12 +4,13 @@ from django.http import HttpResponseRedirect
 from .viewBack.getUserData import getUserData
 from .viewBack.getColorImg import getColorImg
 
+from app.scripts.clientProfile import private_profile
+
 def ret(request, url, data):
     if request.session.session_key != None:
         return render(request, url, data)
     else:
-        return render(request, url, data)
-        # return HttpResponseRedirect("/auth/")
+        return HttpResponseRedirect("/auth/")
 
 
 def viewAuth(request):
@@ -211,43 +212,32 @@ def viewHome(request):
 
 
 def viewProfile(request):
-    data = {
-        'userData': getUserData(request),
-        'email': 'asdas@asdasd.asd',
-        'gender': 'Мужской',
-        'name': 'asdasd asdasdasda sdasdasds',
-        'phone': '+79192837475',
-        'sn_passport': '03 03 030303',
-        'address': 'ewwwwwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwww wwwwwwwwww23ew',
-        'birday': '01.01.1010'
-    }
-    if request.session.session_key != None:
-        return render(request, 'profile.html', data)
-    else:
-        return render(request, 'profile.html', data)
-        # return HttpResponseRedirect("/auth/")
+    # data = {
+    #     'userData': getUserData(request),
+    #     'email': 'asdas@asdasd.asd',
+    #     'gender': 'Мужской',
+    #     'name': 'asdasd asdasdasda sdasdasds',
+    #     'phone': '+79192837475',
+    #     'sn_passport': '03 03 030303',
+    #     'address': 'ewwwwwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwww wwwwwwwwww23ew',
+    #     'birday': '01.01.1010'
+    # }
+    data = private_profile(request)
+    return ret(request, 'profile.html', data)
 
 
 def viewPayment(request):
     data = {
         'userData': getUserData(request)
     }
-    if request.session.session_key != None:
-        return render(request, 'payment.html', data)
-    else:
-        return render(request, 'payment.html', data)
-        # return HttpResponseRedirect("/auth/")
+    return ret(request, 'payment.html', data)
     
 
 def viewWithdraw(request):
     data = {
         'userData': getUserData(request)
     }
-    if request.session.session_key != None:
-        return render(request, 'withdraw.html', data)
-    else:
-        return render(request, 'withdraw.html', data)
-        # return HttpResponseRedirect("/auth/")
+    return ret(request, 'withdraw.html', data)
 
 
 def viewOperations(request):
@@ -640,11 +630,7 @@ def viewAnalytic(request, id=None):
         'funds': funds_data,
         'curr_metals': curr_metals_data
     }
-    if request.session.session_key != None:
-        return render(request, 'analytic.html', data)
-    else:
-        return render(request, 'analytic.html', data)
-        # return HttpResponseRedirect("/auth/")
+    return ret(request, 'analytic.html', data)
     
 
 
@@ -1069,3 +1055,5 @@ def viewTrade(request, id):
             ]
         }
         return ret(request, 'trade.html', data)
+    else:
+        return ret(request, '/auth.html')
