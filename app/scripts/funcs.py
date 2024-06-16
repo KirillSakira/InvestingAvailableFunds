@@ -8,7 +8,7 @@ def check(string, param):
 	}
 	return findall(patterns[param], string) == []
 
-def insertsql(table, params):
+def insertSql(table, params):
 	return f'''insert into {table}
 values
 (default, \'''' + '\', \''.join(params) + '\')'
@@ -32,3 +32,19 @@ def returnJson(data={}, status='', message=''):
 	else:
 		data2 = data
 	return HttpResponse(dumps(data2, ensure_ascii=False), content_type='application/json')
+
+def cardValidation(amount, cardNumber, cardDate = ''):
+	errosDict = {}
+	
+	if amount <= 0:
+		errorsDict['amount'] = 'Некорректная сумма перевода'
+		
+	if len(cardNumber) != 16:
+		errorsDict['card_number'] = 'Некорректный номер карты'
+	
+	if cardDate != '':
+		if cardDate == None or cardDate < dt.today():
+			errorsDict['card_date'] = 'Карта недействительна или некорректный срок действия карты'
+	
+	return errorsDict
+		

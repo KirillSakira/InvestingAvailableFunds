@@ -96,7 +96,7 @@ def registrationBack(request):
 		returnErrors = errorsDict != {}
 		
 		if not returnErrors:
-			dataBase.execute(insertsql('enterprises', [title, typeProperty, address, phone]))
+			dataBase.execute(insertSql('enterprises', [title, typeProperty, address, phone]))
 			
 			idEnterprise = getId(dataBase, 'enterprises', 'id_enterprise')
 			
