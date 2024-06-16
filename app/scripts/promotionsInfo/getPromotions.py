@@ -61,9 +61,9 @@ with Client(TOKEN) as client:
             figi = getFigiByTicker(client, ticker, asset_type)
             if figi:
                 currentPrice = getCurrentPrice(client, figi)
-                if current_price:
+                if currentPrice:
                     print(f"Current price for {ticker} (FIGI: {figi}): {currentPrice.units}.{str(currentPrice.nano)} RUB")
-                    current_price = float(f'{currentPrice.units}.{str(currentPrice.nano)}')
+                    currentPrice = float(f'{currentPrice.units}.{str(currentPrice.nano)}')
                     dataBase.execute(f"update securities set quotation = {currentPrice} where ticker = '{ticker}'")
 connection.commit()
 dataBase.close()
