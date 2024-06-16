@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from re import findall
 from json import dumps
+from datetime import datetime as dt
 
 def check(string, param):
 	patterns = {
@@ -34,7 +35,7 @@ def returnJson(data={}, status='', message=''):
 	return HttpResponse(dumps(data2, ensure_ascii=False), content_type='application/json')
 
 def cardValidation(amount, cardNumber, cardDate = ''):
-	errosDict = {}
+	errorsDict = {}
 	
 	if amount <= 0:
 		errorsDict['amount'] = 'Некорректная сумма перевода'
@@ -42,8 +43,9 @@ def cardValidation(amount, cardNumber, cardDate = ''):
 	if len(cardNumber) != 16:
 		errorsDict['card_number'] = 'Некорректный номер карты'
 	
-	if cardDate != '':
-		if cardDate == None or cardDate < dt.today():
+	if len(cardDate) == 2:
+		cardDate = dt.strptime(f'20{cardDate[1]}/{cardDate[0]}/01', '%Y/%m/%d')
+		if cardDate < dt.today():
 			errorsDict['card_date'] = 'Карта недействительна или некорректный срок действия карты'
 	
 	return errorsDict

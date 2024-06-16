@@ -54,8 +54,10 @@ if(['payment', 'withdraw'].indexOf(pathname[1]) !== -1){
                     }
                     res = JSON.parse(response.result);
                     if(res['status'] == 'success'){
-                        window.location.href = '/';
                         clearForm();
+                        clearInps();
+                        $('#error_message').text('');
+                        $('#success_message').text(res.message);
                         blocked_button = false;
                         return;
                     }
@@ -105,6 +107,9 @@ if(['payment', 'withdraw'].indexOf(pathname[1]) !== -1){
                     if(res.status == 'success'){
                         window.location.href = '/';
                         clearForm();
+                        clearInps();
+                        $('#error_message').text('');
+                        $('#success_message').text(res.message);
                         blocked_button = false;
                         return;
                     }
