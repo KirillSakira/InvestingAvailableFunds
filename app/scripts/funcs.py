@@ -44,9 +44,10 @@ def cardValidation(amount, cardNumber, cardDate = ''):
 		errorsDict['card_number'] = 'Некорректный номер карты'
 	
 	if len(cardDate) == 2:
-		cardDate = dt.strptime(f'20{cardDate[1]}/{cardDate[0]}/01', '%Y/%m/%d')
-		if cardDate < dt.today():
-			errorsDict['card_date'] = 'Карта недействительна или некорректный срок действия карты'
+		if not int(cardDate[0]) in [i for i in range(1,13)]:
+			cardDate = dt.strptime(f'20{cardDate[1]}/{cardDate[0]}/01', '%Y/%m/%d')
+			if cardDate < dt.today():
+				errorsDict['card_date'] = 'Карта недействительна или некорректный срок действия карты'
 	
 	return errorsDict
 		
