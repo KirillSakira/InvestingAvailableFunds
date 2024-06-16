@@ -19,7 +19,8 @@ tickers = {
 }
 
 for row in tickersBase:
-    tickers[row[1]].append(row[0])
+    if row[0] != 'RUB':
+        tickers[row[1]].append(row[0])
 
 def getFigiByTicker(client, ticker, assetType):
     try:
