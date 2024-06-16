@@ -206,6 +206,9 @@ header{
 .payment2 > div:last-child{
     width: 10rem;
 }
+.payment2 > div:only-child{
+    width: 100% !important;
+}
 .payment3{
     margin-top: 2rem;
 }

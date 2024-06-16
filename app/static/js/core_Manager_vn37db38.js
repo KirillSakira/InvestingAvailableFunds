@@ -52,6 +52,7 @@ if(pathname[1] == ''){
                     }
 
                     err('form', res.message);
+                    blocked_button = false;
                 }
                 catch(e){
                     err('form', 'Неожиданная ошибка');

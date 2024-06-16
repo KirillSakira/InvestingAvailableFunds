@@ -1,15 +1,9 @@
 from app.scripts.funcs import returnJson
-import psycopg2
-from django.contrib.sessions.models import Session
-from django.utils.dateparse import parse_date
-from datetime import datetime
 from connection import connection_db
 
 def withdrawBack(request):
     amount = int(request.POST.get('amount'))
     card_number = request.POST.get('card_number')
-    card_date = request.POST.get('card_date')
-    card_date = parse_date(card_date)
 
     errors_dict = {}
 
@@ -18,12 +12,6 @@ def withdrawBack(request):
 
     if len(card_number) != 16:
         errors_dict['card_number'] = 'Некорректный номер карты'
-
-    if card_date.year < datetime.today().year:
-        errors_dict['card_date'] = 'Карта недействительна или некорректный срок действия карты'
-
-    if request.user.is_authenticated == False:
-        errors_dict['authenticated'] = 'Необходимо авторизоваться.'
 
     checker = errors_dict != {}
 
@@ -34,24 +22,27 @@ def withdrawBack(request):
     
     connection = connection_db()
     cursor = connection.cursor()
+    
+    cursor.execute(f'select id_user from auth_user where id={user_id}')
+    id_user = cursor.fetchall()[0][0]
 
-    cursor.execute(f"select id_enterprise from Users where user_id='{user_id}'")
+    cursor.execute(f"select id_enterprise from users where id_user='{id_user}'")
     id_enterprise = cursor.fetchall()[0][0]
 
-    cursor.execute(f"select id_portfolio from Portfolios where id_enterprise='{id_enterprise}'")
+    cursor.execute(f"select id_portfolio from portfolios where id_enterprise='{id_enterprise}'")
     id_portfolio = cursor.fetchall()[0][0]
 
-    cursor.execute(f"INSERT INTO Operations_History (id_portfolio, oper_type, amount) VALUES('{id_portfolio}', '{False}', '{amount}');")
+    cursor.execute(f"INSERT INTO operations_history (id_portfolio, oper_type, amount) VALUES('{id_portfolio}', '{False}', '{amount}');")
     connection.commit()
 
-    cursor.execute("select oper_status from Operations_History where id_oper = (select max(id_oper) from Operations_History)")
+    cursor.execute("select oper_status from operations_history where id_operation = (select max(id_operation) from operations_history)")
     oper_status = cursor.fetchall()[0][0]
 
 
 
     if oper_status == False:
-        errors_dict['amount'] = 'Недостаточно свободных средств'
-        return returnJson(data=errors_dict['amount'])
+        errors_dict['message'] = 'Недостаточно свободных средств'
+        return returnJson(data=errors_dict)
 
 
     cursor.execute(f"select id_employee from Portfolios where id_enterprise='{id_enterprise}'")
@@ -62,4 +53,4 @@ def withdrawBack(request):
     cursor.close()
     connection.close()
 
-    return returnJson(status='Success', message='Успешное снятие')
+    return returnJson(status='success', message='Успешное снятие')

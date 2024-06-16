@@ -47,6 +47,7 @@ $(document).ready(function() {
                     }
 
                     err('form', res.message);
+                    blocked_button = false;
                 }
                 catch(e){
                     err('form', 'Неожиданная ошибка');

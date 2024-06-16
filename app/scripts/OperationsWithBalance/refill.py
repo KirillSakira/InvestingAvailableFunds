@@ -10,7 +10,6 @@ def refillBack(request):
     amount = int(request.POST.get('amount'))
     card_number = request.POST.get('card_number')
     card_date = request.POST.get('card_date')
-    card_date = parse_date(card_date)
 
     if amount <= 0:
         return returnJson(status='Error', message='Некорректная сумма перевода')

@@ -2,6 +2,7 @@ from connection import connection_db
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from app.scripts.funcs import *
+from random import randint as rnd
 
 def registrationBack(request):
 	
@@ -98,6 +99,12 @@ def registrationBack(request):
 			dataBase.execute(insertsql('enterprises', [title, typeProperty, address, phone]))
 			
 			idEnterprise = getId(dataBase, 'enterprises', 'id_enterprise')
+			
+			accountNumber = rnd(int('1' + '0'*19), int('9'*20))
+
+			dataBase.execute(f'''insert into portfolios (id_portfolio, balance, deposition, account_number, id_enterprise)
+			values (default, 0, 0, {accountNumber}, {idEnterprise});''')
+			
 	else:
 		if role == 'Admin':
 			dataBase.execute('insert into employees values (default, 1)')

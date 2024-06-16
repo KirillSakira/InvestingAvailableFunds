@@ -6,25 +6,28 @@ def private_profile(request):
     connection = connection_db()
     cursor = connection.cursor()
 
-    cursor.execute(f"select * from auth_user where id='{id}'")
-    data = cursor.fetchall()
-    last_name = data[0][6]
-    first_name = data[0][5]
-    patronymic = data[0][12]
-    email = data[0][7]
-    id_user = data[0][11]
+    cursor.execute(f"select * from auth_user where id={id}")
+    data = cursor.fetchall()[0]
+    lastName = data[6]
+    firstName = data[5]
+    patronymic = data[12]
+    email = data[7]
+    id_user = data[11]
 
-    cursor.execute(f"select id_enterprise from Users where id_user='{id_user}'")
+    cursor.execute(f"select id_enterprise from Users where id_user={id_user}")
     id_enterprise = cursor.fetchall()[0][0]
 
-    cursor.execute(f"select * from Enterprises where id_enterprise='{id_enterprise}'")
-    data = cursor.fetchall()
-    phone = data[0][4]
-    address = data[0][3]
+    cursor.execute(f"select * from Enterprises where id_enterprise={id_enterprise}")
+    data = cursor.fetchall()[0]
+    phone = data[4]
+    address = data[3]
+    
+    if patronymic == None:
+        patronymic = ''
 
     data = {
         'email': email,
-        'name': (last_name + ' ' + first_name + ' ' + patronymic).strip(),
+        'name': (lastName + ' ' + firstName + ' ' + patronymic).strip(),
         'phone': phone,
         'address': address
     }
@@ -32,7 +35,6 @@ def private_profile(request):
     cursor.close()
     connection.close()
     return data
-
 
 
 

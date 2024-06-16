@@ -148,6 +148,10 @@ button:not(.slick-prev, .slick-next):active{
   transform: scale(0.99);
 }
 
+form{
+  position: relative;
+}
+
 #error_message{
   color: red;
   text-align: center;

@@ -1,4 +1,5 @@
-if(pathname[1] == 'payment' || pathname[1] == 'withdraw'){
+if(['payment', 'withdraw'].indexOf(pathname[1]) !== -1){
+    const inps = document.querySelectorAll('.inputs_bl input');
     let val_sum = '';
     function in_inp_sum(){
     }
@@ -28,19 +29,23 @@ if(pathname[1] == 'payment' || pathname[1] == 'withdraw'){
     });
 
 
-    
     $('form#doPayment').on('submit', function(e){
         e.preventDefault();
         if(blocked_button) return;
         clearForm();
 
         blocked_button = true;
-        if($('#summa').val().trim() == '') err('.summa', 'Введите сумму пополнения');
-        if($('#card_num').val().trim() == '') err('.card_num', 'Введите номер карты');
+        if($('#amount').val().trim() == '') err('.amount', 'Введите сумму пополнения');
+        if($('#card_number').val().trim() == '') err('.card_number', 'Введите номер карты');
         if($('#card_date').val().trim() == '') err('.card_date', 'Введите срок карты');
         if(blocked_button && !errs){
-            let params = $(this).serialize();
-            request("/refill/", params, function(result){
+            let params = $(this).serializeArray();
+            params.forEach(function(item){
+                item.value = item.value.replace(/[^0-9/]/g, '');
+            });
+            params = $.param(params);
+            console.log(params)
+            request("/refillBtn/", params, function(result){
                 try{
                     response = JSON.parse(result);
                     if(response.result == 'fail'){
@@ -54,8 +59,65 @@ if(pathname[1] == 'payment' || pathname[1] == 'withdraw'){
                         blocked_button = false;
                         return;
                     }
+                    
+                    inps.forEach(item => {
+                        if(res[item.id] != undefined) err('.' + item.id, res[item.id]);
+                    });
+                    
+                    if(res.message){
+                        err('form', res.message)
+                    }
 
-                    err('form', res.message);
+                    blocked_button = false;
+                }
+                catch(e){
+                    err('form', 'Неожиданная ошибка');
+                }
+            });
+        }
+        blocked_button = false;
+    });
+    
+
+    $('form#doWithdraw').on('submit', function(e){
+        e.preventDefault();
+        if(blocked_button) return;
+        clearForm();
+
+        blocked_button = true;
+        if($('#amount').val().trim() == '') err('.amount', 'Введите сумму вывода');
+        if($('#card_number').val().trim() == '') err('.card_number', 'Введите номер карты');
+        if(blocked_button && !errs){
+            let params = $(this).serializeArray();
+            params.forEach(function(item){
+                item.value = item.value.replace(/[^0-9/]/g, '');
+            });
+            params = $.param(params);
+            console.log(params)
+            request("/withdrawBtn/", params, function(result){
+                try{
+                    response = JSON.parse(result);
+                    if(response.result == 'fail'){
+                        err('form', response.description);
+                        return;
+                    }
+                    res = JSON.parse(response.result);
+                    if(res.status == 'success'){
+                        window.location.href = '/';
+                        clearForm();
+                        blocked_button = false;
+                        return;
+                    }
+                    
+                    inps.forEach(item => {
+                        if(res[item.id] != undefined) err('.' + item.id, res[item.id]);
+                    });
+                    
+                    if(res.message){
+                        err('form', res.message)
+                    }
+
+                    blocked_button = false;
                 }
                 catch(e){
                     err('form', 'Неожиданная ошибка');
