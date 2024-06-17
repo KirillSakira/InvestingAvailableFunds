@@ -43,7 +43,7 @@
     <div class="row">
         <div class="elem col-11 mx-auto px-5 py-3 h1 text-center font-weight-bold">Клиенты</div>
     </div>
-    
+
     <div id="mClientsList">
         {% for item in users %}
             <div class="row">
@@ -54,11 +54,7 @@
                         </div>
                         <div class="col-12 col-sm-6 mt-3 mt-sm-0 p-sm-0 pr-sm-2 text-sm-right">
                                 <div class="h1">{{item.balance}} ₽ 
-                                {% if '+' in item.balance_proc %}
-                                    (<span class="col_lb">{{item.balance_proc}}%</span>)
-                                {% else %}
-                                    (<span class="col_red">{{item.balance_proc}}%</span>)
-                                {% endif %}
+                                (<span class="{% if '-' in item.balance_proc %}col_red{% else %}col_lb{% endif %}">{{item.balance_proc}}%</span>)
                             </div>
                         </div>
                     </div>

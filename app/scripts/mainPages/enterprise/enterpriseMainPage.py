@@ -1,47 +1,56 @@
 from connection import connection_db
-from securutiesInfo import *
+from .securutiesInfo import *
 
 
-def enterpriseMainPage(request):
-    id = request.user.id
+def enterpriseMainPage(request, uid=False):
+    try:
+        id = uid if uid else request.user.id
+        name = ''
 
-    connection = connection_db()
-    dataBase = connection.cursor()
+        fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
 
-    dataBase.execute(f'select id_user from auth_user where id={id}')
-    data = dataBase.fetchall()[0]
-    id_user = data[0]
+        connection = connection_db()
+        dataBase = connection.cursor()
+    
+        dataBase.execute(f'select id_user, first_name, last_name, patronymic from auth_user where id={id}')
+        data = dataBase.fetchall()[0]
+        id_user = data[0]
+        if uid:
+            name += f'{data[2]} {data[1][0]}.'
+            if data[3] != None:
+                name += f' {data[3][0]}.'
 
-    dataBase.execute(f'select id_enterprise from users where id_user={id_user}')
-    data = dataBase.fetchall()[0]
-    id_enterprise = data[0]
+        dataBase.execute(f'select id_enterprise from users where id_user={id_user}')
+        data = dataBase.fetchall()[0]
+        id_enterprise = data[0]
 
-    dataBase.execute(f'select * from portfolios where id_enterprise={id_enterprise}')
-    data = dataBase.fetchall()[0]
-    balance = data[3]
-    deposition = data[4]
-    id_portfolio = data[0]
-    balanceChange = balance - deposition
-    balanceChangePercentage = balanceChange / (deposition * 0.01)
+        dataBase.execute(f'select * from portfolios where id_enterprise={id_enterprise}')
+        data = dataBase.fetchall()[0]
+        balance = data[1]
+        deposition = data[3]
+        id_portfolio = data[0]
+        balanceChange = balance - deposition
+        balanceChangePercentage = float(balanceChange) / (float(deposition) * 0.01)
 
-    balanceInfo = {
-        'balance': balance,
-        'var_balance': balanceChange,
-        'balance_proc': balanceChangePercentage
-    }
+        balanceInfo = {
+            'balance': fti(balance),
+            'var_balance': fti(balanceChange),
+            'balance_proc': fti(balanceChangePercentage)
+        }
 
-    data = []
-    data.append(balanceInfo)
+        data = balanceInfo
 
-    dataBase.execute(f'select * from portfolios_to_securitie where id_portfolio={id_portfolio}')
-    securities = dataBase.fetchall()
+        dataBase.execute(f'select * from portfolio_to_securitie where id_portfolio={id_portfolio}')
+        securities = dataBase.fetchall()
 
-    if securities == None:
+        if securities == None:
+            dataBase.close()
+            connection.close()
+            return data
+
+        balanceData = securutiesInfo(securities)
         dataBase.close()
         connection.close()
-        return data
-
-    data.append(securutiesInfo(securities))
-    dataBase.close()
-    connection.close()
-    return data
+        return data, balanceData, name
+    except:
+        return ['', '', 'Error']

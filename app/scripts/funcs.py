@@ -39,15 +39,24 @@ def cardValidation(amount, cardNumber, cardDate = ''):
 	
 	if amount <= 0:
 		errorsDict['amount'] = 'Некорректная сумма перевода'
-		
+	
 	if len(cardNumber) != 16:
 		errorsDict['card_number'] = 'Некорректный номер карты'
 	
-	if len(cardDate) == 2:
-		if not int(cardDate[0]) in [i for i in range(1,13)]:
-			cardDate = dt.strptime(f'20{cardDate[1]}/{cardDate[0]}/01', '%Y/%m/%d')
-			if cardDate < dt.today():
-				errorsDict['card_date'] = 'Карта недействительна или некорректный срок действия карты'
+	if cardDate != '':
+		cardDateFlag = False
+		if len(cardDate) == 2:
+			if int(cardDate[0]) in [i for i in range(1,13)]:
+				cardDate = dt.strptime(f'20{cardDate[1]}/{cardDate[0]}/01', '%Y/%m/%d')
+				if cardDate < dt.today():
+					cardDateFlag = True
+			else:
+				cardDateFlag = True
+		else:
+			cardDateFlag = True
+		
+		if cardDateFlag:
+			errorsDict['card_date'] = 'Карта недействительна или некорректный срок действия карты'
 	
 	return errorsDict
 		

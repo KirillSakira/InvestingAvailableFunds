@@ -31,9 +31,11 @@ values ('{id_portfolio}', {True}, {amount})''')
 
     dataBase.execute(f'select id_employee from portfolios where id_enterprise={id_enterprise}')
     id_employee = dataBase.fetchall()[0][0]
-
-    dataBase.execute(f'''insert into messages (id_sender, id_receiver, message_date, message_content)
-values ({user_id}, {id_employee}, default, 'Было совершено пополнение клиентом №{user_id} в размере {amount}₽')''')
+    if id_employee != None:
+        dataBase.execute(f'''insert into messages (id_sender, id_receiver, message_date, message_content)
+    values ({user_id}, {id_employee}, default, 'Было совершено пополнение клиентом №{user_id} в размере {amount}₽')''')
+    else:
+        return returnJson(status='error', message='К аккаунту не привязан сотрудник')
     connection.commit()
     dataBase.close()
     connection.close()

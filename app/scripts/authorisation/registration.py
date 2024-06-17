@@ -105,6 +105,12 @@ def registrationBack(request):
 			dataBase.execute(f'''insert into portfolios (id_portfolio, balance, deposition, account_number, id_enterprise)
 			values (default, 0, 0, {accountNumber}, {idEnterprise});''')
 			
+			dataBase.execute(f'''select id_portfolio from portfolios where id_enterprise={idEnterprise}''')
+			idPortofolio = dataBase.fetchall()[0][0]
+			
+			dataBase.execute(f'''insert into portfolio_to_securitie
+			values ({idPortofolio}, 36, 0, 1);''')
+			
 	else:
 		if role == 'Admin':
 			dataBase.execute('insert into employees values (default, 1)')

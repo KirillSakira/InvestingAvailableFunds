@@ -105,7 +105,6 @@ if(['payment', 'withdraw'].indexOf(pathname[1]) !== -1){
                     }
                     res = JSON.parse(response.result);
                     if(res.status == 'success'){
-                        window.location.href = '/';
                         clearForm();
                         clearInps();
                         $('#error_message').text('');

@@ -4,15 +4,28 @@ from django.http import HttpResponseRedirect
 from .viewBack.getUserData import getUserData
 from .viewBack.getColorImg import getColorImg
 
+from app.scripts.analytics.short.shortAnalyticsBalance import shortAnalyticsBalance
+from app.scripts.analytics.short.shortAnalyticsBar import shortAnalyticsBar
+from app.scripts.analytics.short.shortAnalyticsPie import shortAnalyticsPie
+
 from app.scripts.clientProfile import private_profile
 from app.scripts.OperationsWithBalance.operationsHistory import history
+from app.scripts.mainPages.enterprise.enterpriseMainPage import enterpriseMainPage
+
+#manager
+from app.scripts.mainPages.manager.managerMainPage import managerMainPage
 
 def ret(request, url, data):
     if request.session.session_key != None:
         return render(request, url, data)
     else:
         return HttpResponseRedirect("/auth/")
+    
+def toOops():
+        return HttpResponseRedirect("/oops/")
 
+def viewOops(request):
+        return render(request, 'oops.html')
 
 def viewAuth(request):
     if request.session.session_key == None:
@@ -30,199 +43,44 @@ def viewRegistration(request):
 
 def viewHome(request):
     userData = getUserData(request)
+
     if userData['role'] == 'enterprise':
+        aBal, aProc = shortAnalyticsBalance(request)
+        aBarMonth, aBarCount = shortAnalyticsBar(request)
+        aPie = shortAnalyticsPie(request)
+        balanceData, secData, entName = enterpriseMainPage(request)
         data = {
             'userData': userData,
             'in_scripts_graph': True,
             
-            'balance': '18 638 725,7',
-            'balance_proc': '+19,45',
-            'var_balance': '8 736 976.33',
-            'var_balance_proc': '+19,45',
-            'var_balance_1': '18 638 725,7',
-            'var_balance_proc_1': '+19,56',
+            'balance': balanceData['balance'],
+            'var_balance': balanceData['var_balance'],
+            'var_balance_proc': balanceData['balance_proc'],
+            'var_balance_1': aBal,
+            'var_balance_proc_1': aProc,
             'graph_bar': {
-                'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-                'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
+                'month': aBarMonth,
+                'count': aBarCount
             },
-            'graph_pie': [
-                {
-                    'name': 'Акции',
-                    'count': '100',
-                    'proc': '10',
-                    'color': '#3AA1FF'
-                },
-                {
-                    'name': 'Облигации',
-                    'count': '250',
-                    'proc': '25',
-                    'color': '#FF523A'
-                },
-                {
-                    'name': 'Фонды',
-                    'count': '250',
-                    'proc': '25',
-                    'color': '#F1EDFD'
-                },
-                {
-                    'name': 'Валюта и металлы',
-                    'count': '200',
-                    'proc': '20',
-                    'color': '#634FED'
-                }
-            ],
-            'stocks_data': [
-                {
-                    'img': 's1.png', #имя
-                    'name': 'Норильский никель', #имя
-                    'short_name': 'GMKN', #сокращенное имя
-                    'price_buy': '15 975 876,66', #цена покупки
-                    'price_now': '16 200 000,31', #текущая цена
-                    'price_count_buy': '15 975 876,66', #цена всех купленных
-                    'count_buy': '10', #количество купленных
-                    'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
-                    'proc_end': '+3' #в процентах
-                },
-                {
-                    'img': 's2.png',
-                    'name': 'ТКС Холдинг',
-                    'short_name': 'TKSG',
-                    'price_buy': '2 798,45',
-                    'price_now': '1 598,89',
-                    'price_count_buy': '7 994,45',
-                    'count_buy': '5',
-                    'price_end': '-5 997,8',
-                    'proc_end': '-33,78'
-                },
-                {
-                    'img': 's3.png',
-                    'name': 'Яндекс',
-                    'short_name': 'YNDX',
-                    'price_buy': '4 155,96',
-                    'price_now': '4 161,4',
-                    'price_count_buy': '12 448,2',
-                    'count_buy': '3',
-                    'price_end': '+8 544,78',
-                    'proc_end': '+17,92'
-                },
-                {
-                    'img': 's2.png',
-                    'name': 'ТКС Холдинг',
-                    'short_name': 'TKSG',
-                    'price_buy': '2 798,45',
-                    'price_now': '1 598,89',
-                    'price_count_buy': '7 994,45',
-                    'count_buy': '5',
-                    'price_end': '-5 997,8',
-                    'proc_end': '-33,78'
-                },
-                {
-                    'img': 's3.png',
-                    'name': 'Яндекс',
-                    'short_name': 'YNDX',
-                    'price_buy': '4 155,96',
-                    'price_now': '4 161,4',
-                    'price_count_buy': '12 448,2',
-                    'count_buy': '3',
-                    'price_end': '+8 544,78',
-                    'proc_end': '+17,92'
-                }
-            ],
-            'bonds_data': [
-                {
-                    'name': 'Норильский никель',
-                    'short_name': 'GMKN',
-                    'price_buy': '15 975 876,66',
-                    'count_buy': '10',
-                    'price_now': '16 200 000,31',
-                    'price_end': '+1 975 876,66',
-                    'proc_end': '+3'
-                },
-                {
-                    'name': 'ААААААААААААААА',
-                    'short_name': 'аааааа',
-                    'price_buy': '77777',
-                    'count_buy': '100',
-                    'price_now': '999999',
-                    'price_end': '+236524',
-                    'proc_end': '+50    '
-                }
-            ],
-            'funds_data': [
-                {
-                    'name': 'Норильский никель',
-                    'short_name': 'GMKN',
-                    'price_buy': '15 975 876,66',
-                    'count_buy': '10',
-                    'price_now': '16 200 000,31',
-                    'price_end': '+1 975 876,66',
-                    'proc_end': '+3'
-                },
-                {
-                    'name': 'ААААААААААААААА',
-                    'short_name': 'аааааа',
-                    'price_buy': '77777',
-                    'count_buy': '100',
-                    'price_now': '999999',
-                    'price_end': '+236524',
-                    'proc_end': '+50    '
-                }
-            ],
-            'curr_metals_data': [
-                {
-                    'name': 'Норильский никель',
-                    'short_name': 'GMKN',
-                    'price_buy': '15 975 876,66',
-                    'count_buy': '10',
-                    'price_now': '16 200 000,31',
-                    'price_end': '+1 975 876,66',
-                    'proc_end': '+3'
-                },
-                {
-                    'name': 'ААААААААААААААА',
-                    'short_name': 'аааааа',
-                    'price_buy': '77777',
-                    'count_buy': '100',
-                    'price_now': '999999',
-                    'price_end': '+236524',
-                    'proc_end': '+50    '
-                }
-            ]
+            'graph_pie': aPie,
+            'stocks_data': secData['stocks_data'],
+            'bonds_data': secData['bonds_data'],
+            'funds_data': secData['funds_data'],
+            'curr_metals_data': secData['curr_metals_data']
         }
         return ret(request, 'index.html', data)
     elif userData['role'] == 'Manager':
         data = {
             'userData': userData,
-            'users': [
-                {
-                    'id': '1',
-                    'name': 'Паровозов А. Д.',
-                    'balance': '18 638 725,7',
-                    'balance_proc': '+19,45',
-                },
-                {
-                    'id': '2',
-                    'name': 'Паssровозов А. Д.',
-                    'balance': '1 625,7',
-                    'balance_proc': '-9,45',
-                }
-            ]
+            'users': managerMainPage(request)
         }
         return ret(request, 'Mindex.html', data)
+    else:
+        return ret(request, '/auth.html')
 
 
 
 def viewProfile(request):
-    # data = {
-    #     'userData': getUserData(request),
-    #     'email': 'asdas@asdasd.asd',
-    #     'gender': 'Мужской',
-    #     'name': 'asdasd asdasdasda sdasdasds',
-    #     'phone': '+79192837475',
-    #     'sn_passport': '03 03 030303',
-    #     'address': 'ewwwwwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwww wwwwwwwwww23ew',
-    #     'birday': '01.01.1010'
-    # }
     data = private_profile(request)
     return ret(request, 'profile.html', data)
 
@@ -243,76 +101,38 @@ def viewWithdraw(request):
 
 def viewOperations(request):
     userData = getUserData(request)
+    data = history(request)[1]
     if userData['role'] == 'enterprise':
         data = {
             'userData': userData,
-            'operations_data': history(request)
+            'operations_data': data
         }
         return ret(request, 'operations.html', data)
     elif userData['role'] == 'Manager':
         data = {
             'userData': userData,
             'bodyClass': 'operations_list',
-            'operations_data': [
-                {
-                    'id': '1',
-                    'type': 'Пополнение',
-                    'date': '01.01.2021 15:30',
-                    'name': 'Паровозов А. Д.',
-                    'price': '+7 895',
-                    'proc': '+3'
-                },
-                {
-                    'id': '2',
-                    'type': 'Снятие',
-                    'date': '01.10.2021 15:30',
-                    'name': 'Карапузиков И. В.',
-                    'price': '-5 895',
-                    'proc': '-2'
-                },
-                {
-                    'id': '3',
-                    'type': 'Пополнение',
-                    'date': '01.01.2023 15:30',
-                    'name': 'Валялько Д. К.',
-                    'price': '+1 895',
-                    'proc': '+1'
-                }
-            ]
+            'operations_data': data
         }
         return ret(request, 'operations.html', data)
+    else:
+        return ret(request, '/auth.html')
     
 def viewOperationsDetail(request, id):
     userData = getUserData(request)
-
-    #по url получаем id пользователя и выдаем инфу
-
+    name, data = history(request, id)
     if userData['role'] == 'Manager':
+        if data == 'Error':
+            return toOops()
+        
         data = {
             'userData': userData,
-            'name': 'Паровозов А. Д.',
-            'operations_data': [
-                {
-                    'type': 'Пополнение',
-                    'date': '01.01.2021 15:30',
-                    'price': '+7 895',
-                    'proc': '+3'
-                },
-                {
-                    'type': 'Снятие',
-                    'date': '01.10.2021 15:30',
-                    'price': '-5 895',
-                    'proc': '-2'
-                },
-                {
-                    'type': 'Пополнение',
-                    'date': '01.01.2023 15:30',
-                    'price': '+1 895',
-                    'proc': '+1'
-                }
-            ]
+            'name': name,
+            'operations_data': data
         }
         return ret(request, 'MoperationsDetail.html', data)
+    else:
+        return ret(request, '/auth.html')
 
 
 def viewAnalytic(request, id=None):
@@ -622,165 +442,34 @@ def viewEnterprise(request, id):
     userData = getUserData(request)
 
     if userData['role'] == 'Manager':
+        aBal, aProc = shortAnalyticsBalance(request, id)
+        aBarMonth, aBarCount = shortAnalyticsBar(request, id)
+        aPie = shortAnalyticsPie(request, id)
+        balanceData, secData, entName = enterpriseMainPage(request, id)
+
+        if 'Error' in [aBal, aPie, aBarMonth, balanceData]:
+            return toOops()
+
         data = {
             'userData': userData,
             'id': id,
             'in_scripts_graph': True,
-            
-            'enterprise_name': 'Аркадий Паровозов',
-            'balance': '18 638 725,7',
-            'balance_proc': '+19,45',
-            'var_balance': '8 736 976.33',
-            'var_balance_proc': '+19,45',
-            'var_balance_1': '18 638 725,7',
-            'var_balance_proc_1': '+19,56',
+                        
+            'enterprise_name': entName,
+            'balance': balanceData['balance'],
+            'var_balance': balanceData['var_balance'],
+            'var_balance_proc': balanceData['balance_proc'],
+            'var_balance_1': aBal,
+            'var_balance_proc_1': aProc,
             'graph_bar': {
-                'month': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-                'count': [100, 400, 300, 324, 565, 233, 456, 111, 324, 234, 312, 234]
+                'month': aBarMonth,
+                'count': aBarCount
             },
-            'graph_pie': [
-                {
-                    'name': 'Акции',
-                    'count': '100',
-                    'proc': '10',
-                    'color': '#3AA1FF'
-                },
-                {
-                    'name': 'Облигации',
-                    'count': '250',
-                    'proc': '25',
-                    'color': '#FF523A'
-                },
-                {
-                    'name': 'Фонды',
-                    'count': '250',
-                    'proc': '25',
-                    'color': '#F1EDFD'
-                },
-                {
-                    'name': 'Валюта и металлы',
-                    'count': '200',
-                    'proc': '20',
-                    'color': '#634FED'
-                }
-            ],
-            'stocks_data': [
-                {
-                    'img': 's1.png', #имя
-                    'name': 'Норильский никель', #имя
-                    'short_name': 'GMKN', #сокращенное имя
-                    'price_buy': '15 975 876,66', #цена покупки
-                    'price_now': '16 200 000,31', #текущая цена
-                    'price_count_buy': '15 975 876,66', #цена всех купленных
-                    'count_buy': '10', #количество купленных
-                    'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
-                    'proc_end': '+3' #в процентах
-                },
-                {
-                    'img': 's2.png',
-                    'name': 'ТКС Холдинг',
-                    'short_name': 'TKSG',
-                    'price_buy': '2 798,45',
-                    'price_now': '1 598,89',
-                    'price_count_buy': '7 994,45',
-                    'count_buy': '5',
-                    'price_end': '-5 997,8',
-                    'proc_end': '-33,78'
-                },
-                {
-                    'img': 's3.png',
-                    'name': 'Яндекс',
-                    'short_name': 'YNDX',
-                    'price_buy': '4 155,96',
-                    'price_now': '4 161,4',
-                    'price_count_buy': '12 448,2',
-                    'count_buy': '3',
-                    'price_end': '+8 544,78',
-                    'proc_end': '+17,92'
-                },
-                {
-                    'img': 's2.png',
-                    'name': 'ТКС Холдинг',
-                    'short_name': 'TKSG',
-                    'price_buy': '2 798,45',
-                    'price_now': '1 598,89',
-                    'price_count_buy': '7 994,45',
-                    'count_buy': '5',
-                    'price_end': '-5 997,8',
-                    'proc_end': '-33,78'
-                },
-                {
-                    'img': 's3.png',
-                    'name': 'Яндекс',
-                    'short_name': 'YNDX',
-                    'price_buy': '4 155,96',
-                    'price_now': '4 161,4',
-                    'price_count_buy': '12 448,2',
-                    'count_buy': '3',
-                    'price_end': '+8 544,78',
-                    'proc_end': '+17,92'
-                }
-            ],
-            'bonds_data': [
-                {
-                    'name': 'Норильский никель',
-                    'short_name': 'GMKN',
-                    'price_buy': '15 975 876,66',
-                    'count_buy': '10',
-                    'price_now': '16 200 000,31',
-                    'price_end': '+1 975 876,66',
-                    'proc_end': '+3'
-                },
-                {
-                    'name': 'ААААААААААААААА',
-                    'short_name': 'аааааа',
-                    'price_buy': '77777',
-                    'count_buy': '100',
-                    'price_now': '999999',
-                    'price_end': '+236524',
-                    'proc_end': '+50    '
-                }
-            ],
-            'funds_data': [
-                {
-                    'name': 'Норильский никель',
-                    'short_name': 'GMKN',
-                    'price_buy': '15 975 876,66',
-                    'count_buy': '10',
-                    'price_now': '16 200 000,31',
-                    'price_end': '+1 975 876,66',
-                    'proc_end': '+3'
-                },
-                {
-                    'name': 'ААААААААААААААА',
-                    'short_name': 'аааааа',
-                    'price_buy': '77777',
-                    'count_buy': '100',
-                    'price_now': '999999',
-                    'price_end': '+236524',
-                    'proc_end': '+50    '
-                }
-            ],
-            'curr_metals_data': [
-                {
-                    'name': 'Норильский никель',
-                    'short_name': 'GMKN',
-                    'price_buy': '15 975 876,66',
-                    'count_buy': '10',
-                    'price_now': '16 200 000,31',
-                    'price_end': '+1 975 876,66',
-                    'proc_end': '+3'
-                },
-                {
-                    'name': 'ААААААААААААААА',
-                    'short_name': 'аааааа',
-                    'price_buy': '77777',
-                    'count_buy': '100',
-                    'price_now': '999999',
-                    'price_end': '+236524',
-                    'proc_end': '+50'
-                }
-            ]
+            'graph_pie': aPie,
+            'stocks_data': secData['stocks_data'],
+            'bonds_data': secData['bonds_data'],
+            'funds_data': secData['funds_data'],
+            'curr_metals_data': secData['curr_metals_data']
         }
         return ret(request, 'index.html', data)
     else:

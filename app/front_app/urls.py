@@ -4,6 +4,8 @@ from app.views import *
 from app.front_app import views
 
 urlpatterns = [
+    path('oops/', views.viewOops, name='oops'),
+
     path('auth/', views.viewAuth, name='auth'),
     path('registration/', views.viewRegistration, name='registration'),
     path('profile/', views.viewProfile, name='profile'),
