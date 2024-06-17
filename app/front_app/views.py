@@ -15,11 +15,14 @@ from app.scripts.mainPages.enterprise.enterpriseMainPage import enterpriseMainPa
 #manager
 from app.scripts.mainPages.manager.managerMainPage import managerMainPage
 
-def ret(request, url, data):
-    if request.session.session_key != None:
-        return render(request, url, data)
-    else:
+def chAuth(request):
+    if request.session.session_key == None:
         return HttpResponseRedirect("/auth/")
+    return None
+
+def ret(request, url, data):
+    chAuth(request)
+    return render(request, url, data)
     
 def toOops():
         return HttpResponseRedirect("/oops/")
@@ -42,6 +45,9 @@ def viewRegistration(request):
 
 
 def viewHome(request):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
     userData = getUserData(request)
 
     if userData['role'] == 'enterprise':
@@ -81,11 +87,17 @@ def viewHome(request):
 
 
 def viewProfile(request):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
     data = private_profile(request)
     return ret(request, 'profile.html', data)
 
 
 def viewPayment(request):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
     data = {
         'userData': getUserData(request)
     }
@@ -93,6 +105,9 @@ def viewPayment(request):
     
 
 def viewWithdraw(request):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
     data = {
         'userData': getUserData(request)
     }
@@ -100,6 +115,9 @@ def viewWithdraw(request):
 
 
 def viewOperations(request):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
     userData = getUserData(request)
     data = history(request)[1]
     if userData['role'] == 'enterprise':
@@ -119,6 +137,9 @@ def viewOperations(request):
         return ret(request, '/auth.html')
     
 def viewOperationsDetail(request, id):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
     userData = getUserData(request)
     name, data = history(request, id)
     if userData['role'] == 'Manager':
@@ -136,6 +157,9 @@ def viewOperationsDetail(request, id):
 
 
 def viewAnalytic(request, id=None):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
     userData = getUserData(request)
     stocks_data = {
         'counts': {
@@ -439,6 +463,9 @@ def viewAnalytic(request, id=None):
 
 #Manager
 def viewEnterprise(request, id):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
     userData = getUserData(request)
 
     if userData['role'] == 'Manager':
@@ -476,6 +503,9 @@ def viewEnterprise(request, id):
         return ret(request, '/auth.html')
 
 def viewTradeHistory(request, id):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
     userData = getUserData(request)
 
     if userData['role'] == 'Manager':
@@ -545,7 +575,10 @@ def viewTradeHistory(request, id):
         return ret(request, '/auth.html')
 
 
-def viewTrade(request, id):
+def viewTrade(request):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
     userData = getUserData(request)
 
     if userData['role'] == 'Manager':
