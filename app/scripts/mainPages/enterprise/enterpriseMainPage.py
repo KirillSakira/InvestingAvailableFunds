@@ -30,7 +30,9 @@ def enterpriseMainPage(request, uid=False):
         deposition = data[3]
         id_portfolio = data[0]
         balanceChange = balance - deposition
-        balanceChangePercentage = float(balanceChange) / (float(deposition) * 0.01)
+        balanceChangePercentage = 0
+        if deposition != 0:
+            balanceChangePercentage = float(balanceChange) / (float(deposition) * 0.01)
 
         balanceInfo = {
             'balance': fti(balance),
