@@ -52,7 +52,7 @@ def viewHome(request):
 
     if userData['role'] == 'enterprise':
         aBal, aProc = shortAnalyticsBalance(request)
-        aBarMonth, aBarCount = shortAnalyticsBar(request)
+        aBarMonth, aBarCount, aBarSum = shortAnalyticsBar(request)
         aPie = shortAnalyticsPie(request)
         balanceData, secData, entName = enterpriseMainPage(request)
         data = {
@@ -66,7 +66,8 @@ def viewHome(request):
             'var_balance_proc_1': aProc,
             'graph_bar': {
                 'month': aBarMonth,
-                'count': aBarCount
+                'count': aBarCount,
+                'sum': aBarSum
             },
             'graph_pie': aPie,
             'stocks_data': secData['stocks_data'],
@@ -470,7 +471,7 @@ def viewEnterprise(request, id):
 
     if userData['role'] == 'Manager':
         aBal, aProc = shortAnalyticsBalance(request, id)
-        aBarMonth, aBarCount = shortAnalyticsBar(request, id)
+        aBarMonth, aBarCount, aBarSum = shortAnalyticsBar(request, id)
         aPie = shortAnalyticsPie(request, id)
         balanceData, secData, entName = enterpriseMainPage(request, id)
 
@@ -490,7 +491,8 @@ def viewEnterprise(request, id):
             'var_balance_proc_1': aProc,
             'graph_bar': {
                 'month': aBarMonth,
-                'count': aBarCount
+                'count': aBarCount,
+                'sum': aBarSum
             },
             'graph_pie': aPie,
             'stocks_data': secData['stocks_data'],

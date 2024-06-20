@@ -33,6 +33,6 @@ def shortAnalyticsBar(request, uid=False):
         for row in data:
             if row[0].year == dt.now().year:
                 count[row[0].month - 1] = round(float(row[1]), 2)
-        return month, count
+        return month, count, sum(count)
     except:
-        return 'Error', ''
+        return 'Error', '', ''
