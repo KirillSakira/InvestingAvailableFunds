@@ -3,6 +3,8 @@ from colorthief import ColorThief
 import io
 
 def getColorImg(image_paths):
+    if len(image_paths) == 0:
+        return []
     dominant_colors = []
     for image_path in image_paths:
         image = Image.open(f'app/static/logo_org/{image_path}')

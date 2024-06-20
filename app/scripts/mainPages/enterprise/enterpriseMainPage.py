@@ -1,5 +1,5 @@
 from connection import connection_db
-from .securutiesInfo import *
+from .securitiesInfo import *
 
 
 def enterpriseMainPage(request, uid=False):
@@ -50,7 +50,7 @@ def enterpriseMainPage(request, uid=False):
             connection.close()
             return data
 
-        balanceData = securutiesInfo(securities)
+        balanceData = securitiesInfo(securities)
         dataBase.close()
         connection.close()
         return data, balanceData, name

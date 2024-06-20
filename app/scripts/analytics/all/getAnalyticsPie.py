@@ -1,5 +1,5 @@
 from connection import connection_db
-from app.scripts.mainPages.enterprise.securutiesInfo import securutiesInfo
+from app.scripts.mainPages.enterprise.securitiesInfo import securitiesInfo
 
 
 def analyticsPie(request, uid=False):
@@ -51,10 +51,9 @@ def analyticsPie(request, uid=False):
                 {
                     'name': key,
                     'proc': round(quantities[key][0] / totalSum * 100, 2),
-                    'count': round(quantities[key][0], 2),
+                    'count': round(quantities[key][0], 2)
                 }
             )
         return pie, securitiesData
     except:
         return 'Error', ''
-    

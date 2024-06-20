@@ -29,13 +29,13 @@
                     </div>
                     
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
-                        <button class="h3"><a href="/analytic" class="p-4">Аналитика</a></button>
+                        <button class="h3"><a href="/analytic" class="p-4" {% if graph_pie|length == 0 %}onclick="return false"{% endif %}>Аналитика</a></button>
                     </div>
                 </div>
             </div>
         </div>
     {% endif %}
-    {{secData}}
+    
     {% if userData.role == 'Manager' %}
         <div class="row">
             <div class="elem col-11 mx-auto px-5 pt-5 pb-3">
@@ -166,7 +166,7 @@
         graph_pie = JSON.parse('{{ graph_pie|escapejs }}'.replace(/'/g, "\""));
     $(document).ready(function() {
         if(is_bar != 0) generBar('webixChart', graph_bar);
-        if(is_pie.length != 0) generPie('pieChart', graph_pie); 
+        if(is_pie != 0) generPie('pieChart', graph_pie); 
     });
 </script>
 {% endblock %}
