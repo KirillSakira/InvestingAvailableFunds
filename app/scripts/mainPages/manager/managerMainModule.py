@@ -33,4 +33,7 @@ def getInitials(id_enterprise):
     initials = f'{clientLastName} {clientFirstName[0]}.'
     if clientPatronymic != None:
         initials += f' {clientPatronymic[0]}.'
+    connection.commit()
+    dataBase.close()
+    connection.close()
     return [id, initials]
