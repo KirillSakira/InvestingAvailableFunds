@@ -160,11 +160,13 @@
 
 {% block in_script %}
 <script>
-    var graph_bar = JSON.parse('{{ graph_bar|escapejs }}'.replace(/'/g, "\"")),
+    var is_bar = {{graph_bar.sum|safe}},
+        is_pie = {{graph_pie|length}},
+        graph_bar = JSON.parse('{{ graph_bar|escapejs }}'.replace(/'/g, "\"")),
         graph_pie = JSON.parse('{{ graph_pie|escapejs }}'.replace(/'/g, "\""));
     $(document).ready(function() {
-        generBar('webixChart', graph_bar);
-        generPie('pieChart', graph_pie); 
+        if(is_bar != 0) generBar('webixChart', graph_bar);
+        if(is_pie.length != 0) generPie('pieChart', graph_pie); 
     });
 </script>
 {% endblock %}

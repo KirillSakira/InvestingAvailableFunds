@@ -67,7 +67,7 @@ if(pathname[1] == ''){
     });
 }
 
-$('.el_hoverer').on('click', function(){
+$('#mClientsList').on('click', '.el_hoverer', function(){
     if(['', 'operations'].indexOf(pathname[1]) !== -1)
         window.open('/enterprise/' + this.getAttribute('data-id'), '_self');
 });
