@@ -284,7 +284,8 @@ header{
 
 
 /* manager */
-.cloneBl{
+.cloneBl,
+.cloneb{
     display: none;
 }
 .newClientEmail{

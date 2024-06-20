@@ -1,6 +1,7 @@
 from connection import connection_db
 
 def getPortfolioData(portfolio):
+    fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
     balance = portfolio[1]
     deposition = portfolio[3]
     uid, initials = getInitials(portfolio[5])

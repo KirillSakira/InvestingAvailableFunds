@@ -24,7 +24,7 @@ if(pathname[1] == ''){
         if(blocked_button && !errs){
             let params = $(this).serialize();
             request("/mAddClientMail/", params, function(result){
-                // try{
+                try{
                     response = JSON.parse(result);
                     if(response.result == 'fail'){
                         err('form', response.description);
@@ -32,31 +32,35 @@ if(pathname[1] == ''){
                     }
                     res = JSON.parse(response.result);
                     if(res['status'] == 'success'){
-                        $('#email, #error_message').val('');
-                        $('#success_message').val(response.message);
                         clearForm();
+                        $('#email').val('');
+                        $('#error_message').text('');
+                        $('#success_message').text(res.message);
 
                         let html = cloneClientBlock.html()
-                        .replace('$id', response.id)
-                        .replace('$name', response.name)
-                        .replace('$balance', response.balance)
-                        .replace('$balance_proc', response.balance_proc)
-                        .replace('$color', (response.balance_proc.includes("+")) ? 'col_lb' : 'col_red');
-                        $('#mClientsList').append(html);
+                        .replace('$id', res.id)
+                        .replace('$name', res.name)
+                        .replace('$balance', res.balance)
+                        .replace('$balance_proc', res.balance_proc)
+                        .replace('$color', (toString(res.balance_proc).includes("-")) ? 'col_red' : 'col_lb');
+                        $('#mClientsList').prepend(html);
+                        $('.cloneb').fadeIn(400);
+                        setTimeout(() => $('.cloneb').removeClass('cloneb'), 400);
 
                         setTimeout(function(){
                             $('#hnewClient').click()
                             blocked_button = false;
-                        }, 1000);
+                            setTimeout(() => $('#success_message').text(''), 500);
+                        }, 600);
                         return;
                     }
 
                     err('form', res.message);
                     blocked_button = false;
-                // }
-                // catch(e){
-                //     err('form', 'Неожиданная ошибка');
-                // }
+                }
+                catch(e){
+                    err('form', 'Неожиданная ошибка');
+                }
             });
         }
         blocked_button = false;

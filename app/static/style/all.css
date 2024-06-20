@@ -160,6 +160,9 @@ form{
   color: green;
   text-align: center;
 }
+#success_message:not(:empty){
+  margin-top: 2rem;
+}
 
 .inp_bl{
   position: relative;

@@ -1,9 +1,8 @@
 from connection import connection_db
-from managerMainPage import *
+from .managerMainModule import *
 
 
 def managerMainPage(request):
-    fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
     id = request.user.id
 
     connection = connection_db()

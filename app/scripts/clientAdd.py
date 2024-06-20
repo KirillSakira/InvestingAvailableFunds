@@ -31,11 +31,12 @@ def clientAdd(request):
 			return returnJson(status='error', message='Клиент уже работает с вами')
 		return returnJson(status='error', message='Клиент уже работает с другим менеджером')
 	
-	# dataBase.execute(f'update portfolios set id_employee={idEmployee} where id_enterprise={idEnterprise}')
+	dataBase.execute(f'update portfolios set id_employee={idEmployee} where id_enterprise={idEnterprise}')
 	
 	dataBase.execute(f'select * from portfolios where id_enterprise={idEnterprise}')
 	portfolio = getPortfolioData(dataBase.fetchall()[0])
 	portfolio['status'] = 'success'
+	portfolio['message'] = 'Клиент добавлен'
 	
 	connection.commit()
 	dataBase.close()
