@@ -2,6 +2,7 @@ from .scripts.authorisation.login import *
 from .scripts.authorisation.registration import *
 from .scripts.OperationsWithBalance.refill import *
 from .scripts.OperationsWithBalance.withdraw import *
+from .scripts.clientAdd import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
 from django.shortcuts import redirect
@@ -21,6 +22,10 @@ def refill(request):
 @csrf_exempt
 def withdraw(request):
 	return withdrawBack(request)
+
+@csrf_exempt
+def mAddClientMail(request):
+	return clientAdd(request)
 
 @csrf_exempt
 def doLogout(request):

@@ -23,8 +23,8 @@ if(pathname[1] == ''){
         
         if(blocked_button && !errs){
             let params = $(this).serialize();
-            request("/managerAddClientMail/", params, function(result){
-                try{
+            request("/mAddClientMail/", params, function(result){
+                // try{
                     response = JSON.parse(result);
                     if(response.result == 'fail'){
                         err('form', response.description);
@@ -53,10 +53,10 @@ if(pathname[1] == ''){
 
                     err('form', res.message);
                     blocked_button = false;
-                }
-                catch(e){
-                    err('form', 'Неожиданная ошибка');
-                }
+                // }
+                // catch(e){
+                //     err('form', 'Неожиданная ошибка');
+                // }
             });
         }
         blocked_button = false;

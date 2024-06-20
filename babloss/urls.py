@@ -9,6 +9,7 @@ urlpatterns = [
     path('logout/', doLogout, name='logout'),
     path('refillBtn/', refill, name='refillBtn'),
     path('withdrawBtn/', withdraw, name='withdrawBtn'),
+    path('mAddClientMail/', mAddClientMail, name='mAddClientMail'),
 
     path('', include('app.front_app.urls')),
 ]
