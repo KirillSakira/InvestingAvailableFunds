@@ -1,9 +1,11 @@
 var pathname = location.pathname.split('/');
-var barChart = [];
-var barChartData = [];
+var barChart = [],
+    barChartData = [],
+    lineChartData = [],
+    isResize = false;
 
 //bar
-function generBar(elem, dataPie, con = 0){
+function generBar(elem, dataBar, con = 0){
     let canvas = document.getElementById(elem)
         ctx = canvas.getContext('2d'),
         fontSize = parseInt($('html').css('font-size')) * 1.2;
@@ -13,86 +15,86 @@ function generBar(elem, dataPie, con = 0){
         barChart[con].destroy();
 
     barChart[con] = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: dataPie['month'],
-        datasets: [{
-            data: dataPie['count'],
-            backgroundColor: '#634FED',
-            borderRadius: 20,
-            barPercentage: 0.9,
-            hoverBackgroundColor: '#7664f0'
-        }]
-    },
-    options: {
-        title: {
-            display: false
+        type: 'bar',
+        data: {
+            labels: dataBar['month'],
+            datasets: [{
+                data: dataBar['count'],
+                backgroundColor: '#634FED',
+                borderRadius: 20,
+                barPercentage: 0.9,
+                hoverBackgroundColor: '#7664f0'
+            }]
         },
-        scales: {
-            x: {
-                ticks: {
-                    font: {
-                        size: fontSize
-                    },
-                    color: '#6E6598'
-                }
-            },
-            y: {
-                ticks: {
-                    font: {
-                        size: fontSize
-                    },
-                    color: '#6E6598'
-                },
-                display: false,
-            }
-        },
-        plugins: {
-            legend: {
+        options: {
+            title: {
                 display: false
             },
-            tooltip: {
-                enabled: true,
-                mode: 'index',
-                intersect: false,
-                backgroundColor: '#453F64',
-                titleFont: {
-                    size: fontSize,
-                    weight: 'bold'
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            size: fontSize
+                        },
+                        color: '#6E6598'
+                    }
                 },
-                bodyFont: {
-                    size: fontSize
+                y: {
+                    ticks: {
+                        font: {
+                            size: fontSize
+                        },
+                        color: '#6E6598'
+                    },
+                    display: false,
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
                 },
-                xPadding: 15,
-                yPadding: 15,
-                caretPadding: 5,
-                caretSize: 5,
-                cornerRadius: 8,
-                borderWidth: 0,
-                borderColor: '#6E6598',
-                callbacks: {
-                    label: function(tooltipItem) {
-                        return 'Количество: ' + tooltipItem.raw;
+                tooltip: {
+                    enabled: true,
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: '#453F64',
+                    titleFont: {
+                        size: fontSize,
+                        weight: 'bold'
                     },
-                    labelColor: function(tooltipItem) {
-                        return {
-                            borderColor: '#6E6598', // прозрачная граница
-                            backgroundColor: '#6E6598' // прозрачный фон
-                        };
+                    bodyFont: {
+                        size: fontSize
                     },
-                    labelPointStyle: function() {
-                        return {
-                            pointStyle: 'line' // задаем стиль точки, чтобы квадрат не отображался
-                        };
+                    xPadding: 15,
+                    yPadding: 15,
+                    caretPadding: 5,
+                    caretSize: 5,
+                    cornerRadius: 8,
+                    borderWidth: 0,
+                    borderColor: '#6E6598',
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return 'Количество: ' + tooltipItem.raw;
+                        },
+                        labelColor: function(tooltipItem) {
+                            return {
+                                borderColor: '#6E6598', // прозрачная граница
+                                backgroundColor: '#6E6598' // прозрачный фон
+                            };
+                        },
+                        labelPointStyle: function() {
+                            return {
+                                pointStyle: 'line' // задаем стиль точки, чтобы квадрат не отображался
+                            };
+                        }
                     }
                 }
             }
         }
-    }
     });
     barChartData[con] = {
         'elem': elem,
-        'dataPie': dataPie,
+        'dataBar': dataBar,
         'con': con
     }
 }
@@ -101,7 +103,9 @@ window.addEventListener('resize', (e) => {
     if(window.innerWidth == vw && window.innerHeight == vh) return;
     vw = window.innerWidth;
     vh = window.innerHeight;
-    barChartData.forEach((item) => generBar(item.elem, item.dataPie, item.con));
+    barChartData.forEach((item) => generBar(item.elem, item.dataBar, item.con));
+    lineChartData.forEach((item) => generLine(item.elem, item.dataLine));
+    isResize = true;
 });
 
 //круговая диаграмма
@@ -135,6 +139,79 @@ function generPie(elem, dataPie){
         }
     });
 }
+
+//линейная диаграмма
+function generLine(elem, dataLine){
+    var canvas = document.getElementById(elem),
+        ctx = canvas.getContext('2d'),
+        fontSize = parseInt($('html').css('font-size')) * 1.2;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if(lineChart[0])
+        lineChart[0].destroy();
+
+    let bwidth = 7*vw/1000;
+    if(bwidth > 7) bwidth = 7;
+
+    lineChart[0] = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dataLine.days,
+            datasets: [{
+                data: dataLine.count,
+                borderColor: '#634FED',
+                borderWidth: bwidth,
+                pointRadius: dataLine.count.map((value, index) => index === dataLine.count.length - 1 ? bwidth : 0),
+                pointBackgroundColor: '#3AA1FF',
+                pointBorderColor: '#3AA1FF'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            size: fontSize,
+                        },
+                        color: '#F1EDFD'
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0)'
+                    }
+                },
+                y: {
+                    ticks: {
+                        font: {
+                            size: fontSize
+                        },
+                        color: '#F1EDFD',
+                        callback: function(value) {
+                            return value === 0 ? '' : value;
+                        },
+                    },
+                    grid: {
+                        color: '#453F64'
+                    },
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false // Убираем легенду, если она мешает
+                }
+            }
+        }
+    });
+    
+    lineChartData[0] = {
+        'elem': elem,
+        'dataLine': dataLine
+    }
+}
+
+
+
 $('.canvas_pie').on('mouseout', function() {
     $('.hportfolio_proc_names').removeClass('pieHoverGraphParent');
     $('.pie_item_chart').removeClass('pieHoverGraph');
@@ -153,3 +230,22 @@ if(pathname[1] == 'analytic'){
     });
     $(window).scroll();
 }
+
+let val_sum = '';
+$('.inputSpaces').on('keyup. input', function(e){
+    let input = $(this),
+        val = input.val(),
+        pris = (input.hasClass('inputRub')) ? ' ₽' : ' шт';
+    if(val != val_sum){
+        let formatted = val.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        formatted = formatted ? formatted + pris : '';
+        input.prop("selectionStart");
+        input.val(formatted);
+        if (formatted.endsWith(' ₽') || formatted.endsWith(' шт')) {
+            let newCursorPosition = formatted.length - (formatted.endsWith(' ₽') ? 2 : 3);
+            input.prop("selectionStart", newCursorPosition);
+            input.prop("selectionEnd", newCursorPosition);
+        }
+    }
+    val_sum = val;
+});

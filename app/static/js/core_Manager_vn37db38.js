@@ -73,6 +73,12 @@ $('#mClientsList').on('click', '.el_hoverer', function(){
 });
 
 if(pathname[1] == 'trade'){
+    $('.trade_tabs').on('click', '.el_hoverer', function(){
+            window.open('/securitiesTrade/' + pathname[2] + '/' + this.getAttribute('data-id'), '_self');
+    });
+}
+
+if(pathname[1] == 'trade'){
     $('button').on('click', function(){
         if(!blocked_button){
             blocked_button = true;
@@ -99,10 +105,20 @@ function resizeHe(){
 }
 resizeHe();
 
+function resizeSaleSum(){
+    if(pathname[1] == 'securitiesTrade'){
+        sale_sum = $('.trade_sale_sum').width();
+        $('.inp_bl input').css('padding-right', 'calc(' + sale_sum + 'px + 3rem)');
+    }
+}
+resizeSaleSum();
+
 
 window.addEventListener('resize', (e) => {
-    if(window.innerWidth == vw && window.innerHeight == vh) return;
+    if(window.innerWidth == vw && window.innerHeight == vh && !isResize) return;
     vw = window.innerWidth;
     vh = window.innerHeight;
     resizeHe();
+    resizeSaleSum();
+    isResize = false;
 });

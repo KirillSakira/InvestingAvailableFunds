@@ -9,7 +9,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="inputs_bl">
                         <div class="inp_bl">
-                            <input type="text" class="auth_inp" id="email" name="email" value="{{email}}" autocomplete="off" disabled required>
+                            <input type="text" class="auth_inp" id="email" name="email" value="{{data.email}}" autocomplete="off" disabled required>
                             <span class="bord_inp"></span>
                             <label class="place_podinp">Email</label>
                         </div>
@@ -18,36 +18,43 @@
                 <div class="col-12 col-sm-6">
                     <div class="inputs_bl">
                         <div class="inp_bl">
-                            <input type="text" class="auth_inp" id="name" name="name" value="{{name}}" autocomplete="off" disabled required>
+                            <input type="text" class="auth_inp" id="name" name="name" value="{{data.name}}" autocomplete="off" disabled required>
                             <span class="bord_inp"></span>
                             <label class="place_podinp">ФИО</label>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6">
-                    <div class="inputs_bl">
-                        <div class="inp_bl">
-                            <input type="text" class="auth_inp" id="phone" name="phone" value="{{phone}}" autocomplete="off" disabled required>
-                            <span class="bord_inp"></span>
-                            <label class="place_podinp">Телефон</label>
+
+                {% if userData.role == 'enterprise' %}
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="phone" name="phone" value="{{data.phone}}" autocomplete="off" disabled required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Телефон</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-6">
-                    <div class="inputs_bl">
-                        <div class="inp_bl">
-                            <input type="text" class="auth_inp" id="address" name="address" value="{{address}}" autocomplete="off" disabled required>
-                            <span class="bord_inp"></span>
-                            <label class="place_podinp">Адрес</label>
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="address" name="address" value="{{data.address}}" autocomplete="off" disabled required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Адрес</label>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
+
                 <div class="col-12 col-sm-6 d-flex align-items-end">
                     <button class="h3 py-3 mt-5"><a href="/logout/">выход</a></button>
                 </div>
-                <div class="col">
-                    <button class="h3 py-3 mt-4 mt-sm-5 back_red" type="button" data-toggle="modal" data-target="#myModal">Удалить профиль</button>
-                </div>
+                
+                {% if userData.role == 'enterprise' %}
+                    <div class="col">
+                        <button class="h3 py-3 mt-4 mt-sm-5 back_red" type="button" data-toggle="modal" data-target="#myModal">Удалить профиль</button>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

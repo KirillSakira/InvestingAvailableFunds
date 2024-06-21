@@ -30,16 +30,17 @@ def getFigiByTicker(client, ticker, assetType):
             instruments = client.instruments.etfs().instruments
         elif assetType == "Валюта и металлы":
             instruments = client.instruments.currencies().instruments
+        
         for instrument in instruments:
             if instrument.ticker == ticker:
                 return instrument.figi
+
         print(f"No FIGI found for ticker: {ticker}")
         return None
     except RequestError as e:
         print(f"Could not retrieve FIGI for {ticker}: {e}")
         return None
-    
-# Функция для получения текущей цены по FIGI
+
 def getCurrentPrice(client, figi):
     try:
         response = client.market_data.get_last_prices(figi=[figi])
@@ -51,8 +52,7 @@ def getCurrentPrice(client, figi):
     except RequestError as e:
         print(f"Could not retrieve price for FIGI {figi}: {e}")
         return None
-    
-# Основной блок
+
 with Client(TOKEN) as client:
     for asset_type, tickerList in tickers.items():
         for ticker in tickerList:

@@ -10,6 +10,7 @@ from app.scripts.analytics.short.shortAnalyticsPie import shortAnalyticsPie
 from app.scripts.analytics.all.getAnalyticsPie import analyticsPie
 
 from app.scripts.clientProfile import private_profile
+from app.scripts.managerProfile import manager_profile
 from app.scripts.OperationsWithBalance.operationsHistory import history
 from app.scripts.mainPages.enterprise.enterpriseMainPage import enterpriseMainPage
 
@@ -92,7 +93,17 @@ def viewProfile(request):
     if chAuth(request) != None:
         return chAuth(request)
     
-    data = private_profile(request)
+    userData = getUserData(request)
+    if userData['role'] == 'enterprise':
+        data = {
+            'userData': userData,
+            'data': private_profile(request)
+        }
+    else:
+        data = {
+            'userData': userData,
+            'data': manager_profile(request)
+        }
     return ret(request, 'profile.html', data)
 
 
@@ -299,15 +310,17 @@ def viewTradeHistory(request, id):
         return ret(request, '/auth.html')
 
 
-def viewTrade(request):
+def viewTrade(request, id):
     if chAuth(request) != None:
         return chAuth(request)
     
     userData = getUserData(request)
+    type = request.GET.get('type')
 
     if userData['role'] == 'Manager':
         data = {
             'userData': userData,
+            'type': type,
             'stocks_data': [
                 {
                     'img': 's1.png', #имя
@@ -483,5 +496,34 @@ def viewTrade(request):
             ]
         }
         return ret(request, 'trade.html', data)
+    else:
+        return ret(request, '/auth.html')
+
+
+def viewSecuritiesTrade(request, id, ticker):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
+    userData = getUserData(request)
+
+    if userData['role'] == 'Manager':
+        data = {
+            'userData': userData,
+            'id': id,
+            'type': {
+                'eng': 'bonds',
+                'rus': 'облигаций'
+            },
+            'in_scripts_graph': True,
+            'security_name': 'Норильский никель',
+            'security_price': '146,78',
+            'security_img': 'alrosa.png',
+            'graph_line': {
+                'days': ['22', '24', '26', '28', '30'],
+                'count': [150, 22, 120, 100, 150],
+                'sum': 1
+            }
+        }
+        return ret(request, 'securitiesTrade.html', data)
     else:
         return ret(request, '/auth.html')
