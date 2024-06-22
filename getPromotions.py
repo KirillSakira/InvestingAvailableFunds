@@ -63,6 +63,8 @@ with Client(TOKEN) as client:
                     print(f"Current price for {ticker} (FIGI: {figi}): {currentPrice.units}.{str(currentPrice.nano)} RUB")
                     currentPrice = float(f'{currentPrice.units}.{str(currentPrice.nano)}')
                     dataBase.execute(f"update securities set quotation = {currentPrice} where ticker = '{ticker}'")
+dataBase.execute('''with s as (select id_portfolio, sum(total_quantity * (select quotation from securities where id_securitie = p.id_securitie)) sum from portfolio_to_securitie p group by id_portfolio) update portfolios p set balance = s.sum from s where p.id_portfolio = s.id_portfolio;''')
+print('Balances updated!')
 connection.commit()
 dataBase.close()
 connection.close()
