@@ -17,6 +17,19 @@ from app.scripts.mainPages.enterprise.enterpriseMainPage import enterpriseMainPa
 #manager
 from app.scripts.mainPages.manager.managerMainPage import managerMainPage
 
+def nav(data):
+    href = '/'
+    val = "<a href='/' class='col_bvio'>Главная страница</a> / "
+
+    for item in data:
+        if len(item) == 2:
+            href += f'{item[0]}/'
+            val += f"<a href='{href}' class='col_bvio'>{item[1]}</a> / "
+        else:
+            val += f"<a href='/{item[0]}/' class='col_bvio'>{item[1]}</a> / "
+
+    return val
+
 def chAuth(request):
     if request.session.session_key == None:
         return HttpResponseRedirect("/auth/")
@@ -59,6 +72,7 @@ def viewHome(request):
         balanceData, secData, entName = enterpriseMainPage(request)
         data = {
             'userData': userData,
+            'nav': nav([]),
             'in_scripts_graph': True,
             
             'balance': balanceData['balance'],
@@ -81,6 +95,7 @@ def viewHome(request):
     elif userData['role'] == 'Manager':
         data = {
             'userData': userData,
+            'nav': nav([]),
             'users': managerMainPage(request)
         }
         return ret(request, 'Mindex.html', data)
@@ -94,16 +109,11 @@ def viewProfile(request):
         return chAuth(request)
     
     userData = getUserData(request)
-    if userData['role'] == 'enterprise':
-        data = {
-            'userData': userData,
-            'data': private_profile(request)
-        }
-    else:
-        data = {
-            'userData': userData,
-            'data': manager_profile(request)
-        }
+    data = {
+        'userData': userData,
+        'nav': nav([['profile', 'профиль']]),
+        'data': private_profile(request) if userData['role'] == 'enterprise' else manager_profile(request)
+    }
     return ret(request, 'profile.html', data)
 
 
@@ -112,7 +122,8 @@ def viewPayment(request):
         return chAuth(request)
     
     data = {
-        'userData': getUserData(request)
+        'userData': getUserData(request),
+        'nav': nav([['payment', 'пополнение']]),
     }
     return ret(request, 'payment.html', data)
     
@@ -122,7 +133,8 @@ def viewWithdraw(request):
         return chAuth(request)
     
     data = {
-        'userData': getUserData(request)
+        'userData': getUserData(request),
+        'nav': nav([['withdraw', 'вывод']]),
     }
     return ret(request, 'withdraw.html', data)
 
@@ -133,16 +145,11 @@ def viewOperations(request):
     
     userData = getUserData(request)
     data = history(request)[1]
-    if userData['role'] == 'enterprise':
+    if userData['role'] in ['enterprise', 'Manager']:
         data = {
             'userData': userData,
-            'operations_data': data
-        }
-        return ret(request, 'operations.html', data)
-    elif userData['role'] == 'Manager':
-        data = {
-            'userData': userData,
-            'bodyClass': 'operations_list',
+            'nav': nav([['operations', 'история операций']]),
+            'bodyClass': 'operations_list' if userData['role'] == 'Manager' else '',
             'operations_data': data
         }
         return ret(request, 'operations.html', data)
@@ -161,6 +168,7 @@ def viewOperationsDetail(request, id):
         
         data = {
             'userData': userData,
+            'nav': nav([[f'operations/{id}', f'история операций <b>{name}</b>']]),
             'name': name,
             'operations_data': data
         }
@@ -184,6 +192,7 @@ def viewAnalytic(request, id=None):
 
     data = {
         'userData': userData,
+        'nav': nav([['analytic', 'аналитика']]),
         'in_scripts_graph': True,
         'in_slick': True,
         
@@ -214,6 +223,7 @@ def viewEnterprise(request, id):
         data = {
             'userData': userData,
             'id': id,
+            'nav': nav([[f'enterprise/{id}', entName]]),
             'in_scripts_graph': True,
                         
             'enterprise_name': entName,
@@ -247,9 +257,10 @@ def viewTradeHistory(request, id):
         data = {
             'userData': userData,
             'id': id,
+            'nav': nav([[f'enterprise/{id}', 'клиент', ''], [f'tradeHistory/{id}', 'история торговли']]),
             'sec_data': [
                 {
-                    'img': 's1.png', #имя
+                    'img': 'detskiy_mir.png', #имя
                     'name': 'Норильский никель', #имя
                     'short_name': 'GMKN', #сокращенное имя
                     'price_buy': '15 975 876,66', #цена покупки
@@ -320,10 +331,11 @@ def viewTrade(request, id):
     if userData['role'] == 'Manager':
         data = {
             'userData': userData,
+            'nav': nav([[f'enterprise/{id}', 'клиент', ''], [f'trade/{id}', f'торговля']]),
             'type': type,
             'stocks_data': [
                 {
-                    'img': 's1.png', #имя
+                    'img': 'detskiy_mir.png', #имя
                     'name': 'Норильский никель', #имя
                     'short_name': 'GMKN', #сокращенное имя
                     'price_buy': '15 975 876,66', #цена покупки
@@ -380,7 +392,7 @@ def viewTrade(request, id):
             ],
             'bonds_data': [
                 {
-                    'img': 's1.png', #имя
+                    'img': 'detskiy_mir.png', #имя
                     'name': 'Норильский никель', #имя
                     'short_name': 'GMKN', #сокращенное имя
                     'price_buy': '15 975 876,66', #цена покупки
@@ -426,7 +438,7 @@ def viewTrade(request, id):
             ],
             'funds_data': [
                 {
-                    'img': 's1.png', #имя
+                    'img': 'detskiy_mir.png', #имя
                     'name': 'Норильский никель', #имя
                     'short_name': 'GMKN', #сокращенное имя
                     'price_buy': '15 975 876,66', #цена покупки
@@ -507,15 +519,19 @@ def viewSecuritiesTrade(request, id, ticker):
     userData = getUserData(request)
 
     if userData['role'] == 'Manager':
+        name = 'Норильский никель'
+        shortName = 'GMKN'
         data = {
             'userData': userData,
             'id': id,
             'type': {
                 'eng': 'bonds',
-                'rus': 'облигаций'
+                'rus': 'облигаций',
+                'rus1': 'облигации'
             },
+            'nav': nav([[f'enterprise/{id}', 'клиент', ''], [f'securitiesTrade/{id}/{shortName}', name]]),
             'in_scripts_graph': True,
-            'security_name': 'Норильский никель',
+            'security_name': name,
             'security_price': '146,78',
             'security_img': 'alrosa.png',
             'graph_line': {

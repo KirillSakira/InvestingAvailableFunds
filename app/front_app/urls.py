@@ -20,7 +20,7 @@ urlpatterns = [
     path('tradeHistory/<int:id>/', views.viewTradeHistory, name='tradeHistory'),
     path('analytic/<int:id>/', views.viewAnalytic, name='Manalytic'),
     path('trade/<int:id>/', views.viewTrade, name='trade'),
-    path('securitiesTrade/<int:id>/<ticker>', views.viewSecuritiesTrade, name='securitiesTrade'),
+    path('securitiesTrade/<int:id>/<ticker>/', views.viewSecuritiesTrade, name='securitiesTrade'),
 
 
     path('', views.viewHome, name='/')

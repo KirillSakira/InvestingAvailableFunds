@@ -56,6 +56,10 @@ html{
     background-color: #F1EDFD;
 }
 
+nav a{
+    transition: 0.3s;
+}
+
 .inp_bl_o > div:first-child{
     margin-top: 2rem;
 }
