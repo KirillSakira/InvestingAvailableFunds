@@ -10,6 +10,10 @@ urlpatterns = [
     path('refillBtn/', refill, name='refillBtn'),
     path('withdrawBtn/', withdraw, name='withdrawBtn'),
     path('mAddClientMail/', mAddClientMail, name='mAddClientMail'),
+    path('trade/', trade, name='trade'),
+    path('tradeSum/', getTradeSum, name='tradeSum'),
+    path('clientProfileEdit/', profileEditClient, name='clientProfileEdit'),
+    path('employeeProfileEdit/', profileEditEmployee, name='employeeProfileEdit'),
 
     path('', include('app.front_app.urls')),
 ]

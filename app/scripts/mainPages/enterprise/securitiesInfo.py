@@ -39,7 +39,7 @@ def securitiesInfo(securities):
             securitieInfo = {
                 'name': securitieName,
                 'short_name': ticker,
-                'img': 'detskiy_mir.png', #iconPath
+                'img': 's1.png', #iconPath
                 'price_buy': fti(oldQuotation),
                 'price_now': fti(currentQuotation),
                 'price_count_buy': fti(currentTotalPrice),
