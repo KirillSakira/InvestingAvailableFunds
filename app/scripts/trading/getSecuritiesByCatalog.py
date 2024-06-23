@@ -12,7 +12,12 @@ def getSecuritiesByCatalog(request, userId):
        on p.id_enterprise = u.id_enterprise where u.id_user = {idUser}''')
     idPortfolio = dataBase.fetchall()[0][0]
     
-    dataBase.execute(f'select s.sec_name, s.ticker, s.quotation, COALESCE(ps.total_quantity, 0) total_quantity, s.id_catalog from securities s left join (select * from portfolio_to_securitie where id_portfolio = {idPortfolio}) ps on s.id_securitie = ps.id_securitie order by s.id_securitie')
+    dataBase.execute(f'''select s.sec_name, s.ticker, s.quotation, COALESCE(ps.total_quantity, 0) total_quantity, s.id_catalog 
+                     from securities s 
+                     left join (select * from portfolio_to_securitie 
+                        where id_portfolio = {idPortfolio}) ps 
+                        on s.id_securitie = ps.id_securitie 
+                     order by s.id_securitie''')
     result = dataBase.fetchall()
     
     data = {

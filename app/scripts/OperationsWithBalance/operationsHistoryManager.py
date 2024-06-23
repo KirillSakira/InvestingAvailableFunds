@@ -48,8 +48,11 @@ def historyManager(request):
                 'name': i[0],
                 'operation': j
             })
-    data2.sort(key= lambda g: g[1]['date'])
-    print(data2)
+    data2.sort(key= lambda g: g['operation']['date'], reverse=True)
+
+    for i in data2:
+        i['operation']['date'] = i['operation']['date'].strftime('%d.%m.%Y %H:%M')
+
     dataBase.close()
     connection.close()
     return data2

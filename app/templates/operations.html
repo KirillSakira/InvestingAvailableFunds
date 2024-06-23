@@ -23,22 +23,22 @@
                     </div>
                 {% endfor %}
             {% endif %}
-            
+            {{hh}}
             {% if userData.role == 'Manager' %}
                 {% for item in operations_data %}
                     <div class="operation_el back_lbvoi el_hoverer row py-2" data-id="{{item.id}}">
                         <div class="col-12 col-sm-5 mb-3 mb-sm-0">
-                            <div class="h3 d-inline-block d-sm-block">{{item.type}}</div>
-                            <div class="col_bvio h4 ml-2 ml-sm-0 d-inline-block d-sm-block">{{item.date}}</div>
+                            <div class="h3 d-inline-block d-sm-block">{{item.operation.type}}</div>
+                            <div class="col_bvio h4 ml-2 ml-sm-0 d-inline-block d-sm-block">{{item.operation.date}}</div>
                         </div>
                         <div class="col-6 col-sm-3">
                             <div class="text-nowrap h3 text-start">{{item.name}}</div>
                         </div>
                         <div class="profile_securities_ta col-6 col-sm-4">
-                            {% if item.type == 'Пополнение' %}
-                                <div class="col_lb text-nowrap h3">{{item.price}} ₽</div>
+                            {% if item.operation.type == 'Пополнение' %}
+                                <div class="col_lb text-nowrap h3">{{item.operation.price}} ₽</div>
                             {% else %}
-                                <div class="col_red text-nowrap h3">{{item.price}} ₽</div>
+                                <div class="col_red text-nowrap h3">{{item.operation.price}} ₽</div>
                             {% endif %}
                         </div>
                     </div>

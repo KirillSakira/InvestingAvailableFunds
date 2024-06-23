@@ -8,16 +8,16 @@
         <div class="mb-4 d-flex justify-content-between align-items-center">
             <div>
                 <div class="prof_sec_1_2 pl-3 w-100">
-                    <div class="profile_sec_name h3 text-truncate">{{security_name}}</div>
+                    <div class="profile_sec_name h3 text-truncate">{{security.security_name}}</div>
                 </div>
             </div>
             <div>
                 <div class="prof_sec_1">
                     <div class="profile_securities_ta pl-3 pl-lg-4 text-right w-100 pr-4 pr-lg-2 order-1">
-                        <div class="text-nowrap h3">{{security_price}} ₽</div>
+                        <div class="text-nowrap h3">{{security.security_price}} ₽</div>
                     </div>
                     <div class="prof_sec_1_1 order-2">
-                        {% if security_img != None %}
+                        {% if security.security_img != None %}
                             <img src="{% static 'logo_org/' %}{{security_img}}" class="w-100">
                         {% endif %}
                     </div>
@@ -36,16 +36,17 @@
             </div>
             <div class="inputs_bl inp_bl_o email col-12 mx-auto">
                 <label class="h4 mb-2 mt-4 d-flex justify-content-between">
-                    <span>В портфеле на данный момент 17 шт</span>
-                    <span class="pl-5 text-right">2 482,66 ₽ (+5,56%)</span>
+                    <span>В портфеле на данный момент {{security.total_quantity1}} шт</span>
+                    <span class="pl-5 text-right">{{security.total_quantity}} (<span class="col_lb">{{security.proc}}%</span>)</span>
                 </label>
                 <div class="inp_bl mt-0">
                     <input type="text" class="auth_inp auth_inp_o auth_inp_o_sum back_lvio inputSpaces h2 pl-3 pl-sm-5 py-4 mb-0" id="email" name="email" maxlength="16" autocomplete="off" required>
                     <span class="bord_inp"></span>
-                    <div class="trade_sale_sum p-3">726,55 ₽</div>
+                    <div class="trade_sale_sum p-3">отдельный хуй</div>
                 </div>
                 <div class="error_podinp"></div>
             </div>
+            <div class="col-12 mt-4 h3">Баланс: {{security.balance}} ₽</div>
         </div>
     </div>
 </div>
@@ -59,8 +60,8 @@
 
 {% block in_script %}
 <script>
-    var is_line = {{graph_line.sum|safe}},
-        graph_line = JSON.parse('{{ graph_line|escapejs }}'.replace(/'/g, "\""));
+    var is_line = {{security.graph_line.sum|safe}},
+        graph_line = JSON.parse('{{ security.graph_line|escapejs }}'.replace(/'/g, "\""));
     $(document).ready(function() {
         if(is_line != 0) generLine('lineChart', graph_line);
     });

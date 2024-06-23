@@ -25,6 +25,7 @@
 </div>
 
 <div class="row nomh">
+    {{a}}
     <div class="elem tabs trade_tabs col-11 mx-auto px-5 py-5" data-tabId="1" {% if type == 'stocks' or type == None %}style="display: block;"{% endif %}>
         <div class="h1 mb-4 font-weight-bold">Список акций</div>
         {% include "common/comSecurities.html" with sec_data=stocks_data %}
