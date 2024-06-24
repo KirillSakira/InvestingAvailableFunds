@@ -122,3 +122,82 @@ window.addEventListener('resize', (e) => {
     resizeSaleSum();
     isResize = false;
 });
+
+
+if(pathname[1] == 'securitiesTrade'){
+    var trade_value = ''
+    function dynamicSumTrade(){
+        if(blocked_button) return;
+        blocked_button = true;
+
+        let inp_val = $('#salse_sum').val().replace(/[^0-9]/g, '');
+        
+        if(blocked_button && !errs && inp_val != trade_value){
+            trade_value = inp_val;
+            let params = new URLSearchParams();
+            params.append('ticker', pathname[3]);
+            params.append('quantity', inp_val != '' ? inp_val : 0);
+            request("/tradeSum/", params, function(result){
+                try{
+                    response = JSON.parse(result);
+                    if(response.result == 'fail'){
+                        err('form', response.description);
+                        return;
+                    }
+                    res = JSON.parse(response.result);
+                    if(res['status'] == 'success'){
+                        $('.trade_sale_sum').text(res['message'])
+                    }
+                    blocked_button = false;
+                }
+                catch(e){
+                    err('form', 'Неожиданная ошибка');
+                }
+            });
+        }
+        blocked_button = false;
+    }
+
+    $('.sale_buy_but button').on('click', function(){
+        if(blocked_button) return;
+        blocked_button = true;
+        
+        if(blocked_button && !errs){
+            $('#success_message, #error_message').text('');
+            let params = new URLSearchParams();
+            params.append('uid', pathname[2]);
+            params.append('ticker', pathname[3]);
+            params.append('action', $(this).attr('data-type') == 'buy' ? 1 : 0);
+            params.append('quantity', $('#salse_sum').val().replace(/[^0-9]/g, ''));
+            request("/tradeBtn/", params, function(result){
+                try{
+                    response = JSON.parse(result);
+                    if(response.result == 'fail'){
+                        $('#error_message').text(response.message);
+                        $('#success_message').text('');
+                        return;
+                    }
+                    res = JSON.parse(response.result);
+                    if(res['status'] == 'success'){
+                        $('#success_message').text(res.message);
+                        $('#error_message').text('');
+                        $('#trade_balance').text(res['balance']);
+                        $('#total_quantity').text(res['total_quantity']);
+                        return;
+                    }
+                    
+                    $('#error_message').text(res.message);
+                    blocked_button = false;
+                }
+                catch(e){
+                    err('form', 'Неожиданная ошибка');
+                }
+            });
+        }
+        blocked_button = false;
+
+    })
+
+    $('#salse_sum').on('input', (e) => dynamicSumTrade(e));
+    $('#salse_sum').on('change', (e) => dynamicSumTrade(e));
+}

@@ -25,7 +25,6 @@ if(['payment', 'withdraw'].indexOf(pathname[1]) !== -1){
                 item.value = item.value.replace(/[^0-9/]/g, '');
             });
             params = $.param(params);
-            console.log(params)
             request("/refillBtn/", params, function(result){
                 try{
                     response = JSON.parse(result);
@@ -76,7 +75,6 @@ if(['payment', 'withdraw'].indexOf(pathname[1]) !== -1){
                 item.value = item.value.replace(/[^0-9/]/g, '');
             });
             params = $.param(params);
-            console.log(params)
             request("/withdrawBtn/", params, function(result){
                 try{
                     response = JSON.parse(result);

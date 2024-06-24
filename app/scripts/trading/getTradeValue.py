@@ -3,15 +3,16 @@ from app.scripts.funcs import returnJson
 
 
 def getTradeValue(request):
+    fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
     ticker = request.POST.get('ticker')
-    quantity = request.POST.get('quantity')
+    quantity = int(request.POST.get('quantity'))
     
     connection = connection_db()
     dataBase = connection.cursor()
     
-    dataBase.execute(f'select quotation form securities where ticker = {ticker}')
+    dataBase.execute(f'select quotation from securities where ticker = \'{ticker}\'')
     cost = dataBase.fetchall()[0][0]
     
     cost *= quantity
     
-    return returnJson(status = 'success', message = cost)
+    return returnJson(status = 'success', message = f'{fti(cost)} ₽')

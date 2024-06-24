@@ -3,13 +3,20 @@ from app.scripts.funcs import returnJson
 
 
 def tradeAction(request):
-    id_securitie = request.POST.get('id_securitie')
-    action = bool(request.POST.get('action'))
+    fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
+    ticker = request.POST.get('ticker')
+    action = bool(int(request.POST.get('action')))
     quantity = request.POST.get('quantity')
     userId = request.POST.get('uid')
 
+    if not(quantity) or quantity == '0':
+        return returnJson(status='error', message='Введите количество')
+
     connection = connection_db()
     dataBase = connection.cursor()
+    
+    dataBase.execute(f'select id_securitie from securities where ticker=\'{ticker}\'')
+    id_securitie = dataBase.fetchall()[0][0]
 
     dataBase.execute(f'select id_user from auth_user where id={userId}')
     id_user = dataBase.fetchall()[0][0]
@@ -32,13 +39,14 @@ def tradeAction(request):
             return returnJson(status='error', message='Недостаточно свободных средств')
 
         dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={id_portfolio} and (id_securitie={id_securitie} or id_securitie=36) order by id_securitie')
-        newTotalQuantity = dataBase.fetchall()[0][0]
-        newBalance = dataBase.fetchall()[1][0]
+        fetchs = dataBase.fetchall()
+        newTotalQuantity = fetchs[0][0]
+        newBalance = fetchs[1][0]
         dataBase.close()
         connection.close()
         return returnJson(data={
-            'total_quantity': newTotalQuantity,
-            'balance': newBalance,
+            'total_quantity': fti(newTotalQuantity),
+            'balance': fti(newBalance),
             'status': 'success',
             'message': 'Покупка совершена успешно'
         })
@@ -53,15 +61,15 @@ def tradeAction(request):
         connection.close()
         return returnJson(status='error', message='Указано неверное колличество для продажи')
 
-    dataBase.execute(
-        f'select total_quantity from portfolio_to_securitie where id_portfolio={id_portfolio} and (id_securitie={id_securitie} or id_securitie=36) order by id_securitie')
-    newTotalQuantity = dataBase.fetchall()[0][0]
-    newBalance = dataBase.fetchall()[1][0]
+    dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={id_portfolio} and (id_securitie={id_securitie} or id_securitie=36) order by id_securitie')
+    fetchs = dataBase.fetchall()
+    newTotalQuantity = fetchs[0][0]
+    newBalance = fetchs[1][0]
     dataBase.close()
     connection.close()
     return returnJson(data={
-        'total_quantity': newTotalQuantity,
-        'balance': newBalance,
+        'total_quantity': fti(newTotalQuantity),
+        'balance': fti(newBalance),
         'status': 'success',
         'message': 'Продажа совершена успешно'
     })
