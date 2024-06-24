@@ -2,8 +2,25 @@ from connection import connection_db
 from app.scripts.funcs import returnJson
 
 
+fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
+
+
+def getAdditionalInfo(dataBase, idSecuritie, idPortfolio):
+    dataBase.execute(f'select quotation from securities where id_securitie={idSecuritie}')
+    quotation = fti(dataBase.fetchall()[0][0])
+    dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={idPortfolio} and id_securitie={idSecuritie}')
+    portfolioPrice = fti(dataBase.fetchall()[0][0]) * quotation
+    dataBase.execute(f'select quotation from queue where id_securitie={idSecuritie} and id_portfolio={idPortfolio} order by queue_date')
+    try:
+        oldPrice = dataBase.fetchall()[0][0]
+        
+        proc = 100 - (float(oldPrice)/float(quotation))*100
+    except:
+        proc = 0
+    return [portfolioPrice, proc]
+    
+
 def tradeAction(request):
-    fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
     ticker = request.POST.get('ticker')
     action = bool(int(request.POST.get('action')))
     quantity = request.POST.get('quantity')
@@ -42,13 +59,16 @@ def tradeAction(request):
         fetchs = dataBase.fetchall()
         newTotalQuantity = fetchs[0][0]
         newBalance = fetchs[1][0]
+        info = getAdditionalInfo(dataBase, id_securitie, id_portfolio)
         dataBase.close()
         connection.close()
         return returnJson(data={
             'total_quantity': fti(newTotalQuantity),
             'balance': fti(newBalance),
             'status': 'success',
-            'message': 'Покупка совершена успешно'
+            'message': 'Покупка совершена успешно',
+            'total_sum': info[0],
+            'proc': info[1]
         })
 
     dataBase.execute(f'insert into requests (id_portfolio, id_securitie, quantity, req_type) values ({id_portfolio}, {id_securitie}, {quantity}, false)')
@@ -65,11 +85,14 @@ def tradeAction(request):
     fetchs = dataBase.fetchall()
     newTotalQuantity = fetchs[0][0]
     newBalance = fetchs[1][0]
+    info = getAdditionalInfo(dataBase, id_securitie, id_portfolio)
     dataBase.close()
     connection.close()
     return returnJson(data={
         'total_quantity': fti(newTotalQuantity),
         'balance': fti(newBalance),
         'status': 'success',
-        'message': 'Продажа совершена успешно'
+        'message': 'Продажа совершена успешно',
+        'total_sum': info[0],
+        'proc': info[1]
     })

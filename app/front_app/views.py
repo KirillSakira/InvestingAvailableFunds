@@ -539,7 +539,7 @@ def viewSecuritiesTrade(request, id, ticker):
             'userData': userData,
             'id': id,
             'type': type,
-            'nav': nav([[f'enterprise/{id}', 'клиент', ''], [f'trade/{id}/?type={type['eng']}', type['href_rus'], ''], [f'securitiesTrade/{id}/{ticker}', name]]),
+            'nav': nav([[f'enterprise/{id}', 'клиент', ''], [f"trade/{id}/?type={type['eng']}", type['href_rus'], ''], [f'securitiesTrade/{id}/{ticker}', name]]),
             'in_scripts_graph': True,
 
             'security': securities
