@@ -25,25 +25,24 @@
 </div>
 
 <div class="row nomh">
-    {{a}}
     <div class="elem tabs trade_tabs col-11 mx-auto px-5 py-5" data-tabId="1" {% if type == 'stocks' or type == None %}style="display: block;"{% endif %}>
         <div class="h1 mb-4 font-weight-bold">Список акций</div>
-        {% include "common/comSecurities.html" with sec_data=stocks_data %}
+        {% include "common/comSecuritiesTrade.html" with sec_data=stocks_data %}
     </div>
     
     <div class="elem tabs trade_tabs col-11 mx-auto px-5 py-5" data-tabId="2" {% if type == 'bonds' %}style="display: block;"{% endif %}>
         <div class="h1 mb-4 font-weight-bold">Список Облигаций</div>
-        {% include "common/comSecurities.html" with sec_data=bonds_data %}
+        {% include "common/comSecuritiesTrade.html" with sec_data=bonds_data %}
     </div>
     
     <div class="elem tabs trade_tabs col-11 mx-auto px-5 py-5" data-tabId="3" {% if type == 'funds' %}style="display: block;"{% endif %}>
         <div class="h1 mb-4 font-weight-bold">Список Фондов</div>
-        {% include "common/comSecurities.html" with sec_data=funds_data %}
+        {% include "common/comSecuritiesTrade.html" with sec_data=funds_data %}
     </div>
     
     <div class="elem tabs trade_tabs col-11 mx-auto px-5 py-5" data-tabId="4" {% if type == 'curr_metals' %}style="display: block;"{% endif %}>
         <div class="h1 mb-4 font-weight-bold">Список Валют и металлов</div>
-        {% include "common/comSecurities.html" with sec_data=curr_metals_data %}
+        {% include "common/comSecuritiesTrade.html" with sec_data=curr_metals_data %}
     </div>
 </div>
 {% endblock %}

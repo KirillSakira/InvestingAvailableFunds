@@ -7,6 +7,8 @@ from .scripts.trading.tradeAction import *
 from .scripts.trading.getTradeValue import *
 from .scripts.dataProfileEdit.employeeEdit import *
 from .scripts.dataProfileEdit.userEdit import *
+from .scripts.deleteProfile import *
+from .scripts.mainPages.manager.unlink import *
 
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
@@ -39,7 +41,7 @@ def mAddClientMail(request):
 
 
 @csrf_exempt
-def trade(request):
+def tradeBtn(request):
 	return tradeAction(request)
 
 
@@ -56,6 +58,17 @@ def profileEditEmployee(request):
 @csrf_exempt
 def profileEditClient(request):
 	return clientEdit(request)
+
+
+@csrf_exempt
+def deleteProfile(request):
+	res = delete_profile(request)
+	logout(request)
+	return res
+
+@csrf_exempt
+def unlinkClient(request):
+	return unlinkingAnAccount(request)
 
 
 @csrf_exempt

@@ -25,7 +25,7 @@ def analyticsPie(request, uid=False):
             connection.close()
             return pie, []
         securitiesData = securitiesInfo(securitiesData)
-        dataBase.execute(f'''select total_quantity, quotation, sec_name, ticker, catalog_name
+        dataBase.execute(f'''select total_quantity, quotation, sec_name, ticker, catalog_name, icon
     from portfolio_to_securitie as p join securities as s
     on p.id_securitie = s.id_securitie join catalogs as c
     on s.id_catalog = c.id_catalog where id_portfolio = {idPortfolio}''')
@@ -45,15 +45,16 @@ def analyticsPie(request, uid=False):
                 idSecuritie = row[2]
                 securitieQuantity = float(row[0] * row[1])
                 totalSum += securitieQuantity
-                quantities[idSecuritie] = (securitieQuantity, row[4])
+                quantities[idSecuritie] = (securitieQuantity, row[4], row[5])
         for key in quantities:
             pie[catalogNames[quantities[key][1]]].append(
                 {
                     'name': key,
                     'proc': round(quantities[key][0] / totalSum * 100, 2),
-                    'count': round(quantities[key][0], 2)
+                    'count': round(quantities[key][0], 2),
+                    'img': quantities[key][2] if quantities[key][2] != None else 'None'
                 }
             )
         return pie, securitiesData
     except:
-        return 'Error', ''
+        return 'Error'

@@ -5,10 +5,15 @@ if(pathname[1] == ''){
     $('#hnewClient').on('click', function(){
         if(!blocked_button){
             blocked_button = true;
+            $('.newClientEmail').toggleClass('activeh');
             $('.newClientEmail').animate({
                 height: "toggle"
             }, 500, function(){
                 blocked_button = false;
+                if(!$('.newClientEmail').hasClass('activeh')){
+                    $('#error_message, #success_message').text('');
+                    $('.auth_inp_o').val('');
+                }
             });
         }
     });
@@ -97,10 +102,10 @@ if(pathname[1] == 'trade'){
 
 function resizeHe(){
     if(['operations', 'tradeHistory'].indexOf(pathname[1]) !== -1){
-        $('.nomh > div > div:nth-child(2)').css('max-height', 'calc(100vh - ' + ($('.header').height() + $('.nomh > div > div.h1').height()) + 'px - 10.5rem)');
+        $('.nomh > div > div:nth-child(2)').css('max-height', 'calc(100vh - ' + ($('.header').height() + $('nav').height() + $('.nomh > div > div.h1').height()) + 'px - 11.5rem)');
     }
     if(pathname[1] == 'trade'){
-        $('.nomh > div > div:nth-child(2)').css('max-height', 'calc(100vh - ' + ($('.header').height() + $('.tradeSels').height() + $('.nomh > div > div.h1').height()) + 'px - 13rem)');
+        $('.nomh > div > div:nth-child(2)').css('max-height', 'calc(100vh - ' + ($('.header').height() + $('nav').height() + $('.tradeSels').height() + $('.nomh > div > div.h1').height()) + 'px - 14rem)');
     }
 }
 resizeHe();
@@ -183,6 +188,10 @@ if(pathname[1] == 'securitiesTrade'){
                         $('#error_message').text('');
                         $('#trade_balance').text(res['balance']);
                         $('#total_quantity').text(res['total_quantity']);
+                        $('#total_sum').text(res['total_sum']);
+                        $('#proc').text(res['proc'] + '%');
+                        $('.auth_inp_o_sum').val('')
+                        $('.trade_sale_sum').text('0 ₽')
                         return;
                     }
                     
@@ -195,9 +204,45 @@ if(pathname[1] == 'securitiesTrade'){
             });
         }
         blocked_button = false;
-
     })
 
     $('#salse_sum').on('input', (e) => dynamicSumTrade(e));
     $('#salse_sum').on('change', (e) => dynamicSumTrade(e));
+}
+
+if(pathname[1] == 'enterprise'){
+    $('#unlinkClient').on('click', function(){
+        if(blocked_button) return;
+        blocked_button = true;
+        
+        if(blocked_button && !errs){
+            $('#success_message, #error_message').text('');
+            let params = new URLSearchParams();
+            params.append('uid', pathname[2]);
+            request("/unlinkClient/", params, function(result){
+                try{
+                    response = JSON.parse(result);
+                    if(response.result == 'fail'){
+                        $('#error_message').text(response.message);
+                        $('#success_message').text('');
+                        return;
+                    }
+                    res = JSON.parse(response.result);
+                    if(res['status'] == 'success'){
+                        $('#success_message').text(res.message);
+                        $('#error_message').text('');
+                        setTimeout(() => window.location.href = '/', 1500);
+                        return;
+                    }
+                    
+                    $('#error_message').text(res.message);
+                    blocked_button = false;
+                }
+                catch(e){
+                    err('form', 'Неожиданная ошибка');
+                }
+            });
+        }
+        blocked_button = false;
+    });
 }

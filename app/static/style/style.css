@@ -76,6 +76,12 @@ nav a{
 #error_message:not(:empty){
     padding-top: 1rem;
 }
+.modal_deleteProfile #error_message:not(:empty),
+.modal_deleteProfile #success_message:not(:empty){
+    margin-bottom: 1rem;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
 
 .header_profile_aname{
     display: flex;
@@ -311,7 +317,7 @@ header{
     cursor: pointer;
 }
 .el_hoverer:hover{
-    transform: scale(1.01);
+    /* transform: scale(1.002); */
     border-radius: 2rem;
     transition: 0.3s;
     filter: brightness(1.2);
@@ -363,7 +369,8 @@ header{
       max-height: unset;
     }
 
-    .auth_inp_o{
+    .auth_inp_o,
+    .trade_sale_sum{
         font-size: 2.35rem;
     }
     .payment2 > div:first-child{

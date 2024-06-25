@@ -110,3 +110,38 @@ if(['payment', 'withdraw'].indexOf(pathname[1]) !== -1){
         blocked_button = false;
     });
 }
+
+if(pathname[1] == 'profile'){
+    $('#deleteProfile').on('click', function(){
+        if(blocked_button) return;
+        blocked_button = true;
+        
+        if(blocked_button && !errs){
+            $('#success_message, #error_message').text('');
+            request("/deleteProfile/", '', function(result){
+                try{
+                    response = JSON.parse(result);
+                    if(response.result == 'fail'){
+                        $('#error_message').text(response.message);
+                        $('#success_message').text('');
+                        return;
+                    }
+                    res = JSON.parse(response.result);
+                    if(res['status'] == 'success'){
+                        $('#success_message').text(res.message);
+                        $('#error_message').text('');
+                        setTimeout(() => window.location.href = '/auth/', 1500);
+                        return;
+                    }
+                    
+                    $('#error_message').text(res.message);
+                    blocked_button = false;
+                }
+                catch(e){
+                    err('form', 'Неожиданная ошибка');
+                }
+            });
+        }
+        blocked_button = false;
+    });
+}

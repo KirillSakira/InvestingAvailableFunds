@@ -226,7 +226,7 @@ if(pathname[1] == 'analytic'){
     });
 
     $(window).on("scroll", function(e){
-        $('.slick-arrow').css('top', 'calc(50vh + ' + ($(window).scrollTop() - $('.header').height())  + 'px');
+        $('.slick-arrow').css('top', 'calc(50vh + ' + ($(window).scrollTop() - $('.header').height() - $('nav').height())  + 'px');
     });
     $(window).scroll();
 }
@@ -235,7 +235,12 @@ let val_sum = '';
 $('.inputSpaces').on('keyup. input', function(e){
     let input = $(this),
         val = input.val(),
-        pris = (input.hasClass('inputRub')) ? ' ₽' : ' шт';
+        pris = (input.hasClass('inputRub')) ? ' ₽' : ' шт',
+        maxCount = $(this).attr('data-count');
+    if(maxCount != '' && maxCount != undefined && Number(val.replace(/[^0-9]/g, '')) > Number(maxCount.replace(/[^0-9]/g, ''))){
+        input.val(val_sum);
+        return;
+    }
     if(val != val_sum){
         let formatted = val.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
         formatted = formatted ? formatted + pris : '';

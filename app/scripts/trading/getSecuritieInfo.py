@@ -1,4 +1,5 @@
 from connection import connection_db
+from re import sub
 
 
 def getSecuritieInfo(request, userId, ticker): 
@@ -63,6 +64,13 @@ def getSecuritieInfo(request, userId, ticker):
         'count': [],
         'sum': 1
     }
+
+    if len(totalQuantity) == 2:
+      balance = totalQuantity[1][0]
+      totalQuantity = totalQuantity[0][0]
+    else:
+      balance = totalQuantity[0][0]
+      totalQuantity = 0
     
     history = history[-7:]
     
@@ -76,9 +84,9 @@ def getSecuritieInfo(request, userId, ticker):
       'security_img': security[2],
       'graph_line': graphLine,
       'proc': fti(proc),
-      'total_sum': fti(fti(security[1]) * fti(totalQuantity[0][0])),
-      'total_quantity1': fti(totalQuantity[0][0]),
-      'balance': fti(totalQuantity[1][0]),
+      'total_sum': fti(fti(security[1]) * fti(totalQuantity)),
+      'total_quantity1': sub(r'\B(?=(\d{3})+(?!\d))', ' ', str(fti(totalQuantity))),
+      'balance': sub(r'\B(?=(\d{3})+(?!\d))', ' ', str(fti(balance))),
       'type': type[security[3]]
     }
   

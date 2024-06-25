@@ -19,6 +19,7 @@ from app.scripts.mainPages.manager.managerMainPage import managerMainPage
 from app.scripts.OperationsWithBalance.operationsHistoryManager import historyManager
 from app.scripts.trading.getSecuritiesByCatalog import getSecuritiesByCatalog
 from app.scripts.trading.getSecuritieInfo import getSecuritieInfo
+from app.scripts.trading.tradingHistory import trading_history
 
 def nav(data):
     href = '/'
@@ -135,9 +136,11 @@ def viewWithdraw(request):
     if chAuth(request) != None:
         return chAuth(request)
     
+    userData = getUserData(request)
+    
     data = {
-        'userData': getUserData(request),
-        'nav': nav([['withdraw', 'вывод']]),
+        'userData': userData,
+        'nav': nav([['withdraw', 'вывод']])
     }
     return ret(request, 'withdraw.html', data)
 
@@ -185,17 +188,23 @@ def viewAnalytic(request, id=None):
         return chAuth(request)
     
     userData = getUserData(request)
-    datas = analyticsPie(request)
+    datas = analyticsPie(request, id)
     
     if datas != 'Error':
         for key in datas[0].keys():
-            icos = getColorImg([obj['img'] for obj in datas[1][key]])
-            for obj, col in zip(datas[0][key], icos):
-                obj['color'] = col
+            if datas[0][key][0]['img'] != 'None':
+                icos = getColorImg([obj['img'] for obj in datas[1][key]])
+                for obj, col in zip(datas[0][key], icos):
+                    obj['color'] = col
+
+    if userData['role'] == 'enterprise':
+        nav1 = [['analytic', 'аналитика']]
+    if userData['role'] == 'Manager':
+        nav1 = [[f'enterprise/{id}', f'клиент', ''], [f'analytic/{id}', 'аналитика']]
 
     data = {
         'userData': userData,
-        'nav': nav([['analytic', 'аналитика']]),
+        'nav': nav(nav1),
         'in_scripts_graph': True,
         'in_slick': True,
         
@@ -257,67 +266,12 @@ def viewTradeHistory(request, id):
     userData = getUserData(request)
 
     if userData['role'] == 'Manager':
+        tradeData = trading_history(id)
         data = {
             'userData': userData,
             'id': id,
             'nav': nav([[f'enterprise/{id}', 'клиент', ''], [f'tradeHistory/{id}', 'история торговли']]),
-            'sec_data': [
-                {
-                    'img': 'detskiy_mir.png', #имя
-                    'name': 'Норильский никель', #имя
-                    'short_name': 'GMKN', #сокращенное имя
-                    'price_buy': '15 975 876,66', #цена покупки
-                    'price_now': '16 200 000,31', #текущая цена
-                    'price_count_buy': '15 975 876,66', #цена всех купленных
-                    'count_buy': '10', #количество купленных
-                    'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
-                    'proc_end': '+3' #в процентах
-                },
-                {
-                    'img': 's2.png',
-                    'name': 'ТКС Холдинг',
-                    'short_name': 'TKSG',
-                    'price_buy': '2 798,45',
-                    'price_now': '1 598,89',
-                    'price_count_buy': '7 994,45',
-                    'count_buy': '5',
-                    'price_end': '-5 997,8',
-                    'proc_end': '-33,78'
-                },
-                {
-                    'img': 's3.png',
-                    'name': 'Яндекс',
-                    'short_name': 'YNDX',
-                    'price_buy': '4 155,96',
-                    'price_now': '4 161,4',
-                    'price_count_buy': '12 448,2',
-                    'count_buy': '3',
-                    'price_end': '+8 544,78',
-                    'proc_end': '+17,92'
-                },
-                {
-                    'img': 's2.png',
-                    'name': 'ТКС Холдинг',
-                    'short_name': 'TKSG',
-                    'price_buy': '2 798,45',
-                    'price_now': '1 598,89',
-                    'price_count_buy': '7 994,45',
-                    'count_buy': '5',
-                    'price_end': '-5 997,8',
-                    'proc_end': '-33,78'
-                },
-                {
-                    'img': 's3.png',
-                    'name': 'Яндекс',
-                    'short_name': 'YNDX',
-                    'price_buy': '4 155,96',
-                    'price_now': '4 161,4',
-                    'price_count_buy': '12 448,2',
-                    'count_buy': '3',
-                    'price_end': '+8 544,78',
-                    'proc_end': '+17,92'
-                }
-            ]
+            'sec_data': tradeData
         }
         return ret(request, 'tradeHistory.html', data)
     else:
@@ -530,11 +484,7 @@ def viewSecuritiesTrade(request, id, ticker):
 
     if userData['role'] == 'Manager':
         name = securities['security_name']
-        type = {
-            'eng': 'bonds',
-            'rus': 'облигаций',
-            'href_rus': 'облигации'
-        }
+        type = securities['type']
         data = {
             'userData': userData,
             'id': id,

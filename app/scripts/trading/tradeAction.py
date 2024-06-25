@@ -6,6 +6,7 @@ fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
 
 
 def getAdditionalInfo(dataBase, idSecuritie, idPortfolio):
+
     dataBase.execute(f'select quotation from securities where id_securitie={idSecuritie}')
     quotation = fti(dataBase.fetchall()[0][0])
     dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={idPortfolio} and id_securitie={idSecuritie}')
@@ -83,9 +84,16 @@ def tradeAction(request):
 
     dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={id_portfolio} and (id_securitie={id_securitie} or id_securitie=36) order by id_securitie')
     fetchs = dataBase.fetchall()
-    newTotalQuantity = fetchs[0][0]
-    newBalance = fetchs[1][0]
-    info = getAdditionalInfo(dataBase, id_securitie, id_portfolio)
+    if len(fetchs) == 2:
+      newBalance = fetchs[1][0]
+      newTotalQuantity = fetchs[0][0]
+    else:
+      newBalance = fetchs[0][0]
+      newTotalQuantity = 0
+    if newTotalQuantity > 0:
+        info = getAdditionalInfo(dataBase, id_securitie, id_portfolio)
+    else:
+        info = [0, 0]
     dataBase.close()
     connection.close()
     return returnJson(data={

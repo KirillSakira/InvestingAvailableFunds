@@ -1,5 +1,6 @@
 from connection import connection_db
 from app.scripts.funcs import returnJson
+from re import sub
 
 
 def getTradeValue(request):
@@ -14,5 +15,6 @@ def getTradeValue(request):
     cost = dataBase.fetchall()[0][0]
     
     cost *= quantity
+    cost = sub(r'\B(?=(\d{3})+(?!\d))', ' ', str(fti(cost)))
     
-    return returnJson(status = 'success', message = f'{fti(cost)} ₽')
+    return returnJson(status = 'success', message = f'{cost} ₽')

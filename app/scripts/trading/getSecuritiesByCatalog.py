@@ -14,7 +14,7 @@ def getSecuritiesByCatalog(request, userId):
        on p.id_enterprise = u.id_enterprise where u.id_user = {idUser}''')
     idPortfolio = dataBase.fetchall()[0][0]
     
-    dataBase.execute(f'''select s.sec_name, s.ticker, s.quotation, COALESCE(ps.total_quantity, 0) total_quantity, s.id_catalog, s.id_securitie
+    dataBase.execute(f'''select s.sec_name, s.ticker, s.quotation, COALESCE(ps.total_quantity, 0) total_quantity, s.id_catalog, s.id_securitie, s.icon
                      from securities s 
                      left join (select * from portfolio_to_securitie 
                         where id_portfolio = {idPortfolio}) ps 
@@ -33,21 +33,14 @@ def getSecuritiesByCatalog(request, userId):
     
     for i in result:
         d = {
+            'img': i[6],
             'name': i[0],
             'short_name': i[1],
-            'price_now': fti(i[2]),
-            'count_buy': fti(i[3]),
+            'price': fti(i[2]),
+            'count': fti(i[3]),
             'id': i[4],
-            'price_portfolio': i[2]*i[3],
             'id_sec': i[5]
         }
-        dataBase.execute(f"select quotation from quotations_history where id_securitie={d['id_sec']}")
-        try:
-            d['old_price'] = fti(dataBase.fetchall()[-2][0])
-            d['proc'] = fti(d['price_portfolio']/(d['count_buy'] * d['old_price']) * 100)
-        except:
-            d['old_price'] = 0
-            d['proc'] = 0
         if d['id_sec'] != 36:
             data[template[d['id']]].append(d)
     

@@ -76,15 +76,17 @@
         
 
         <!-- Модальное окно -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade modal_deleteProfile" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content back_lvio p-5">
                     <div class="modal-body">
+                        <h3 id="error_message"></h3>
+                        <h3 id="success_message"></h3>
                         <h1 class="text-center mb-4"><b>Уверены ли вы?</b></h1>
                         <h2 class="text-center">На Вашем счету еще есть активы, если вы сейчас удалите аккаунт, вам вернутся средства на одну из привязанных карт, если ни одной карты не привязано деньги будут утеряны.</h2>
                     </div>
                     <div class="modal-footer mt-3">
-                        <button class="h4 py-3">Да</button>
+                        <button class="h4 py-3" id="unlinkClient">Да</button>
                         <button class="h4 py-3 ml-3" data-dismiss="modal">Нет</button>
                     </div>
                 </div>
