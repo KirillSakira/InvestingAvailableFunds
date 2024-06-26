@@ -38,7 +38,7 @@ def nav(data):
     return val
 
 def chAuth(request):
-    if request.session.session_key == None:
+    if request.user.id == None:
         return HttpResponseRedirect("/auth/")
     return None
 
@@ -55,17 +55,21 @@ def viewOops(request):
         return render(request, 'oops.html')
 
 def viewAuth(request):
-    if request.session.session_key == None:
+    if request.user.id == None:
         return render(request, 'auth.html')
     else:
         return HttpResponseRedirect("/")
 
 
 def viewRegistration(request):
-    if request.session.session_key == None:
+    if request.user.id == None:
         return render(request, 'registration.html')
     else:
-        return HttpResponseRedirect("/")
+        userData = getUserData(request)
+        if userData['role'] != 'Admin':
+            return HttpResponseRedirect("/")
+        else:
+            return render(request, 'registration.html', {'userData': userData})
 
 
 def viewHome(request):
@@ -120,15 +124,26 @@ def viewHome(request):
 
 
 
-def viewProfile(request):
+def viewProfile(request, id=None):
     if chAuth(request) != None:
         return chAuth(request)
     
+    edit = request.GET.get('edit')
+    
     userData = getUserData(request)
+    userData1 = getUserData(request, id, True)
+
+    dataProfile = []
+    if userData['role'] == 'enterprise' or userData1['role'] == 'enterprise':
+        dataProfile = private_profile(request, id)
+    else:
+        dataProfile = manager_profile(request, id)
     data = {
         'userData': userData,
         'nav': nav([['profile', 'профиль']]),
-        'data': private_profile(request) if userData['role'] == 'enterprise' else manager_profile(request)
+        'userData1': userData1,
+        'edit': edit,
+        'data': dataProfile
     }
     return ret(request, 'profile.html', data)
 
@@ -179,18 +194,42 @@ def viewOperationsDetail(request, id):
         return chAuth(request)
     
     userData = getUserData(request)
-    name, data = history(request, id)
-    if userData['role'] in ['Manager', 'Admin']:
-        if data == 'Error':
-            return toOops()
-        
+    name, dataHistory = history(request, id)
+    # if data == 'Error':
+    #     return toOops()
+    
+    if userData['role'] == 'Manager':
+        userData = getUserData(request)
+        name, dataHistory = history(request, id)
+        # if data == 'Error':
+        #     return toOops()
         data = {
             'userData': userData,
             'nav': nav([[f'enterprise/{id}', f'клиент <b>{name}</b>', ''], [f'operations/{id}', 'история операций']]),
             'name': name,
-            'operations_data': data
+            'operations_data': dataHistory
         }
         return ret(request, 'MoperationsDetail.html', data)
+    elif userData['role'] == 'Admin':
+        userData = getUserData(request, id)
+        if userData['role'] == 'Manager':
+            dataHistory = historyManager(request, id)
+            data = {
+                'userData': userData,
+                'nav': nav([[f'enterprise/{id}', f'клиент <b>{name}</b>', ''], [f'operations/{id}', 'история операций']]),
+                'name': name,
+                'operations_data': dataHistory
+            }
+        else:
+            name, dataHistory = history(request, id)
+            data = {
+                'userData': userData,
+                'nav': nav([[f'enterprise/{id}', f'клиент <b>{name}</b>', ''], [f'operations/{id}', 'история операций']]),
+                'name': name,
+                'operations_data': dataHistory
+            }
+
+        return ret(request, 'operations.html', data)
     else:
         return ret(request, 'auth.html')
 
@@ -331,5 +370,25 @@ def viewSecuritiesTrade(request, id, ticker):
             'security': securities
         }
         return ret(request, 'securitiesTrade.html', data)
+    else:
+        return ret(request, 'auth.html')
+
+
+#admin
+def viewEmployee(request, id):
+    if chAuth(request) != None:
+        return chAuth(request)
+    
+    userData = getUserData(request)
+    
+    if userData['role'] == 'Admin':
+        data = {
+            'userData': userData,
+            'nav': nav([[f'employee/{id}', 'Сотрудник', '']]),
+            'id': id,
+            'userData1': getUserData(request, id, True),
+            'users': managerMainPage(request, id)
+        }
+        return ret(request, 'Mindex.html', data)
     else:
         return ret(request, 'auth.html')

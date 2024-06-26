@@ -4,7 +4,7 @@
 {% block in_body_class %}{{bodyClass}}{% endblock %}
 {% block in_body %}
     <div class="row nomh">
-        <div class="elem col-11 mx-auto p-5">
+        <div class="elem col-11 mx-auto p-5" id="mClientsList">
             <div class="h1 mb-4 font-weight-bold">История операций</div>
             {% if userData.role == 'enterprise' %}
                 {% for item in operations_data %}
@@ -23,7 +23,7 @@
                     </div>
                 {% endfor %}
             {% endif %}
-            {{hh}}
+            
             {% if userData.role == 'Manager' %}
                 {% for item in operations_data %}
                     <div class="operation_el back_lbvoi el_hoverer row py-2" data-id="{{item.id}}">

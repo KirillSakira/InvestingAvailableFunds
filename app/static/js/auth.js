@@ -1,4 +1,5 @@
 const nameInput = {
+    'role': 'Роль',
     'username': 'Логин',
     'email': 'Почту',
     'password': 'Пароль',

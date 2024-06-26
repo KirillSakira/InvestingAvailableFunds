@@ -4,8 +4,10 @@ from django.contrib.auth.models import User
 from app.scripts.funcs import *
 from random import randint as rnd
 
+def isClient(role):
+	return role in ['Admin', 'Manager']
+
 def registrationBack(request):
-	
 	role = request.POST.get('role')
 	username = request.POST.get('login')
 	password = request.POST.get('password')
@@ -18,9 +20,19 @@ def registrationBack(request):
 	
 	if username == None:
 		username = email
+
 	
 	errorsDict = {}
 	returnErrors = False
+
+	if isClient(role):
+		address = ''
+		title = ''
+		typeProperty = ''
+	else:
+		if role == None and typeProperty == None:
+			errorsDict['role'] = 'Выберите роль'
+			return returnJson(data=errorsDict)
 	
 	idEmployee = 'Null'
 	idEnterprise = 'Null'
@@ -72,7 +84,7 @@ def registrationBack(request):
 	connection = connection_db()
 	dataBase = connection.cursor()
 	
-	if not role in ['Admin', 'Manager']:
+	if not isClient(role):
 		
 		phone = phone.replace('+7', '8')
 		
@@ -141,8 +153,9 @@ def registrationBack(request):
 	
 	user.save()
 	
-	user = authenticate(request, username=username, password=password)
-	login(request, user)
+	if isClient(role):
+		user = authenticate(request, username=username, password=password)
+		login(request, user)
 	
 	dataBase.execute(f'update auth_user set id_user={idUser} where username=\'{username}\'')
 

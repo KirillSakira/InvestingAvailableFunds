@@ -44,7 +44,7 @@
                         <div class="col_lb h4">{{var_balance}} ₽ ({{var_balance_proc}}%)</div>
                     </div>
                     <div class="col d-grid align-items-start">
-                        <div class="h1 font-weight-bold text-right">{{enterprise_name}}</div>
+                        <div class="h1 font-weight-bold text-right"><a href="/profile/{{id}}/">{{enterprise_name}}</a></div>
                         <div class="h_home_but text-right">
                             <button class="h3 p-4 mt-3">Отправить сообщение</button>
                         </div>
@@ -60,7 +60,7 @@
                     </div>
                     
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
-                        <button class="h3 h-100"><a href="/analytic/{{id}}/" class="p-4">Аналитика</a></button>
+                        <button class="h3 h-100"><a href="/analytic/{{id}}/" class="p-4" {% if graph_pie|length == 0 %}onclick="return false"{% endif %}>Аналитика</a></button>
                     </div>
                     
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
@@ -80,8 +80,8 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content back_lvio p-5">
                     <div class="modal-body">
-                        <h3 id="error_message"></h3>
-                        <h3 id="success_message"></h3>
+                        <h3 id="error_message" class="error_message es_message"></h3>
+                        <h3 id="success_message" class="success_message es_message"></h3>
                         <h1 class="text-center mb-4"><b>Уверены ли вы?</b></h1>
                         <h2 class="text-center">На Вашем счету еще есть активы, если вы сейчас удалите аккаунт, вам вернутся средства на одну из привязанных карт, если ни одной карты не привязано деньги будут утеряны.</h2>
                     </div>

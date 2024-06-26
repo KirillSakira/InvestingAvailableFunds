@@ -6,8 +6,10 @@ def clientAdd(request):
 	connection = connection_db()
 	dataBase = connection.cursor()
 	
-	idE = request.user.id
 	username = request.POST.get('email')
+	id = request.POST.get('id')
+	
+	idE = id if id else request.user.id
 	
 	dataBase.execute(f'select id_user from auth_user where username=\'{username}\'')
 	idUserEnt = dataBase.fetchall()

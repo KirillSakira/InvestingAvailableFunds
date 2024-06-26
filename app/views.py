@@ -9,6 +9,8 @@ from .scripts.dataProfileEdit.employeeEdit import *
 from .scripts.dataProfileEdit.userEdit import *
 from .scripts.deleteProfile import *
 from .scripts.mainPages.manager.unlink import *
+from .scripts.dataProfileEdit.employeeEdit import *
+from .scripts.dataProfileEdit.userEdit import *
 
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
@@ -62,14 +64,19 @@ def profileEditClient(request):
 
 @csrf_exempt
 def deleteProfile(request):
-	res = delete_profile(request)
-	logout(request)
-	return res
+	return delete_profile(request)
 
 @csrf_exempt
 def unlinkClient(request):
 	return unlinkingAnAccount(request)
 
+@csrf_exempt
+def editProfile(request):
+	return employeeEdit(request)
+
+@csrf_exempt
+def editProfileUser(request):
+	return clientEdit(request)
 
 @csrf_exempt
 def doLogout(request):

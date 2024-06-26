@@ -15,10 +15,10 @@ def adminMainPage():
     idClients = dataBase.fetchall()
     
     employees = []
-    employees += (temp for temp in data if temp[0] in [temp2[0] for temp2 in idEmployees])
+    employees += (list(temp) for temp in data if temp[0] in [temp2[0] for temp2 in idEmployees])
     
     clients = []
-    clients += (temp for temp in data if temp[0] in [temp2[0] for temp2 in idClients])
+    clients += (list(temp) for temp in data if temp[0] in [temp2[0] for temp2 in idClients])
     
     clientsData = []
     employeesData = []
@@ -27,11 +27,15 @@ def adminMainPage():
         dataBase.execute(f'select id from auth_user where id_user={temp[0]}')
         id = dataBase.fetchall()[0][0]
         if temp[3] == None:
-            temp[3] = ''
-        clientsData.append({
-            'id': id,
-            'fio': f"{temp[1]} {temp[2][0]}. {temp[3][0]}.".strip()
-        })
+            clientsData.append({
+                'id': id,
+                'fio': f"{temp[2]} {temp[1][0]}.".strip()
+            })
+        else:
+            clientsData.append({
+                'id': id,
+                'fio': f"{temp[2]} {temp[1][0]}. {temp[3][0]}.".strip()
+            })
     
     for temp in employees:
         dataBase.execute(f'select id from auth_user where id_user={temp[0]}')
@@ -40,7 +44,7 @@ def adminMainPage():
             temp[3] = ''
         employeesData.append({
             'id': id,
-            'fio': f"{temp[1]} {temp[2][0]}. {temp[3][0]}.".strip()
+            'fio': f"{temp[2]} {temp[1][0]}. {temp[3][0]}.".strip()
         })
     data = {
         'clients': clientsData,

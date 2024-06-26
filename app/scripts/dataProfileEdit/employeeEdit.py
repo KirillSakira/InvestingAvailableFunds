@@ -7,6 +7,8 @@ def employeeEdit(request):
     email = request.POST.get('email')
     name = request.POST.get('name')
 
+    user_id = user_id if user_id else request.user.id
+
     errorsDict = {}
 
     if len(email) > 150:
@@ -25,10 +27,10 @@ def employeeEdit(request):
 
         last_name = last_name.capitalize()
         first_name = first_name.capitalize()
-        patronymic = ''
+        patronymic = "Null"
 
         if args != []:
-            patronymic = args[0].capitalize()
+            patronymic = f"'{args[0].capitalize()}'"
 
         if len(first_name) > 150 or len(last_name) > 150 or len(patronymic) > 150:
             errorsDict['name'] = 'ФИО слишком длинное'
@@ -39,9 +41,9 @@ def employeeEdit(request):
     connection = connection_db()
     dataBase = connection.cursor()
 
-    dataBase.execute(f"update auth_user set email='{email}' where id={user_id}")
+    dataBase.execute(f"update auth_user set email='{email}', username='{email}' where id={user_id}")
 
-    dataBase.execute(f"update auth_user set first_name='{splitName[0]}' set last_name='{splitName[1]}' set patronymic='{splitName[2]} where id={user_id}'")
+    dataBase.execute(f"update auth_user set first_name='{first_name}', last_name='{last_name}', patronymic={patronymic} where id={user_id}")
     
     
     connection.commit()

@@ -22,7 +22,7 @@
     <div class="container-fluid">
         <div class="row">
             <header class="elem col-11 my-5 mx-auto p-4">
-                <h2 class="logo mb-0"><img src="{% static 'img/logo.svg' %}" alt="Лого">Баблосс</h2>
+                <h2 class="logo mb-0 mx-auto"><img src="{% static 'img/logo.svg' %}" alt="Лого">Баблосс</h2>
             </header>
         </div>
 
@@ -30,7 +30,7 @@
             <form id="auth_form" class="elem col-10 col-sm-8 col-md-6 col-xl-5">
                 {% csrf_token %}
                 <h1 class="zag m-0 text-center text-sm-left">Вход</h1>
-                <h3 id="error_message"></h3>
+                <h3 id="error_message" class="error_message es_message"></h3>
             
                 <div class="inputs_bl username">
                     <div class="inp_bl">

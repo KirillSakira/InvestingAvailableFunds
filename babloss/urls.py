@@ -16,6 +16,8 @@ urlpatterns = [
     path('employeeProfileEdit/', profileEditEmployee, name='employeeProfileEdit'),
     path('deleteProfile/', deleteProfile, name='deleteProfile'),
     path('unlinkClient/', unlinkClient, name='unlinkClient'),
+    path('editProfile/', editProfile, name='editProfile'),
+    path('editProfileUser/', editProfileUser, name='editProfileUser'),
 
     path('', include('app.front_app.urls')),
 ]

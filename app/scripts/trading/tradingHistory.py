@@ -46,7 +46,7 @@ def trading_history(uid):
             data.append(requestInfo)
 
     if data:
-        data.sort(key=lambda x: x['datetime'])
+        data.sort(key=lambda x: x['datetime'], reverse=True)
 
     dataBase.close()
     connection.close()

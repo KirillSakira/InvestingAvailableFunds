@@ -9,6 +9,7 @@ urlpatterns = [
     path('auth/', views.viewAuth, name='auth'),
     path('registration/', views.viewRegistration, name='registration'),
     path('profile/', views.viewProfile, name='profile'),
+    path('profile/<int:id>/', views.viewProfile, name='profileId'),
     path('payment/', views.viewPayment, name='payment'),
     path('withdraw/', views.viewWithdraw, name='withdraw'),
     path('operations/', views.viewOperations, name='operations'),
@@ -21,6 +22,8 @@ urlpatterns = [
     path('analytic/<int:id>/', views.viewAnalytic, name='Manalytic'),
     path('trade/<int:id>/', views.viewTrade, name='trade'),
     path('securitiesTrade/<int:id>/<ticker>/', views.viewSecuritiesTrade, name='securitiesTrade'),
+
+    path('employee/<int:id>/', views.viewEmployee, name='employee'),
 
 
     path('', views.viewHome, name='/')

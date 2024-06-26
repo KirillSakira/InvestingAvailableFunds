@@ -68,7 +68,7 @@ function err(el, val){
 
 function clearForm(){
     $('.inputs_bl').removeClass('error');
-    $('.error_podinp, #error_messsage, #success_message').text('');
+    $('.error_podinp, .error_messsage, .success_message').text('');
 }
 function clearInps(){
     $('form input').val('');

@@ -6,7 +6,7 @@
         <div class="home_buts col-11 mx-auto pt-2">
             <div class="row">
                 <div class="col-12 col-sm-6 mb-4 px-2 text-nowrap">
-                    <button class="h1"><a href="/operations" class="p-4">История операций</a></button>
+                    <button class="h1"><a href="/operations/{{id}}" class="p-4">История операций</a></button>
                 </div>
                 <div class="col-12 col-sm-6 mb-4 px-2 text-nowrap">
                     <button class="h1 p-4" id="hnewClient">Добавить клиента</button>
@@ -21,8 +21,8 @@
             <form id="mAddEmail_form">
                 <div class="row align-items-end">
                     <div class="col-12">
-                        <h3 id="error_message"></h3>
-                        <h3 id="success_message"></h3>
+                        <h3 id="error_message" class="error_message es_message"></h3>
+                        <h3 id="success_message" class="success_message es_message"></h3>
                     </div>
                     <div class="inputs_bl inp_bl_o email col-12 col-sm-8 mx-auto">
                         <div class="inp_bl">
@@ -39,6 +39,12 @@
             </form>
         </div>
     </div>
+
+    {% if userData.role == 'Admin' %}
+        <div class="row mb-2">
+            <div class="elem col-11 mx-auto px-5 py-3 h1 text-center font-weight-bold">Сотрудник <a href="/profile/{{userData1.id}}/">{{userData1.name}}</a></div>
+        </div>
+    {% endif %}
 
     <div class="row">
         <div class="elem col-11 mx-auto px-5 py-3 h1 text-center font-weight-bold">Клиенты</div>

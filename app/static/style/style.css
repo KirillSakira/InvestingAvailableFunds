@@ -73,35 +73,14 @@ nav a{
     border-radius: 1.7rem;
 }
 
-#error_message:not(:empty){
+.error_message:not(:empty){
     padding-top: 1rem;
 }
-.modal_deleteProfile #error_message:not(:empty),
-.modal_deleteProfile #success_message:not(:empty){
+.modal_deleteProfile .error_message:not(:empty),
+.modal_deleteProfile .success_message:not(:empty){
     margin-bottom: 1rem;
     margin-top: 0 !important;
     padding-top: 0 !important;
-}
-
-.header_profile_aname{
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    white-space: nowrap;
-    width: calc(100% - 16rem);
-}
-.header_user_ava img{
-    width: 3.2rem;
-}
-.header_user_name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .hportfolio_proc_names{
@@ -128,7 +107,7 @@ header{
     transition: 0.3s;
 }
 .pieHoverGraphParent > .pie_item_chart:not(.pieHoverGraph){
-    opacity: 0.5;
+    opacity: 0.4;
 }
 
 .portfolio_pit_bl{
@@ -226,35 +205,6 @@ header{
 .payment3{
     margin-top: 2rem;
 }
-
-
-
-
-
-
-.ccheckbox {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-}
-.ccheckbox input{
-    display: none;
-}
-.ccheckbox .checkbox {
-    position: relative;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 50%;
-    border: 0.5rem #fff solid;
-    transition: 0.2s;
-}
-.ccheckbox input:checked ~ .checkbox {
-    background-color: #3AA1FF;
-}
-
-
-
-
 
 
 .canvas_bar{

@@ -48,6 +48,47 @@ body{
   max-width: 1558px !important;
 }
 
+.header_profile_aname{
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  white-space: nowrap;
+  width: calc(100% - 16rem);
+}
+.header_user_ava img{
+  width: 3.2rem;
+}
+.header_user_name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.ccheckbox {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+.ccheckbox input{
+    display: none;
+}
+.ccheckbox .checkbox {
+    position: relative;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 0.5rem #fff solid;
+    transition: 0.2s;
+}
+.ccheckbox input:checked ~ .checkbox {
+    background-color: #3AA1FF;
+}
 
 /* preloader */
 #preloader{
@@ -152,15 +193,15 @@ form{
   position: relative;
 }
 
-#error_message{
+.error_message{
   color: red;
   text-align: center;
 }
-#success_message{
+.success_message{
   color: green;
   text-align: center;
 }
-#success_message:not(:empty){
+.success_message:not(:empty){
   margin-top: 2rem;
 }
 
