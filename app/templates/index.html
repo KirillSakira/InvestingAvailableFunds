@@ -34,7 +34,7 @@
         </div>
     {% endif %}
     
-    {% if userData.role == 'Manager' %}
+    {% if userData.role == 'Manager' or userData.role == 'Admin' %}
         <div class="row">
             <div class="elem col-11 mx-auto px-5 pt-5 pb-3">
                 <div class="row">
@@ -46,7 +46,7 @@
                     <div class="col d-grid align-items-start">
                         <div class="h1 font-weight-bold text-right">{{enterprise_name}}</div>
                         <div class="h_home_but text-right">
-                            <button class="h3 mt-3"><a href="/operations/{{id}}/" class="p-4">Операции</a></button>
+                            <button class="h3 p-4 mt-3">Отправить сообщение</button>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                     </div>
                     
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
-                        <button class="h3 p-4 h-100" data-toggle="modal" data-target="#myModal">Отвязать аккаунт</button>
+                        <button class="h3 h-100"><a href="/operations/{{id}}/" class="p-4">Операции</a></button>
                     </div>
                 </div>
             </div>

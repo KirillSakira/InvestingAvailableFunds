@@ -21,6 +21,9 @@ from app.scripts.trading.getSecuritiesByCatalog import getSecuritiesByCatalog
 from app.scripts.trading.getSecuritieInfo import getSecuritieInfo
 from app.scripts.trading.tradingHistory import trading_history
 
+#admin
+from app.scripts.mainPages.admin.adminMainPage import adminMainPage
+
 def nav(data):
     href = '/'
     val = "<a href='/' class='col_bvio'>Главная страница</a> / "
@@ -39,7 +42,9 @@ def chAuth(request):
         return HttpResponseRedirect("/auth/")
     return None
 
-def ret(request, url, data):
+def ret(request, url, data = {}):
+    if url == 'auth.html':
+        return HttpResponseRedirect("/auth/")
     chAuth(request)
     return render(request, url, data)
     
@@ -103,8 +108,15 @@ def viewHome(request):
             'users': managerMainPage(request)
         }
         return ret(request, 'Mindex.html', data)
+    elif userData['role'] == 'Admin':
+        data = {
+            'userData': userData,
+            'nav': nav([]),
+            'users': adminMainPage()
+        }
+        return ret(request, 'Aindex.html', data)
     else:
-        return ret(request, '/auth.html')
+        return ret(request, 'auth.html')
 
 
 
@@ -151,16 +163,16 @@ def viewOperations(request):
     
     userData = getUserData(request)
     data = history(request)[1] if userData['role'] == 'enterprise' else historyManager(request)
-    if userData['role'] in ['enterprise', 'Manager']:
+    if userData['role'] in ['enterprise', 'Manager', 'Admin']:
         data = {
             'userData': userData,
             'nav': nav([['operations', 'история операций']]),
-            'bodyClass': 'operations_list' if userData['role'] == 'Manager' else '',
+            'bodyClass': 'operations_list' if userData['role'] in ['Manager', 'Admin'] else '',
             'operations_data': data
         }
         return ret(request, 'operations.html', data)
     else:
-        return ret(request, '/auth.html')
+        return ret(request, 'auth.html')
     
 def viewOperationsDetail(request, id):
     if chAuth(request) != None:
@@ -168,7 +180,7 @@ def viewOperationsDetail(request, id):
     
     userData = getUserData(request)
     name, data = history(request, id)
-    if userData['role'] == 'Manager':
+    if userData['role'] in ['Manager', 'Admin']:
         if data == 'Error':
             return toOops()
         
@@ -180,7 +192,7 @@ def viewOperationsDetail(request, id):
         }
         return ret(request, 'MoperationsDetail.html', data)
     else:
-        return ret(request, '/auth.html')
+        return ret(request, 'auth.html')
 
 
 def viewAnalytic(request, id=None):
@@ -199,7 +211,7 @@ def viewAnalytic(request, id=None):
 
     if userData['role'] == 'enterprise':
         nav1 = [['analytic', 'аналитика']]
-    if userData['role'] == 'Manager':
+    if userData['role'] in ['Manager', 'Admin']:
         nav1 = [[f'enterprise/{id}', f'клиент', ''], [f'analytic/{id}', 'аналитика']]
 
     data = {
@@ -214,8 +226,6 @@ def viewAnalytic(request, id=None):
     return ret(request, 'analytic.html', data)
     
 
-
-
 #Manager
 def viewEnterprise(request, id):
     if chAuth(request) != None:
@@ -223,7 +233,7 @@ def viewEnterprise(request, id):
     
     userData = getUserData(request)
 
-    if userData['role'] == 'Manager':
+    if userData['role'] in ['Manager', 'Admin']:
         aBal, aProc = shortAnalyticsBalance(request, id)
         aBarMonth, aBarCount, aBarSum = shortAnalyticsBar(request, id)
         aPie = shortAnalyticsPie(request, id)
@@ -257,7 +267,7 @@ def viewEnterprise(request, id):
         }
         return ret(request, 'index.html', data)
     else:
-        return ret(request, '/auth.html')
+        return ret(request, 'auth.html')
 
 def viewTradeHistory(request, id):
     if chAuth(request) != None:
@@ -265,7 +275,7 @@ def viewTradeHistory(request, id):
     
     userData = getUserData(request)
 
-    if userData['role'] == 'Manager':
+    if userData['role'] in ['Manager', 'Admin']:
         tradeData = trading_history(id)
         data = {
             'userData': userData,
@@ -275,7 +285,7 @@ def viewTradeHistory(request, id):
         }
         return ret(request, 'tradeHistory.html', data)
     else:
-        return ret(request, '/auth.html')
+        return ret(request, 'auth.html')
 
 
 def viewTrade(request, id):
@@ -286,7 +296,7 @@ def viewTrade(request, id):
     type = request.GET.get('type')
     securities = getSecuritiesByCatalog(request, id)
 
-    if userData['role'] == 'Manager':
+    if userData['role'] in ['Manager', 'Admin']:
         data = {
             'userData': userData,
             'nav': nav([[f'enterprise/{id}', 'клиент', ''], [f'trade/{id}', f'торговля']]),
@@ -295,184 +305,10 @@ def viewTrade(request, id):
             'bonds_data': securities['bonds_data'],
             'funds_data': securities['funds_data'],
             'curr_metals_data': securities['curr_metals_data']
-
-            # 'stocks_data': [
-            #     {
-            #         'img': 'detskiy_mir.png', #имя
-            #         'name': 'Норильский никель', #имя
-            #         'short_name': 'GMKN', #сокращенное имя
-            #         'price_buy': '15 975 876,66', #цена покупки
-            #         'price_now': '16 200 000,31', #текущая цена
-            #         'price_count_buy': '15 975 876,66', #цена всех купленных
-            #         'count_buy': '10', #количество купленных
-            #         'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
-            #         'proc_end': '+3' #в процентах
-            #     },
-            #     {
-            #         'img': 's2.png',
-            #         'name': 'ТКС Холдинг',
-            #         'short_name': 'TKSG',
-            #         'price_buy': '2 798,45',
-            #         'price_now': '1 598,89',
-            #         'price_count_buy': '7 994,45',
-            #         'count_buy': '5',
-            #         'price_end': '-5 997,8',
-            #         'proc_end': '-33,78'
-            #     },
-            #     {
-            #         'img': 's3.png',
-            #         'name': 'Яндекс',
-            #         'short_name': 'YNDX',
-            #         'price_buy': '4 155,96',
-            #         'price_now': '4 161,4',
-            #         'price_count_buy': '12 448,2',
-            #         'count_buy': '3',
-            #         'price_end': '+8 544,78',
-            #         'proc_end': '+17,92'
-            #     },
-            #     {
-            #         'img': 's2.png',
-            #         'name': 'ТКС Холдинг',
-            #         'short_name': 'TKSG',
-            #         'price_buy': '2 798,45',
-            #         'price_now': '1 598,89',
-            #         'price_count_buy': '7 994,45',
-            #         'count_buy': '5',
-            #         'price_end': '-5 997,8',
-            #         'proc_end': '-33,78'
-            #     },
-            #     {
-            #         'img': 's3.png',
-            #         'name': 'Яндекс',
-            #         'short_name': 'YNDX',
-            #         'price_buy': '4 155,96',
-            #         'price_now': '4 161,4',
-            #         'price_count_buy': '12 448,2',
-            #         'count_buy': '3',
-            #         'price_end': '+8 544,78',
-            #         'proc_end': '+17,92'
-            #     }
-            # ],
-            # 'bonds_data': [
-            #     {
-            #         'img': 'detskiy_mir.png', #имя
-            #         'name': 'Норильский никель', #имя
-            #         'short_name': 'GMKN', #сокращенное имя
-            #         'price_buy': '15 975 876,66', #цена покупки
-            #         'price_now': '16 200 000,31', #текущая цена
-            #         'price_count_buy': '15 975 876,66', #цена всех купленных
-            #         'count_buy': '10', #количество купленных
-            #         'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
-            #         'proc_end': '+3' #в процентах
-            #     },
-            #     {
-            #         'img': 's3.png',
-            #         'name': 'Яндекс',
-            #         'short_name': 'YNDX',
-            #         'price_buy': '4 155,96',
-            #         'price_now': '4 161,4',
-            #         'price_count_buy': '12 448,2',
-            #         'count_buy': '3',
-            #         'price_end': '+8 544,78',
-            #         'proc_end': '+17,92'
-            #     },
-            #     {
-            #         'img': 's2.png',
-            #         'name': 'ТКС Холдинг',
-            #         'short_name': 'TKSG',
-            #         'price_buy': '2 798,45',
-            #         'price_now': '1 598,89',
-            #         'price_count_buy': '7 994,45',
-            #         'count_buy': '5',
-            #         'price_end': '-5 997,8',
-            #         'proc_end': '-33,78'
-            #     },
-            #     {
-            #         'img': 's3.png',
-            #         'name': 'Яндекс',
-            #         'short_name': 'YNDX',
-            #         'price_buy': '4 155,96',
-            #         'price_now': '4 161,4',
-            #         'price_count_buy': '12 448,2',
-            #         'count_buy': '3',
-            #         'price_end': '+8 544,78',
-            #         'proc_end': '+17,92'
-            #     }
-            # ],
-            # 'funds_data': [
-            #     {
-            #         'img': 'detskiy_mir.png', #имя
-            #         'name': 'Норильский никель', #имя
-            #         'short_name': 'GMKN', #сокращенное имя
-            #         'price_buy': '15 975 876,66', #цена покупки
-            #         'price_now': '16 200 000,31', #текущая цена
-            #         'price_count_buy': '15 975 876,66', #цена всех купленных
-            #         'count_buy': '10', #количество купленных
-            #         'price_end': '+1 975 876,66', #сколько пользователь получил/потерял
-            #         'proc_end': '+3' #в процентах
-            #     },
-            #     {
-            #         'img': 's2.png',
-            #         'name': 'ТКС Холдинг',
-            #         'short_name': 'TKSG',
-            #         'price_buy': '2 798,45',
-            #         'price_now': '1 598,89',
-            #         'price_count_buy': '7 994,45',
-            #         'count_buy': '5',
-            #         'price_end': '-5 997,8',
-            #         'proc_end': '-33,78'
-            #     },
-            #     {
-            #         'img': 's2.png',
-            #         'name': 'ТКС Холдинг',
-            #         'short_name': 'TKSG',
-            #         'price_buy': '2 798,45',
-            #         'price_now': '1 598,89',
-            #         'price_count_buy': '7 994,45',
-            #         'count_buy': '5',
-            #         'price_end': '-5 997,8',
-            #         'proc_end': '-33,78'
-            #     },
-            #     {
-            #         'img': 's3.png',
-            #         'name': 'Яндекс',
-            #         'short_name': 'YNDX',
-            #         'price_buy': '4 155,96',
-            #         'price_now': '4 161,4',
-            #         'price_count_buy': '12 448,2',
-            #         'count_buy': '3',
-            #         'price_end': '+8 544,78',
-            #         'proc_end': '+17,92'
-            #     }
-            # ],
-            # 'curr_metals_data': [
-            #     {
-            #         'img': 's2.png',
-            #         'name': 'ТКС Холдинг',
-            #         'short_name': 'TKSG',
-            #         'price_buy': '2 798,45',
-            #         'price_now': '1 598,89',
-            #         'price_count_buy': '7 994,45',
-            #         'count_buy': '5',
-            #         'price_end': '-5 997,8',
-            #         'proc_end': '-33,78'
-            #     },
-            #     {
-            #         'img': 's3.png',
-            #         'name': 'Яндекс',
-            #         'short_name': 'YNDX',
-            #         'price_buy': '4 155,96',
-            #         'price_now': '4 161,4',
-            #         'price_count_buy': '12 448,2',
-            #         'count_buy': '3',
-            #         'price_end': '+8 544,78',
-            #         'proc_end': '+17,92'
-            #     }
-            # ]
         }
         return ret(request, 'trade.html', data)
     else:
-        return ret(request, '/auth.html')
+        return ret(request, 'auth.html')
 
 
 def viewSecuritiesTrade(request, id, ticker):
@@ -482,7 +318,7 @@ def viewSecuritiesTrade(request, id, ticker):
     userData = getUserData(request)
     securities = getSecuritieInfo(request, id, ticker)
 
-    if userData['role'] == 'Manager':
+    if userData['role'] in ['Manager', 'Admin']:
         name = securities['security_name']
         type = securities['type']
         data = {
@@ -496,4 +332,4 @@ def viewSecuritiesTrade(request, id, ticker):
         }
         return ret(request, 'securitiesTrade.html', data)
     else:
-        return ret(request, '/auth.html')
+        return ret(request, 'auth.html')

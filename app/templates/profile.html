@@ -45,13 +45,19 @@
                         </div>
                     </div>
                 {% endif %}
+                
+                {% if userData.role == 'Admin' %}
+                    <div class="col">
+                        <button class="h3 py-3 mt-4 mt-sm-5">Редактировать профиль</button>
+                    </div>
+                {% endif %}
 
                 <div class="col-12 col-sm-6 d-flex align-items-end">
                     <button class="h3 py-3 mt-5"><a href="/logout/">выход</a></button>
                 </div>
                 
-                {% if userData.role == 'enterprise' %}
-                    <div class="col">
+                {% if userData.role == 'enterprise' or userData.role == 'Admin' %}
+                    <div class="col-12">
                         <button class="h3 py-3 mt-4 mt-sm-5 back_red" type="button" data-toggle="modal" data-target="#myModal">Удалить профиль</button>
                     </div>
                 {% endif %}

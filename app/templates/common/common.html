@@ -61,8 +61,14 @@
         {% if userData.role == 'enterprise' %}
             <script src="{% static 'js/core_enterprise_5x78w291.js' %}"></script>
         {% endif %}
+        {% if userData.role == 'Manager' or userData.role == 'Admin'%}
+            <script src="{% static 'js/core_MA_sadh9834ew893.js' %}"></script>
+        {% endif %}
         {% if userData.role == 'Manager' %}
             <script src="{% static 'js/core_Manager_vn37db38.js' %}"></script>
+        {% endif %}
+        {% if userData.role == 'Admin' %}
+            <script src="{% static 'js/core_Admin_322e32e23s.js' %}"></script>
         {% endif %}
 
     </body>
