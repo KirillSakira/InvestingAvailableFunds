@@ -41,11 +41,15 @@ def adminMainPage():
         dataBase.execute(f'select id from auth_user where id_user={temp[0]}')
         id = dataBase.fetchall()[0][0]
         if temp[3] == None:
-            temp[3] = ''
-        employeesData.append({
-            'id': id,
-            'fio': f"{temp[2]} {temp[1][0]}. {temp[3][0]}.".strip()
-        })
+            employeesData.append({
+                'id': id,
+                'fio': f"{temp[2]} {temp[1][0]}.".strip()
+            })
+        else:
+            employeesData.append({
+                'id': id,
+                'fio': f"{temp[2]} {temp[1][0]}. {temp[3][0]}.".strip()
+            })
     data = {
         'clients': clientsData,
         'employees': employeesData
