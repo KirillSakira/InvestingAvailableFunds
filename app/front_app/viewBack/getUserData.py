@@ -45,7 +45,7 @@ def getUserData(request):
 		connection.close()
 		return {
 			'name': name,
-			'role': 'Admin'
+			'role': role
 		}
     
 	
