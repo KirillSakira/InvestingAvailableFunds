@@ -1,12 +1,8 @@
 from connection import connection_db
-from app.scripts.funcs import returnJson
-
-
-fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
+from app.scripts.funcs import returnJson, fti
 
 
 def getAdditionalInfo(dataBase, idSecuritie, idPortfolio):
-
     dataBase.execute(f'select quotation from securities where id_securitie={idSecuritie}')
     quotation = fti(dataBase.fetchall()[0][0])
     dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={idPortfolio} and id_securitie={idSecuritie}')

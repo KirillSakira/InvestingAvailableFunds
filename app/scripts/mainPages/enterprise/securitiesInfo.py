@@ -1,11 +1,10 @@
 from connection import connection_db
+from app.scripts.funcs import fti
 
 
 def securitiesInfo(securities):
     connection = connection_db()
     dataBase = connection.cursor()
-
-    fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
     
     info = {
         'stocks_data': [],
