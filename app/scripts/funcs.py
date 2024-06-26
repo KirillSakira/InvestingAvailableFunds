@@ -1,13 +1,18 @@
 from django.http import HttpResponse
-from re import findall
+from re import findall, sub
 from json import dumps
 from datetime import datetime as dt
+
+fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
 
 def check(string, param):
 	patterns = {
 		'mail': r'\b[\w\d]+@\w+\.\w+\b'
 	}
 	return findall(patterns[param], string) == []
+
+def numFormat(num):
+	return sub(r'\B(?=(\d{3})+(?!\d))', ' ', str(num))
 
 def insertSql(table, params):
 	return f'''insert into {table}

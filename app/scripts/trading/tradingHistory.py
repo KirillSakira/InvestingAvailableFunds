@@ -1,7 +1,7 @@
 from connection import connection_db
+from app.scripts.funcs import fti
 
 def trading_history(uid):
-    fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
     connection = connection_db()
     dataBase = connection.cursor()
 

@@ -1,13 +1,12 @@
 from connection import connection_db
 from .securitiesInfo import *
+from app.scripts.funcs import fti
 
 
 def enterpriseMainPage(request, uid=False):
     try:
         id = uid if uid else request.user.id
         name = ''
-
-        fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
 
         connection = connection_db()
         dataBase = connection.cursor()

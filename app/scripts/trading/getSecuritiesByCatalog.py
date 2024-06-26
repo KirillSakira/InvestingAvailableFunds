@@ -1,8 +1,8 @@
 from connection import connection_db
+from app.scripts.funcs import fti
 
 
 def getSecuritiesByCatalog(request, userId):
-    fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
     
     connection = connection_db()
     dataBase = connection.cursor()

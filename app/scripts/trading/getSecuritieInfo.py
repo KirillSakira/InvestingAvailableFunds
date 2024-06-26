@@ -1,10 +1,8 @@
 from connection import connection_db
-from re import sub
+from app.scripts.funcs import fti, numFormat
 
 
 def getSecuritieInfo(request, userId, ticker): 
-    fti = lambda f: float(str(round(f, 2))) if f != int(f) else int(f)
-    
     type = {
       1: {
         'eng': 'stocks',
@@ -85,8 +83,8 @@ def getSecuritieInfo(request, userId, ticker):
       'graph_line': graphLine,
       'proc': fti(proc),
       'total_sum': fti(fti(security[1]) * fti(totalQuantity)),
-      'total_quantity1': sub(r'\B(?=(\d{3})+(?!\d))', ' ', str(fti(totalQuantity))),
-      'balance': sub(r'\B(?=(\d{3})+(?!\d))', ' ', str(fti(balance))),
+      'total_quantity1': numFormat(fti(totalQuantity)),
+      'balance': numFormat(fti(balance)),
       'type': type[security[3]]
     }
   
