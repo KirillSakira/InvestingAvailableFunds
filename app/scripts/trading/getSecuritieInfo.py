@@ -54,7 +54,7 @@ def getSecuritieInfo(request, userId, ticker):
     dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={idPortfolio} and (id_securitie={idSecuritie} or id_securitie=36) order by id_securitie')
     totalQuantity = dataBase.fetchall()
     
-    dataBase.execute(f'select sec_date, quotation from quotations_history where id_securitie={idSecuritie}')
+    dataBase.execute(f'select sec_date, quotation from quotations_history where id_securitie={idSecuritie} ORDER BY sec_date')
     history = dataBase.fetchall()
     
     graphLine = {

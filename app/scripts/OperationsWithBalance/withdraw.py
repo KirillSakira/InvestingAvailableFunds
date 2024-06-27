@@ -45,5 +45,5 @@ values ({id_portfolio}, {False}, {amount})''')
     return returnJson(data={
         'status': 'success',
         'message': 'Успешное снятие',
-        'balance': userData['balance']
+        'balance': f'{userData['balance']} ₽'
     })

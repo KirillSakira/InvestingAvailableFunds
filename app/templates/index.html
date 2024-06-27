@@ -54,10 +54,12 @@
         </div>
         <div class="row">
             <div class="home_buts col-11 mt-4 mx-auto pt-4 pb-3">
-                <div class="row">
-                    <div class="col-12 col-md-6 col-xl-3 mb-4">
-                        <button class="h3 h-100"><a href="/trade/{{id}}/" class="p-4">Торговля</a></button>
-                    </div>
+                <div class="row justify-content-center">
+                    {% if userData.role != 'Admin' %}
+                        <div class="col-12 col-md-6 col-xl-3 mb-4">
+                            <button class="h3 h-100"><a href="/trade/{{id}}/" class="p-4">Торговля</a></button>
+                        </div>
+                    {% endif %}
                     
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
                         <button class="h3 h-100"><a href="/analytic/{{id}}/" class="p-4" {% if graph_pie|length == 0 %}onclick="return false"{% endif %}>Аналитика</a></button>

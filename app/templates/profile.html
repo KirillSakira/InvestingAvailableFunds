@@ -77,25 +77,33 @@
                 
                 {% if userData.role == 'Admin' %}
                     {% if edit %}
-                        <div class="col">
+                        <div class="col-12 col-sm-6">
                             <button type="submit" class="h3 py-3 mt-4 mt-sm-5" id="profileEditSave">Сохранить</button>
                         </div>
                     {% else %}
-                        <div class="col">
+                        <div class="col-12 col-sm-6">
                             <button type="button" class="h3 py-3 mt-4 mt-sm-5"><a href="?edit=true">Редактировать профиль</a></button>
                         </div>
                     {% endif %}
                 {% endif %}
 
                 {% if userData.role == userData1.role and not edit %}
-                    <div class="col-12 col-sm-6 d-flex align-items-end">
+                    <div class="col-12 {% if userData.role != 'Manager' %}col-sm-6{% endif %} d-flex align-items-end">
                         <button type="button" class="h3 py-3 mt-5"><a href="/logout/">выход</a></button>
                     </div>
                 {% endif %}
 
                 {% if userData.role == 'enterprise' or userData.role == 'Admin' %}
                     {% if not edit %}
-                        <div class="col-12">
+                        {% if userData.role == 'Admin' %}
+                            {% if userData1.role == 'Admin' %}
+                                <div class="col-12">
+                            {% else %}
+                                <div class="col-6">
+                            {% endif %}
+                        {% else %}
+                            <div class="col-6">
+                        {% endif %}
                             <button type="button" class="h3 py-3 mt-4 mt-sm-5 back_red" type="button" data-toggle="modal" data-target="#myModal">Удалить профиль</button>
                         </div>
                     {% endif %}
