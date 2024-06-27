@@ -260,7 +260,8 @@ def viewAnalytic(request, id=None):
         'in_scripts_graph': True,
         'in_slick': True,
         
-        'a': datas,
+        'a': datas[0],
+        'b': datas[1],
         'pie': datas[0],
         'securities': datas[1],
     }
