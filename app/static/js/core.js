@@ -161,7 +161,7 @@ function generLine(elem, dataLine){
                 data: dataLine.count,
                 borderColor: '#634FED',
                 borderWidth: bwidth,
-                pointRadius: dataLine.count.map((value, index) => index === dataLine.count.length - 1 ? bwidth : 0),
+                pointRadius: dataLine.count.map((value, index) => index === dataLine.count.length - 1 ? bwidth : bwidth / 2),
                 pointBackgroundColor: '#3AA1FF',
                 pointBorderColor: '#3AA1FF'
             }]

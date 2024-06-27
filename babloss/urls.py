@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import handler404
 from app.views import *
 
 urlpatterns = [
@@ -19,5 +20,5 @@ urlpatterns = [
     path('editProfile/', editProfile, name='editProfile'),
     path('editProfileUser/', editProfileUser, name='editProfileUser'),
 
-    path('', include('app.front_app.urls')),
+    path('', include('app.front_app.urls'))
 ]

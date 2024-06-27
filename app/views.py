@@ -15,7 +15,11 @@ from .scripts.dataProfileEdit.userEdit import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.shortcuts import render
 
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
 
 @csrf_exempt
 def registration(request):

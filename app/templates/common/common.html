@@ -14,10 +14,10 @@
         <link rel="stylesheet" href="{% static 'style/all.css' %}">
         <link rel="stylesheet" href="{% static 'style/style.css' %}">
         <link rel="shortcut icon" href="{% static 'img/logo.ico' %}" type="image/x-icon">
-        <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
-        <script src="{% static 'libs/bootstrap/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'libs/bootstrap/js/bootstrap.min.js' %}" type="text/javascript"></script>
         {% if in_slick %}
-            <script type="text/javascript" src="{% static 'libs/slick/slick/slick.min.js' %}"></script>
+            <script type="text/javascript" src="{% static 'libs/slick/slick/slick.min.js' %}" type="text/javascript"></script>
         {% endif %}
         {% block in_head %}{% endblock %}
     </head>
@@ -52,20 +52,20 @@
         
         {% block in_script %}{% endblock %}
         {% if in_scripts_graph %}
-            <script src="{% static 'libs/chart.min.js' %}" type="module"></script>
-            <script src="{% static 'dist/bundle.js' %}"></script>
+            <script src="{% static 'libs/chart.min.js' %}" type="module" type="text/javascript"></script>
+            <script src="{% static 'dist/bundle.js' %}" type="text/javascript"></script>
         {% endif %}
-        <script src="{% static 'js/all.js' %}"></script>
-        <script src="{% static 'js/core.js' %}"></script>
+        <script src="{% static 'js/all.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/core.js' %}" type="text/javascript"></script>
 
         {% if userData.role == 'enterprise' %}
-            <script src="{% static 'js/core_enterprise_5x78w291.js' %}"></script>
+            <script src="{% static 'js/core_enterprise_5x78w291.js' %}" type="text/javascript"></script>
         {% endif %}
         {% if userData.role == 'Manager' or userData.role == 'Admin'%}
-            <script src="{% static 'js/core_MA_vn37db38.js' %}"></script>
+            <script src="{% static 'js/core_MA_vn37db38.js' %}" type="text/javascript"></script>
         {% endif %}
         {% if userData.role == 'Admin' %}
-            <script src="{% static 'js/core_Admin_322e32e23s.js' %}"></script>
+            <script src="{% static 'js/core_Admin_322e32e23s.js' %}" type="text/javascript"></script>
         {% endif %}
 
     </body>
