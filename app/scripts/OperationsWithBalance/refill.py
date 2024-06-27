@@ -28,14 +28,6 @@ def refillBack(request):
     dataBase.execute(f'''insert into operations_history (id_portfolio, oper_type, amount)
 values ('{id_portfolio}', {True}, {amount})''')
     connection.commit()
-
-    dataBase.execute(f'select id_employee from portfolios where id_enterprise={id_enterprise}')
-    id_employee = dataBase.fetchall()[0][0]
-    if id_employee != None:
-        dataBase.execute(f'''insert into messages (id_sender, id_receiver, message_date, message_content)
-    values ({user_id}, {id_employee}, default, 'Было совершено пополнение клиентом №{user_id} в размере {amount}₽')''')
-
-    connection.commit()
     dataBase.close()
     connection.close()
 

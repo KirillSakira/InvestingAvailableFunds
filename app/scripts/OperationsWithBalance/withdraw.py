@@ -34,13 +34,7 @@ values ({id_portfolio}, {False}, {amount})''')
     if oper_status == False:
         errorsDict['message'] = 'Недостаточно свободных средств'
         return returnJson(data=errorsDict)
-
-
-    dataBase.execute(f'select id_employee from Portfolios where id_enterprise={id_enterprise}')
-    id_employee = dataBase.fetchall()[0][0]
-
-    dataBase.execute(f'''insert into messages (id_sender, id_receiver, message_date, message_content)
-values ({user_id}, {id_employee}, default, 'Было совершено снятие клиентом № {user_id}')''')
+    
     connection.commit()
     dataBase.close()
     connection.close()
