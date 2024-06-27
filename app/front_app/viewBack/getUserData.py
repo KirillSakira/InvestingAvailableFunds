@@ -11,11 +11,11 @@ def getUserData(request, uid = False, initial=False):
 		dataBase.execute(f'select id_user, last_name, first_name, patronymic from auth_user where id={id}')
 		data = dataBase.fetchall()[0]
 		if initial:
-			name = f'{data[2]} {data[1][0]}.'
+			name = f'{data[1]} {data[2][0]}.'
 			if data[3] != None:
 				name += f' {data[3][0]}.'
 		else:
-			name = f'{data[2]} {data[1]}'
+			name = f'{data[3]} {data[2]}'
 			if data[3] != None:
 				name += f' {data[3]}'
 		userId = id
