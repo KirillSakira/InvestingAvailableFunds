@@ -243,10 +243,11 @@ def viewAnalytic(request, id=None):
     
     if datas != 'Error':
         for key in datas[0].keys():
-            if datas[0][key][0]['img'] != 'None':
-                icos = getColorImg([obj['img'] for obj in datas[1][key]])
-                for obj, col in zip(datas[0][key], icos):
-                    obj['color'] = col
+            if datas[0][key] != []:
+                if datas[0][key][0]['img'] != 'None':
+                    icos = getColorImg([obj['img'] for obj in datas[1][key]])
+                    for obj, col in zip(datas[0][key], icos):
+                        obj['color'] = col
 
     if userData['role'] == 'enterprise':
         nav1 = [['analytic', 'аналитика']]
