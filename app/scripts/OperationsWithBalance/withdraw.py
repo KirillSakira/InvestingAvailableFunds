@@ -1,5 +1,6 @@
 from app.scripts.funcs import returnJson, cardValidation
 from connection import connection_db
+from app.front_app.viewBack.getUserData import getUserData
 
 def withdrawBack(request):
     amount = int(request.POST.get('amount'))
@@ -39,4 +40,10 @@ values ({id_portfolio}, {False}, {amount})''')
     dataBase.close()
     connection.close()
 
-    return returnJson(status='success', message='Успешное снятие')
+    userData = getUserData(request)
+
+    return returnJson(data={
+        'status': 'success',
+        'message': 'Успешное снятие',
+        'balance': userData['balance']
+    })

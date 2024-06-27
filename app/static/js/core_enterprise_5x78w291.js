@@ -88,6 +88,7 @@ if(['payment', 'withdraw'].indexOf(pathname[1]) !== -1){
                         clearInps();
                         $('#error_message').text('');
                         $('#success_message').text(res.message);
+                        $('#amount').attr('placeholder', res.balance);
                         blocked_button = false;
                         return;
                     }
