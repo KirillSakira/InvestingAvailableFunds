@@ -55,6 +55,15 @@ def analyticsPie(request, uid=False):
                     'img': quantities[key][2] if quantities[key][2] != None else 'None'
                 }
             )
+        pie['stocks_data'] = sorted(pie['stocks_data'], key= lambda g: g['name'])
+        pie['bonds_data'] = sorted(pie['bonds_data'], key= lambda g: g['name'])
+        pie['funds_data'] = sorted(pie['funds_data'], key= lambda g: g['name'])
+        pie['curr_metals_data'] = sorted(pie['curr_metals_data'], key= lambda g: g['name'])
+        
+        securitiesData['stocks_data'] = sorted(securitiesData['stocks_data'], key= lambda g: g['name'])
+        securitiesData['bonds_data'] = sorted(securitiesData['bonds_data'], key= lambda g: g['name'])
+        securitiesData['funds_data'] = sorted(securitiesData['funds_data'], key= lambda g: g['name'])
+        securitiesData['curr_metals_data'] = sorted(securitiesData['curr_metals_data'], key= lambda g: g['name'])
         return pie, securitiesData
     except:
         return 'Error'

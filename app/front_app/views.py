@@ -245,7 +245,8 @@ def viewAnalytic(request, id=None):
         for key in datas[0].keys():
             if datas[0][key] != []:
                 if datas[0][key][0]['img'] != 'None':
-                    icos = getColorImg([obj['img'] for obj in datas[1][key][::-1]])
+
+                    icos = getColorImg([obj['img'] for obj in datas[1][key]])
                     for obj, col in zip(datas[0][key], icos):
                         obj['color'] = col
 
