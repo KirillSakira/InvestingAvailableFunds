@@ -153,7 +153,7 @@ def registrationBack(request):
 	
 	user.save()
 	
-	if isClient(role):
+	if not isClient(role):
 		user = authenticate(request, username=username, password=password)
 		login(request, user)
 	
