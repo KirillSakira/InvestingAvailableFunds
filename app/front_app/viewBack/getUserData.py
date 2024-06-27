@@ -15,7 +15,7 @@ def getUserData(request, uid = False, initial=False):
 			if data[3] != None:
 				name += f' {data[3][0]}.'
 		else:
-			name = f'{data[3]} {data[2]}'
+			name = f'{data[1]} {data[2]}'
 			if data[3] != None:
 				name += f' {data[3]}'
 		userId = id
