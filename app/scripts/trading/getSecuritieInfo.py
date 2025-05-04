@@ -1,5 +1,6 @@
 from connection import connection_db
 from app.scripts.funcs import fti, numFormat
+from app.scripts.trading.getPromotionsNew import get_graph_info
 
 
 def getSecuritieInfo(request, userId, ticker): 
@@ -54,15 +55,7 @@ def getSecuritieInfo(request, userId, ticker):
     dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={idPortfolio} and (id_securitie={idSecuritie} or id_securitie=36) order by id_securitie')
     totalQuantity = dataBase.fetchall()
     
-    dataBase.execute(f'select sec_date, quotation from quotations_history where id_securitie={idSecuritie} ORDER BY sec_date')
-    history = dataBase.fetchall()
     
-    graphLine = {
-        'days': [],
-        'count': [],
-        'sum': 1
-    }
-
     if len(totalQuantity) == 2:
       balance = totalQuantity[1][0]
       totalQuantity = totalQuantity[0][0]
@@ -70,12 +63,8 @@ def getSecuritieInfo(request, userId, ticker):
       balance = totalQuantity[0][0]
       totalQuantity = 0
     
-    history = history[-7:]
-    
-    for item in history: 
-        graphLine['days'].append(item[0].strftime('%d'))
-        graphLine['count'].append(fti(item[1]))
-    
+    graphLine = get_graph_info(ticker, type[security[3]]['href_rus'])
+
     data = {
       'security_name': security[0],
       'security_price': fti(security[1]),
