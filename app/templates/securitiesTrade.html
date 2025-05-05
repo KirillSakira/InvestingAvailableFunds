@@ -25,6 +25,13 @@
             </div>
         </div>
 
+        <div id="sale_interval_graph" class="mb-4">
+            <button data-time-key="1 min">1 минута</button>
+            <button data-time-key="5 min">5 минут</button>
+            <button data-time-key="15 min">15 минут</button>
+            <button data-time-key="1 hour">1 час</button>
+            <button data-time-key="1 day" class="active">1 день</button>
+        </div>
         <canvas id="lineChart" class="canvas_line"></canvas>
         
         <div class="row">
@@ -67,10 +74,11 @@
 
 {% block in_script %}
 <script>
-    var is_line = {{security.graph_line.sum|safe}},
-        graph_line = JSON.parse('{{ security.graph_line|escapejs }}'.replace(/'/g, "\""));
+    var graph_line = JSON.parse('{{ security.graph_line|escapejs }}'.replace(/'/g, "\""));
+    console.log(graph_line); 
     $(document).ready(function() {
-        if(is_line != 0) generLine('lineChart', graph_line);
+        hide_graph_but();
+        line_graph_view('1 day');
     });
 </script>
 {% endblock %}

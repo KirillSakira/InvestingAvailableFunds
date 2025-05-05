@@ -150,8 +150,9 @@ function generLine(elem, dataLine){
     if(lineChart[0])
         lineChart[0].destroy();
 
-    let bwidth = 7*vw/1000;
-    if(bwidth > 7) bwidth = 7;
+    let bwidth = 3*vw/1000;
+    if(bwidth > 3) bwidth = 3;
+    let lastValidZoom = { min: 0, max: dataLine.days.length - 1 };
 
     lineChart[0] = new Chart(ctx, {
         type: 'line',
@@ -161,7 +162,8 @@ function generLine(elem, dataLine){
                 data: dataLine.count,
                 borderColor: '#634FED',
                 borderWidth: bwidth,
-                pointRadius: dataLine.count.map((value, index) => index === dataLine.count.length - 1 ? bwidth : bwidth / 2),
+                pointRadius: 0,
+                pointHoverRadius: dataLine.count.map((value, index) => index === dataLine.count.length - 1 ? bwidth : bwidth / 2),
                 pointBackgroundColor: '#3AA1FF',
                 pointBorderColor: '#3AA1FF'
             }]
@@ -171,10 +173,13 @@ function generLine(elem, dataLine){
             scales: {
                 x: {
                     ticks: {
+                        maxTicksLimit: 8,
                         font: {
                             size: fontSize,
                         },
-                        color: '#F1EDFD'
+                        color: '#F1EDFD',
+                        maxRotation: 0,
+                        minRotation: 0,
                     },
                     grid: {
                         color: 'rgba(0, 0, 0, 0)'
@@ -193,12 +198,55 @@ function generLine(elem, dataLine){
                     grid: {
                         color: '#453F64'
                     },
-                    beginAtZero: true
+                    min: Math.min(...dataLine.count)
                 }
             },
+            interaction: {
+                mode: 'index',        // реагирует на вертикальную линию, пересекающую все точки по X
+                intersect: false      // не требует попадания курсора прямо на точку
+            },
             plugins: {
+                zoom: {
+                  pan: {
+                    enabled: true,
+                    mode: 'x', // можно 'x', 'y' или 'xy'
+                  },
+                  zoom: {
+                    wheel: {
+                      enabled: true,
+                      speed: 0.04,
+                    //   modifierKey: 'ctrl', // или убери, если хочешь без Ctrl
+                    },
+                    pinch: {
+                      enabled: true
+                    },
+                    mode: 'x',
+                    onZoom: ({ chart }) => {
+                        const scale = chart.scales.x;
+                        const visible = scale.max - scale.min;
+
+                        if (visible < 5) {
+                            scale.options.min = lastValidZoom.min;
+                            scale.options.max = lastValidZoom.max;
+                            chart.update();
+                            console.warn('Слишком близко! Откат зума.');
+                            return;
+                        }
+
+                        lastValidZoom = {
+                            min: scale.min,
+                            max: scale.max
+                        };
+                    }
+                  }
+                },
+                tooltip: {
+                  enabled: true,
+                  mode: 'index',
+                  intersect: false
+                },
                 legend: {
-                    display: false // Убираем легенду, если она мешает
+                  display: false
                 }
             }
         }

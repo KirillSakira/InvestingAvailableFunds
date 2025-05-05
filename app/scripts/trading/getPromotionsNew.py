@@ -72,14 +72,20 @@ def get_graph_info_by_interval(ticker, type, interval_option):
     candles = get_candles_by_ticker(ticker, type, interval_option)
 
     graph_information = []
-    graph_border = float(candles[-1].time.timestamp()) - float(candles[0].time.timestamp())
-    start_timestamp = float(candles[0].time.timestamp())
 
     for candle in candles:
         graph_point = dict()
-        relative = float(candle.time.timestamp()) - start_timestamp
-        graph_point["position"] = (relative / graph_border) * 100
-        graph_point["time"] = candle.time.strftime("%H:%M %d:%m:%y")
+        if interval_option == 0:
+            graph_point["time_interval"] = candle.time.strftime("%H:%M")
+        elif interval_option == 1:
+            graph_point["time_interval"] = candle.time.strftime("%H:%M")
+        elif interval_option == 2:
+            graph_point["time_interval"] = candle.time.strftime("%H:%M")
+        elif interval_option == 3:
+            graph_point["time_interval"] = int(candle.time.strftime("%H"))
+        elif interval_option == 4:
+            graph_point["time_interval"] = candle.time.strftime("%d")
+        graph_point["time"] = candle.time.strftime("%H:%M %d.%m.%y")
         graph_point["volume"] = str(candle.volume)
         graph_point["price"] = dict()
         graph_point["price"]["open"] = str(quotation_to_float(candle.open))

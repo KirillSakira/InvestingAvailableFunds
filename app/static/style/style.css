@@ -56,6 +56,10 @@ html{
     background-color: #F1EDFD;
 }
 
+.hidden{
+    display: none;
+}
+
 nav a{
     transition: 0.3s;
 }
@@ -293,6 +297,23 @@ nav a{
     min-height: 23rem;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+#sale_interval_graph{
+    display: flex;
+    gap: 1rem;
+}
+#sale_interval_graph > button{
+    width: unset;
+    padding: 6px 12px;
+    background: transparent;
+    border: 3px #aaa solid;
+    font-size: 1.5rem;
+}
+#sale_interval_graph > button.active,
+#sale_interval_graph > button:hover{
+    background: #aaa;
+    color: #222;
 }
 
 .trade_sale_sum{

@@ -67,7 +67,7 @@ def getSecuritieInfo(request, userId, ticker):
 
     data = {
       'security_name': security[0],
-      'security_price': fti(security[1]),
+      'security_price': fti(float(graphLine["1 day"][-1]["price"]["close"]) if len(graphLine["1 day"]) else 0),
       'security_img': security[2],
       'graph_line': graphLine,
       'proc': fti(proc),

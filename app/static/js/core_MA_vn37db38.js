@@ -129,9 +129,37 @@ window.addEventListener('resize', (e) => {
     isResize = false;
 });
 
+function line_graph_view(timeKey){
+    const closePrices = {
+        count: graph_line[timeKey].map(item => parseFloat(item.price.close)),
+        days: graph_line[timeKey].map(item => item.time_interval)
+    }
+    generLine('lineChart', closePrices);
+}
 
 if(pathname[1] == 'securitiesTrade'){
-    var trade_value = ''
+    $('#sale_interval_graph button').on('click', function(){
+        if($(this).hasClass('active')) return;
+        const timeKey = $(this).attr('data-time-key');
+        line_graph_view(timeKey);
+        $('#sale_interval_graph button').removeClass('active');
+        $(this).addClass('active');
+    });
+
+    function hide_graph_but(){
+        const but = $('#sale_interval_graph > button');
+        but.each(function () {
+            const el = this,
+                elT = $(this).attr('data-time-key');
+            if (!graph_line[elT] || graph_line[elT].length < 7) {
+                $(el).addClass('hidden');
+            }
+        });
+        
+    }
+
+
+    var trade_value = '';
     function dynamicSumTrade(){
         if(blocked_button) return;
         blocked_button = true;
