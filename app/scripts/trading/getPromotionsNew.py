@@ -85,8 +85,7 @@ def get_graph_info_by_interval(ticker, type, interval_option):
             graph_point["time_interval"] = int(candle.time.strftime("%H"))
         elif interval_option == 4:
             graph_point["time_interval"] = candle.time.strftime("%d")
-        graph_point["time"] = candle.time.strftime("%H:%M %d.%m.%y")
-        graph_point["volume"] = str(candle.volume)
+        graph_point["time"] = candle.time.strftime("%d.%m.%y %H:%M")
         graph_point["price"] = str(quotation_to_float(candle.close))
         graph_information.append(graph_point)
 

@@ -53,6 +53,7 @@
         {% block in_script %}{% endblock %}
         {% if in_scripts_graph %}
             <script src="{% static 'libs/chart.min.js' %}" type="text/javascript"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
             <script src="{% static 'libs/chartjs-plugin-zoom.min.js' %}"></script>
             <script>
               if (window.ChartZoom && window.Chart) {

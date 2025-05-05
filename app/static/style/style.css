@@ -168,6 +168,7 @@ nav a{
 }
 .prof_sec_1_1 img{
     transition: 0.3s;
+    border-radius: 50%;
 }
 .prof_sec_1_2 {
     display: flex;
