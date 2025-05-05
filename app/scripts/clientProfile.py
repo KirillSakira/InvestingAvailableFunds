@@ -7,13 +7,8 @@ def private_profile(request, id=None):
         connection = connection_db()
         dataBase = connection.cursor()
 
-        dataBase.execute(f"select * from auth_user where id={id}")
-        data = dataBase.fetchall()[0]
-        lastName = data[6]
-        firstName = data[5]
-        patronymic = data[12]
-        email = data[7]
-        id_user = data[11]
+        dataBase.execute(f"select first_name, last_name, email, id_user, patronymic from auth_user where id={id}")
+        firstName, lastName, email, id_user, patronymic = dataBase.fetchall()[0]
 
         dataBase.execute(f"select id_enterprise from Users where id_user={id_user}")
         id_enterprise = dataBase.fetchall()[0][0]

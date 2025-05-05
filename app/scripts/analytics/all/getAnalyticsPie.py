@@ -67,3 +67,8 @@ def analyticsPie(request, uid=False):
         return pie, securitiesData
     except:
         return 'Error'
+
+
+
+
+

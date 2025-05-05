@@ -19,7 +19,7 @@ from django.shortcuts import render
 
 
 def custom_404(request, exception):
-    return render(request, '404.html', status=404)
+	return render(request, '404.html', status=404)
 
 @csrf_exempt
 def registration(request):

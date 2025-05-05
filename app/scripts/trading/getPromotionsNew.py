@@ -87,12 +87,7 @@ def get_graph_info_by_interval(ticker, type, interval_option):
             graph_point["time_interval"] = candle.time.strftime("%d")
         graph_point["time"] = candle.time.strftime("%H:%M %d.%m.%y")
         graph_point["volume"] = str(candle.volume)
-        graph_point["price"] = dict()
-        graph_point["price"]["open"] = str(quotation_to_float(candle.open))
-        graph_point["price"]["high"] = str(quotation_to_float(candle.high))
-        graph_point["price"]["low"] = str(quotation_to_float(candle.low))
-        graph_point["price"]["close"] = str(quotation_to_float(candle.close))
-        graph_point["is_complete"] = str(candle.is_complete)
+        graph_point["price"] = str(quotation_to_float(candle.close))
         graph_information.append(graph_point)
 
     return graph_information
