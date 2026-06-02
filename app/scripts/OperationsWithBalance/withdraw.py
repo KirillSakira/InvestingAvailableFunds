@@ -1,49 +1,53 @@
-from app.scripts.funcs import returnJson, cardValidation
-from connection import connection_db
+from decimal import Decimal, InvalidOperation
+
 from app.front_app.viewBack.getUserData import getUserData
+from app.models import AuthUserExtra, Portfolio
+from app.scripts.funcs import returnJson, cardValidation
+from app.services import create_operation
+
 
 def withdrawBack(request):
-    amount = int(request.POST.get('amount'))
-    cardNumber = request.POST.get('card_number')
+    try:
+        amount = Decimal(request.POST.get("amount") or "0")
+    except (InvalidOperation, TypeError):
+        return returnJson(data={"amount": "Некорректная сумма перевода"})
+
+    cardNumber = request.POST.get("card_number") or ""
 
     errorsDict = cardValidation(amount, cardNumber)
 
-    if errorsDict != {}:
+    if errorsDict:
         return returnJson(data=errorsDict)
 
-    user_id = request.user.id
-    
-    connection = connection_db()
-    dataBase = connection.cursor()
-    
-    dataBase.execute(f'select id_user from auth_user where id={user_id}')
-    id_user = dataBase.fetchall()[0][0]
+    try:
+        auth_user = (
+            AuthUserExtra.objects
+            .select_related("legacy_user", "legacy_user__enterprise")
+            .get(pk=request.user.id)
+        )
 
-    dataBase.execute(f'select id_enterprise from users where id_user={id_user}')
-    id_enterprise = dataBase.fetchall()[0][0]
+        portfolio = Portfolio.objects.get(
+            enterprise=auth_user.legacy_user.enterprise
+        )
 
-    dataBase.execute(f'select id_portfolio from portfolios where id_enterprise={id_enterprise}')
-    id_portfolio = dataBase.fetchall()[0][0]
+        operation = create_operation(
+            portfolio_id=portfolio.id_portfolio,
+            oper_type=False,
+            amount=amount,
+        )
 
-    dataBase.execute(f'''insert into operations_history (id_portfolio, oper_type, amount)
-values ({id_portfolio}, {False}, {amount})''')
-    connection.commit()
+        if not operation.oper_status:
+            return returnJson(data={"message": "Недостаточно свободных средств"})
 
-    dataBase.execute('select oper_status from operations_history where id_operation = (select max(id_operation) from operations_history)')
-    oper_status = dataBase.fetchall()[0][0]
-
-    if oper_status == False:
-        errorsDict['message'] = 'Недостаточно свободных средств'
-        return returnJson(data=errorsDict)
-    
-    connection.commit()
-    dataBase.close()
-    connection.close()
+    except Exception:
+        return returnJson(status="error", message="Ошибка снятия")
 
     userData = getUserData(request)
 
-    return returnJson(data={
-        'status': 'success',
-        'message': 'Успешное снятие',
-        'balance': f'{userData['balance']} ₽'
-    })
+    return returnJson(
+        data={
+            "status": "success",
+            "message": "Успешное снятие",
+            "balance": f"{userData['balance']} ₽",
+        }
+    )

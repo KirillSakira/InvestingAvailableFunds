@@ -1,36 +1,28 @@
-from connection import connection_db
+from app.models import AuthUserExtra
+
 
 def private_profile(request, id=None):
     try:
-        id = id if id != None else request.user.id
+        user_id = id if id is not None else request.user.id
 
-        connection = connection_db()
-        dataBase = connection.cursor()
+        auth_user = (
+            AuthUserExtra.objects
+            .select_related("legacy_user", "legacy_user__enterprise")
+            .get(pk=user_id)
+        )
 
-        dataBase.execute(f"select first_name, last_name, email, id_user, patronymic from auth_user where id={id}")
-        firstName, lastName, email, id_user, patronymic = dataBase.fetchall()[0]
+        enterprise = auth_user.legacy_user.enterprise
 
-        dataBase.execute(f"select id_enterprise from Users where id_user={id_user}")
-        id_enterprise = dataBase.fetchall()[0][0]
+        patronymic = auth_user.patronymic or ""
 
-        dataBase.execute(f"select title, type_property, tel, address from Enterprises where id_enterprise={id_enterprise}")
-        data = dataBase.fetchall()[0]
-        title, typeProperty, phone, address = data
-        
-        if patronymic == None:
-            patronymic = ''
-
-        data = {
-            'email': email,
-            'name': (lastName + ' ' + firstName + ' ' + patronymic).strip(),
-            'phone': phone,
-            'address': address,
-            'type_property': typeProperty,
-            'title': title
+        return {
+            "email": auth_user.email,
+            "name": f"{auth_user.last_name} {auth_user.first_name} {patronymic}".strip(),
+            "phone": enterprise.tel,
+            "address": enterprise.address,
+            "type_property": enterprise.type_property,
+            "title": enterprise.title,
         }
 
-        dataBase.close()
-        connection.close()
-        return data
-    except:
-        return 'Error'
+    except Exception:
+        return "Error"

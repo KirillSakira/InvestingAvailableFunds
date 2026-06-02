@@ -1,102 +1,113 @@
-from connection import connection_db
+from app.models import AuthUserExtra, Portfolio, PortfolioToSecuritie, Queue, Security
 from app.scripts.funcs import returnJson, fti
+from app.services import create_request
+
+RUB_SECURITY_ID = 36
 
 
-def getAdditionalInfo(dataBase, idSecuritie, idPortfolio):
-    dataBase.execute(f'select quotation from securities where id_securitie={idSecuritie}')
-    quotation = fti(dataBase.fetchall()[0][0])
-    dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={idPortfolio} and id_securitie={idSecuritie}')
-    portfolioPrice = fti(dataBase.fetchall()[0][0]) * quotation
-    dataBase.execute(f'select quotation from queue where id_securitie={idSecuritie} and id_portfolio={idPortfolio} order by queue_date')
-    try:
-        oldPrice = dataBase.fetchall()[0][0]
-        
-        proc = 100 - (float(oldPrice)/float(quotation))*100
-    except:
+def getAdditionalInfo(security, portfolio):
+    link = (
+        PortfolioToSecuritie.objects
+        .filter(portfolio=portfolio, securitie=security)
+        .first()
+    )
+
+    if not link:
+        return [0, 0]
+
+    quotation = security.quotation
+    portfolio_price = fti(link.total_quantity) * fti(quotation)
+
+    first_queue_item = (
+        Queue.objects
+        .filter(portfolio=portfolio, securitie=security)
+        .order_by("queue_date")
+        .first()
+    )
+
+    if first_queue_item and quotation:
+        old_price = first_queue_item.quotation
+        proc = 100 - (float(old_price) / float(quotation)) * 100
+    else:
         proc = 0
-    return [portfolioPrice, proc]
-    
+
+    return [portfolio_price, proc]
+
+
+def _get_portfolio_by_user_id(user_id):
+    auth_user = (
+        AuthUserExtra.objects
+        .select_related("legacy_user", "legacy_user__enterprise")
+        .get(pk=user_id)
+    )
+
+    return Portfolio.objects.get(
+        enterprise=auth_user.legacy_user.enterprise
+    )
+
 
 def tradeAction(request):
-    ticker = request.POST.get('ticker')
-    action = bool(int(request.POST.get('action')))
-    quantity = request.POST.get('quantity')
-    userId = request.POST.get('uid')
+    ticker = request.POST.get("ticker")
+    user_id = request.POST.get("uid") or request.user.id
 
-    if not(quantity) or quantity == '0':
-        return returnJson(status='error', message='Введите количество')
+    try:
+        action = bool(int(request.POST.get("action")))
+    except (TypeError, ValueError):
+        return returnJson(status="error", message="Некорректное действие")
 
-    connection = connection_db()
-    dataBase = connection.cursor()
-    
-    dataBase.execute(f'select id_securitie from securities where ticker=\'{ticker}\'')
-    id_securitie = dataBase.fetchall()[0][0]
+    try:
+        quantity = int(request.POST.get("quantity") or "0")
+    except (TypeError, ValueError):
+        return returnJson(status="error", message="Введите количество")
 
-    dataBase.execute(f'select id_user from auth_user where id={userId}')
-    id_user = dataBase.fetchall()[0][0]
-    dataBase.execute(
-        f'select id_portfolio from portfolios as p join users as u on p.id_enterprise=u.id_enterprise where u.id_user={id_user}')
-    id_portfolio = dataBase.fetchall()[0][0]
+    if quantity <= 0:
+        return returnJson(status="error", message="Введите количество")
 
-    if action:
-        dataBase.execute(
-            f'insert into requests (id_portfolio, id_securitie, quantity, req_type) values ({id_portfolio}, {id_securitie}, {quantity}, true)')
+    try:
+        security = Security.objects.get(ticker=ticker)
+        portfolio = _get_portfolio_by_user_id(user_id)
 
-        connection.commit()
+        request_obj = create_request(
+            portfolio_id=portfolio.id_portfolio,
+            securitie_id=security.id_securitie,
+            req_type=action,
+            quantity=quantity,
+        )
 
-        dataBase.execute(f'select req_status from requests where id_request = (select max(id_request) from requests)')
-        oper_status = dataBase.fetchall()[0][0]
+        if not request_obj.req_status:
+            if action:
+                return returnJson(status="error", message="Недостаточно свободных средств")
 
-        if not (oper_status):
-            dataBase.close()
-            connection.close()
-            return returnJson(status='error', message='Недостаточно свободных средств')
+            return returnJson(status="error", message="Указано неверное колличество для продажи")
 
-        dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={id_portfolio} and (id_securitie={id_securitie} or id_securitie=36) order by id_securitie')
-        fetchs = dataBase.fetchall()
-        newTotalQuantity = fetchs[0][0]
-        newBalance = fetchs[1][0]
-        info = getAdditionalInfo(dataBase, id_securitie, id_portfolio)
-        dataBase.close()
-        connection.close()
-        return returnJson(data={
-            'total_quantity': fti(newTotalQuantity),
-            'balance': fti(newBalance),
-            'status': 'success',
-            'message': 'Покупка совершена успешно',
-            'total_sum': info[0],
-            'proc': info[1]
-        })
+        security_link = (
+            PortfolioToSecuritie.objects
+            .filter(portfolio=portfolio, securitie=security)
+            .first()
+        )
 
-    dataBase.execute(f'insert into requests (id_portfolio, id_securitie, quantity, req_type) values ({id_portfolio}, {id_securitie}, {quantity}, false)')
-    connection.commit()
-    dataBase.execute(f'select req_status from requests where id_request = (select max(id_request) from requests)')
-    oper_status = dataBase.fetchall()[0][0]
+        rub_link = (
+            PortfolioToSecuritie.objects
+            .filter(portfolio=portfolio, securitie_id=RUB_SECURITY_ID)
+            .first()
+        )
 
-    if not (oper_status):
-        dataBase.close()
-        connection.close()
-        return returnJson(status='error', message='Указано неверное колличество для продажи')
+        new_total_quantity = security_link.total_quantity if security_link else 0
+        new_balance = rub_link.total_quantity if rub_link else 0
+        info = getAdditionalInfo(security, portfolio) if new_total_quantity > 0 else [0, 0]
 
-    dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={id_portfolio} and (id_securitie={id_securitie} or id_securitie=36) order by id_securitie')
-    fetchs = dataBase.fetchall()
-    if len(fetchs) == 2:
-      newBalance = fetchs[1][0]
-      newTotalQuantity = fetchs[0][0]
-    else:
-      newBalance = fetchs[0][0]
-      newTotalQuantity = 0
-    if newTotalQuantity > 0:
-        info = getAdditionalInfo(dataBase, id_securitie, id_portfolio)
-    else:
-        info = [0, 0]
-    dataBase.close()
-    connection.close()
-    return returnJson(data={
-        'total_quantity': fti(newTotalQuantity),
-        'balance': fti(newBalance),
-        'status': 'success',
-        'message': 'Продажа совершена успешно',
-        'total_sum': info[0],
-        'proc': info[1]
-    })
+        return returnJson(
+            data={
+                "total_quantity": fti(new_total_quantity),
+                "balance": fti(new_balance),
+                "status": "success",
+                "message": "Покупка совершена успешно" if action else "Продажа совершена успешно",
+                "total_sum": info[0],
+                "proc": info[1],
+            }
+        )
+
+    except Security.DoesNotExist:
+        return returnJson(status="error", message="Инструмент не найден")
+    except Exception:
+        return returnJson(status="error", message="Ошибка совершения сделки")

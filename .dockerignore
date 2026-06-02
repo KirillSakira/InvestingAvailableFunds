@@ -1,0 +1,16 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+venv
+python_modules
+node_modules
+.DS_Store
+*.docx
+*.pdf
+docs
+Документация организации

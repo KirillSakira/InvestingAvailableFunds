@@ -1,64 +1,78 @@
-from connection import connection_db
-from app.scripts.OperationsWithBalance.operationsHistory import history
-from datetime import datetime as dt
+from app.models import AuthUserExtra, OperationHistory, Portfolio
+
+
+def _short_name(auth_user):
+    name = f"{auth_user.last_name} {auth_user.first_name[0]}."
+
+    if auth_user.patronymic:
+        name += f" {auth_user.patronymic[0]}."
+
+    return name
 
 
 def historyManager(request, uid=False):
     try:
-        
-        id = uid if uid else request.user.id
+        user_id = uid if uid else request.user.id
 
-        connection = connection_db()
-        dataBase = connection.cursor()
+        manager_auth = (
+            AuthUserExtra.objects
+            .select_related("legacy_user", "legacy_user__employee")
+            .get(pk=user_id)
+        )
 
-        dataBase.execute(f"select id_user from auth_user where id={id}")
-        id_user = dataBase.fetchall()[0][0]
+        employee = manager_auth.legacy_user.employee
 
-        dataBase.execute(f'select id_employee from Users where id_user={id_user}')
-        id_employee = dataBase.fetchall()[0][0]
-
-        dataBase.execute(f'select id_portfolio from Portfolios where id_employee={id_employee}')
-        portfoliosId = dataBase.fetchall()
+        portfolios = (
+            Portfolio.objects
+            .filter(employee=employee)
+            .select_related("enterprise")
+        )
 
         data = []
 
-        if portfoliosId == None:
-            dataBase.close()
-            connection.close()
-            return data
-        for portfolio in portfoliosId:
-            id_portfolio = portfolio[0]
+        operation_types = ["Вывод", "Пополнение"]
 
-            dataBase.execute(f'select id_enterprise from Portfolios where id_portfolio={id_portfolio}')
-            enterpriseId = dataBase.fetchall()[0][0]
+        for portfolio in portfolios:
+            client_auth = (
+                AuthUserExtra.objects
+                .select_related("legacy_user", "legacy_user__enterprise")
+                .get(legacy_user__enterprise=portfolio.enterprise)
+            )
 
-            dataBase.execute(f'select id_user from Users where id_enterprise={enterpriseId}')
-            idUserClient = dataBase.fetchall()[0][0]
+            client_name = _short_name(client_auth)
 
-            dataBase.execute(f'select id from auth_user where id_user={idUserClient}')
-            uid = dataBase.fetchall()[0][0]
+            operations = (
+                OperationHistory.objects
+                .filter(
+                    portfolio=portfolio,
+                    oper_status=True,
+                )
+                .order_by("-oper_date")
+            )
 
-            operationInfo = history(request, uid)
-            operationInfo.append(uid)
-            data.append(operationInfo)
-        
-        data2 = []
-        
-        for i in data:
-            for j in i[1]:
-                j['date'] = dt.strptime(j['date'], '%d.%m.%Y %H:%M')
-                data2.append({
-                    'id': i[2],
-                    'name': i[0],
-                    'operation': j
-                })
-        data2.sort(key= lambda g: g['operation']['date'], reverse=True)
+            for operation in operations:
+                amount = float(operation.amount)
 
-        for i in data2:
-            i['operation']['date'] = i['operation']['date'].strftime('%d.%m.%Y %H:%M')
+                if amount == int(amount):
+                    amount = int(amount)
 
-        dataBase.close()
-        connection.close()
-        return data2
-    except:
-        return 'Error'
+                data.append(
+                    {
+                        "id": client_auth.id,
+                        "name": client_name,
+                        "operation": {
+                            "type": operation_types[int(operation.oper_type)],
+                            "date": operation.oper_date.strftime("%d.%m.%Y %H:%M"),
+                            "price": amount,
+                        },
+                    }
+                )
+
+        return sorted(
+            data,
+            key=lambda item: item["operation"]["date"],
+            reverse=True,
+        )
+
+    except Exception:
+        return "Error"

@@ -1,50 +1,80 @@
-from connection import connection_db
-from app.scripts.funcs import returnJson
-from app.front_app.viewBack.getUserData import getUserData
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
+from django.db import transaction
+
+from app.models import (
+    AuthUserExtra,
+    BalanceHistory,
+    Employee,
+    Enterprise,
+    LegacyUser,
+    OperationHistory,
+    Portfolio,
+    PortfolioToSecuritie,
+    Queue,
+    Request,
+)
+from app.front_app.viewBack.getUserData import getUserData
+from app.scripts.funcs import returnJson
+
 
 def delete_profile(request):
-    idPost = request.POST.get('id')
-    id = idPost if idPost != None else request.user.id
-    
-    userData = getUserData(request, id)
+    id_post = request.POST.get("id")
+    user_id = id_post if id_post is not None else request.user.id
 
-    connection = connection_db()
-    dataBase = connection.cursor()
+    userData = getUserData(request, user_id)
 
-    dataBase.execute(f"select id_user from auth_user where id={id}")
-    idUser = dataBase.fetchall()[0][0]
+    try:
+        auth_user = (
+            AuthUserExtra.objects
+            .select_related(
+                "legacy_user",
+                "legacy_user__enterprise",
+                "legacy_user__employee",
+            )
+            .get(pk=user_id)
+        )
+    except AuthUserExtra.DoesNotExist:
+        return returnJson(status="error", message="Пользователь не найден")
 
-    if userData['role'] == 'enterprise':
-        dataBase.execute(f"select id_enterprise from users where id_user={idUser}")
-        idEnterprise = dataBase.fetchall()[0][0]
-    
-        dataBase.execute(f"select * from portfolios where id_enterprise={idEnterprise}")
-        idPortfolio = dataBase.fetchall()[0][0]
-        
-        dataBase.execute(f"delete from queue where id_portfolio={idPortfolio}")
-        dataBase.execute(f"delete from portfolio_to_securitie where id_portfolio={idPortfolio}")
-        dataBase.execute(f"delete from operations_history where id_portfolio={idPortfolio}")
-        dataBase.execute(f"delete from balances_history where id_portfolio={idPortfolio}")
-        dataBase.execute(f"delete from requests where id_portfolio={idPortfolio}")
-        dataBase.execute(f"delete from portfolios where id_portfolio={idPortfolio}")
-        dataBase.execute(f"delete from users where id_enterprise={idEnterprise}")
-        dataBase.execute(f"delete from auth_user where id={id}")
-        dataBase.execute(f"delete from enterprises where id_enterprise={idEnterprise}")
-    else:
-        dataBase.execute(f"select id_employee from users where id_user={idUser}")
-        idEmployee = dataBase.fetchall()[0][0]
-        
-        dataBase.execute(f'update portfolios set id_employee=Null where id_employee={idEmployee}')
-        dataBase.execute(f'delete from auth_user where id={id}')
-        dataBase.execute(f'delete from users where id_user={idUser}')
-        dataBase.execute(f'delete from employees where id_employee={idEmployee}')
+    legacy_user = auth_user.legacy_user
 
-    connection.commit()
-    dataBase.close()
-    connection.close()
-    
-    if idPost == None:
+    if legacy_user is None:
+        return returnJson(status="error", message="Профиль пользователя не найден")
+
+    with transaction.atomic():
+        if userData["role"] == "enterprise":
+            enterprise = legacy_user.enterprise
+
+            if enterprise is None:
+                return returnJson(status="error", message="Клиент не найден")
+
+            portfolio = Portfolio.objects.get(enterprise=enterprise)
+
+            Queue.objects.filter(portfolio=portfolio).delete()
+            PortfolioToSecuritie.objects.filter(portfolio=portfolio).delete()
+            OperationHistory.objects.filter(portfolio=portfolio).delete()
+            BalanceHistory.objects.filter(portfolio=portfolio).delete()
+            Request.objects.filter(portfolio=portfolio).delete()
+
+            portfolio.delete()
+            User.objects.filter(pk=user_id).delete()
+            LegacyUser.objects.filter(pk=legacy_user.pk).delete()
+            Enterprise.objects.filter(pk=enterprise.pk).delete()
+
+        else:
+            employee = legacy_user.employee
+
+            if employee is None:
+                return returnJson(status="error", message="Сотрудник не найден")
+
+            Portfolio.objects.filter(employee=employee).update(employee=None)
+
+            User.objects.filter(pk=user_id).delete()
+            LegacyUser.objects.filter(pk=legacy_user.pk).delete()
+            Employee.objects.filter(pk=employee.pk).delete()
+
+    if id_post is None:
         logout(request)
 
     return returnJson(status="success", message="Ваш аккаунт был удалён")

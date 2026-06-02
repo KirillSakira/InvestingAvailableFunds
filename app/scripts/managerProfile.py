@@ -1,31 +1,21 @@
-from connection import connection_db
+from app.models import AuthUserExtra
+
 
 def manager_profile(request, id=None):
     try:
-        id = id if id != None else request.user.id
+        user_id = id if id is not None else request.user.id
 
-        connection = connection_db()
-        dataBase = connection.cursor()
+        auth_user = AuthUserExtra.objects.get(pk=user_id)
 
-        dataBase.execute(f"select last_name, first_name, patronymic, email from auth_user where id={id}")
-        data = dataBase.fetchall()[0]
+        name = f"{auth_user.last_name} {auth_user.first_name}"
 
-        lastName = data[0]
-        firstName = data[1]
-        patronymic = data[2]
-        email = data[3]
+        if auth_user.patronymic:
+            name += f" {auth_user.patronymic}"
 
-        name = f'{lastName} {firstName}'
-        if patronymic != None:
-            name += f' {patronymic}'
-            
-        data = {
-            'email': email,
-            'name': name,
+        return {
+            "email": auth_user.email,
+            "name": name,
         }
 
-        dataBase.close()
-        connection.close()
-        return data
-    except:
-        return 'Error'
+    except Exception:
+        return "Error"

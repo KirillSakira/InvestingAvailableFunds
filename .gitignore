@@ -22,5 +22,5 @@ dist/
 .ipynb_checkpoints
 
 connection.py
-babloss/settings.py
-babloss/__pycache__/
+finportfolio/settings.py
+finportfolio/__pycache__/

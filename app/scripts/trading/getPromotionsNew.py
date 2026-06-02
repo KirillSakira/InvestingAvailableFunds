@@ -101,5 +101,62 @@ def get_graph_info(ticker, type):
     return result
 
     
-
-
+def get_last_price_by_ticker(ticker, category):
+    figi = get_figi(ticker, category)
+    
+    if not figi:
+        return None
+    
+    with Client(TOKEN) as client:
+        response = client.market_data.get_last_prices(figi=[figi])
+        
+        if not response.last_prices:
+            return None
+        
+        return quotation_to_float(response.last_prices[0].price)
+    
+    
+def get_last_prices_by_tickers(securities):
+    prices = {}
+    
+    with Client(TOKEN) as client:
+        for security in securities:
+            ticker = security.ticker
+            category = security.catalog.catalog_name.lower()
+            
+            if ticker == "RUB":
+                continue
+            
+            try:
+                figi = None
+                allowed_classes = CLASS_CODE_MAP.get(category)
+                
+                if not allowed_classes:
+                    prices[ticker] = None
+                    continue
+                
+                results = client.instruments.find_instrument(query=ticker)
+                
+                for instr in results.instruments:
+                    if (
+                        instr.ticker.upper() == ticker.upper()
+                        and instr.class_code in allowed_classes
+                    ):
+                        figi = instr.figi
+                        break
+                
+                if not figi:
+                    prices[ticker] = None
+                    continue
+                
+                response = client.market_data.get_last_prices(figi=[figi])
+                
+                if response.last_prices:
+                    prices[ticker] = quotation_to_float(response.last_prices[0].price)
+                else:
+                    prices[ticker] = None
+                    
+            except Exception:
+                prices[ticker] = None
+                
+    return prices

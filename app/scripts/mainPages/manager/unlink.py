@@ -1,22 +1,27 @@
-from connection import connection_db
+from django.db import transaction
+
+from app.models import AuthUserExtra, Portfolio
 from app.scripts.funcs import returnJson
 
+
 def unlinkingAnAccount(request):
+    uid = request.POST.get("uid")
 
-    uid = request.POST.get('uid')
+    try:
+        auth_user = (
+            AuthUserExtra.objects
+            .select_related("legacy_user", "legacy_user__enterprise")
+            .get(pk=uid)
+        )
+    except AuthUserExtra.DoesNotExist:
+        return returnJson(status="error", message="Пользователь не найден")
 
-    connection = connection_db()
-    dataBase = connection.cursor()
+    enterprise = auth_user.legacy_user.enterprise
 
-    dataBase.execute(f"select id_user from auth_user where id='{uid}'")
-    id_user_client = dataBase.fetchall()[0][0] 
+    if enterprise is None:
+        return returnJson(status="error", message="Клиент не найден")
 
-    dataBase.execute(f"select id_enterprise from Users where id_user='{id_user_client}'")
-    id_enterprise = dataBase.fetchall()[0][0]
-    
-    dataBase.execute(f"update portfolios set id_employee = null where id_enterprise={id_enterprise}")
+    with transaction.atomic():
+        Portfolio.objects.filter(enterprise=enterprise).update(employee=None)
 
-    connection.commit()
-    dataBase.close()
-    connection.close()
-    return returnJson(status='success', message='Аккаунт отвязан успешно')
+    return returnJson(status="success", message="Аккаунт отвязан успешно")

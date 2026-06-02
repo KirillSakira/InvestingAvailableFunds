@@ -1,5 +1,5 @@
 # test_settings.py
-from babloss.settings import *
+from finportfolio.settings import *
 
 DATABASES = {
     'default': {

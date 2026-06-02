@@ -1,40 +1,36 @@
-from connection import connection_db
+from app.models import AuthUserExtra
 from app.scripts.funcs import fti
 
 
 def getPortfolioData(portfolio):
-    balance = portfolio[1]
-    deposition = portfolio[3]
-    uid, initials = getInitials(portfolio[5])
-    balanceChange = 0
+    uid, initials = getInitials(portfolio.enterprise_id)
+
+    balance = portfolio.balance
+    deposition = portfolio.deposition
+
+    balance_change = 0
+
     if deposition:
-        balanceChange = fti((float(balance) / float(deposition) - 1) * 100)
-    portfolioInfo = {
-        'id': uid,
-        'name': initials,
-        'balance': fti(balance),
-        'balance_proc': fti(balanceChange),
+        balance_change = fti((float(balance) / float(deposition) - 1) * 100)
+
+    return {
+        "id": uid,
+        "name": initials,
+        "balance": fti(balance),
+        "balance_proc": fti(balance_change),
     }
-    return portfolioInfo
+
 
 def getInitials(id_enterprise):
-    connection = connection_db()
-    dataBase = connection.cursor()
+    auth_user = (
+        AuthUserExtra.objects
+        .select_related("legacy_user", "legacy_user__enterprise")
+        .get(legacy_user__enterprise_id=id_enterprise)
+    )
 
-    dataBase.execute(f'select id_user from Users where id_enterprise={id_enterprise}')
-    id_user = dataBase.fetchall()[0][0]
+    initials = f"{auth_user.last_name} {auth_user.first_name[0]}."
 
-    dataBase.execute(f'select id, last_name, first_name, patronymic from auth_user where id_user={id_user}')
-    data = dataBase.fetchall()[0]
-    id = data[0]
-    clientLastName = data[1]
-    clientFirstName = data[2]
-    clientPatronymic = data[3]
+    if auth_user.patronymic:
+        initials += f" {auth_user.patronymic[0]}."
 
-    initials = f'{clientLastName} {clientFirstName[0]}.'
-    if clientPatronymic != None:
-        initials += f' {clientPatronymic[0]}.'
-    connection.commit()
-    dataBase.close()
-    connection.close()
-    return [id, initials]
+    return auth_user.id, initials

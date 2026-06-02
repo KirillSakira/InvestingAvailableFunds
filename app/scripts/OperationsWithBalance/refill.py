@@ -1,34 +1,42 @@
-from connection import connection_db
+from decimal import Decimal, InvalidOperation
+
+from app.models import AuthUserExtra, Portfolio
 from app.scripts.funcs import returnJson, cardValidation
+from app.services import create_operation
+
 
 def refillBack(request):
-    amount = int(request.POST.get('amount'))
-    cardNumber = request.POST.get('card_number')
-    cardDateInput = request.POST.get('card_date').split('/')
-    
+    try:
+        amount = Decimal(request.POST.get("amount") or "0")
+    except (InvalidOperation, TypeError):
+        return returnJson(data={"amount": "Некорректная сумма перевода"})
+
+    cardNumber = request.POST.get("card_number") or ""
+    cardDateInput = request.POST.get("card_date") or ""
+
     errorsDict = cardValidation(amount, cardNumber, cardDateInput)
-    
-    if errorsDict != {}:
+
+    if errorsDict:
         return returnJson(data=errorsDict)
 
-    user_id = request.user.id
+    try:
+        auth_user = (
+            AuthUserExtra.objects
+            .select_related("legacy_user", "legacy_user__enterprise")
+            .get(pk=request.user.id)
+        )
 
-    connection = connection_db()
-    dataBase = connection.cursor()
-    
-    dataBase.execute(f'select id_user from auth_user where id={user_id}')
-    id_user = dataBase.fetchall()[0][0]
+        portfolio = Portfolio.objects.get(
+            enterprise=auth_user.legacy_user.enterprise
+        )
 
-    dataBase.execute(f'select id_enterprise from users where id_user={id_user}')
-    id_enterprise = dataBase.fetchall()[0][0]
+        create_operation(
+            portfolio_id=portfolio.id_portfolio,
+            oper_type=True,
+            amount=amount,
+        )
 
-    dataBase.execute(f'select id_portfolio from portfolios where id_enterprise={id_enterprise}')
-    id_portfolio = dataBase.fetchall()[0][0]
-    
-    dataBase.execute(f'''insert into operations_history (id_portfolio, oper_type, amount)
-values ('{id_portfolio}', {True}, {amount})''')
-    connection.commit()
-    dataBase.close()
-    connection.close()
+    except Exception:
+        return returnJson(status="error", message="Ошибка пополнения")
 
-    return returnJson(status='success', message='Успешное пополнение')
+    return returnJson(status="success", message="Успешное пополнение")

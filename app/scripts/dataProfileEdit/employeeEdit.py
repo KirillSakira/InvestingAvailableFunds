@@ -1,52 +1,49 @@
-from connection import *
-from app.scripts.funcs import *
+from django.db import transaction
+
+from app.models import AuthUserExtra
+from app.scripts.funcs import check, returnJson
 
 
 def employeeEdit(request):
-    user_id = request.POST.get('id')
-    email = request.POST.get('email')
-    name = request.POST.get('name')
-
-    user_id = user_id if user_id else request.user.id
+    user_id = request.POST.get("id") or request.user.id
+    email = request.POST.get("email") or ""
+    name = request.POST.get("name") or ""
 
     errorsDict = {}
 
     if len(email) > 150:
-        errorsDict['email'] = 'Почта слишком длинная'
+        errorsDict["email"] = "Почта слишком длинная"
 
-    if check(email, 'mail'):
-        errorsDict['email'] = 'Введите корректную почту'
+    if check(email, "mail"):
+        errorsDict["email"] = "Введите корректную почту"
 
     splitName = name.split()
 
     if len(splitName) < 2:
-        errorsDict['name'] = 'ФИО введён некорректно'
+        errorsDict["name"] = "ФИО введён некорректно"
+        first_name = ""
+        last_name = ""
+        patronymic = None
     else:
-
         last_name, first_name, *args = splitName
 
         last_name = last_name.capitalize()
         first_name = first_name.capitalize()
-        patronymic = "Null"
+        patronymic = args[0].capitalize() if args else None
 
-        if args != []:
-            patronymic = f"'{args[0].capitalize()}'"
+        if len(first_name) > 150 or len(last_name) > 150 or len(patronymic or "") > 150:
+            errorsDict["name"] = "ФИО слишком длинное"
 
-        if len(first_name) > 150 or len(last_name) > 150 or len(patronymic) > 150:
-            errorsDict['name'] = 'ФИО слишком длинное'
-
-    if errorsDict != {}:
+    if errorsDict:
         return returnJson(data=errorsDict)
 
-    connection = connection_db()
-    dataBase = connection.cursor()
+    with transaction.atomic():
+        AuthUserExtra.objects.filter(pk=user_id).update(
+            email=email,
+            username=email,
+            first_name=first_name,
+            last_name=last_name,
+            patronymic=patronymic,
+        )
 
-    dataBase.execute(f"update auth_user set email='{email}', username='{email}' where id={user_id}")
-
-    dataBase.execute(f"update auth_user set first_name='{first_name}', last_name='{last_name}', patronymic={patronymic} where id={user_id}")
-    
-    
-    connection.commit()
-    dataBase.close()
-    connection.close()
-    return returnJson(status='success', message='Данные обновлены')
+    return returnJson(status="success", message="Данные обновлены")

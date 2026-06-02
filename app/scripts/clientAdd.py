@@ -1,46 +1,61 @@
-from connection import connection_db
+from django.db import transaction
+
+from app.models import AuthUserExtra, Portfolio
 from app.scripts.funcs import returnJson
 from app.scripts.mainPages.manager.managerMainModule import getPortfolioData
 
+
 def clientAdd(request):
-	connection = connection_db()
-	dataBase = connection.cursor()
-	
-	username = request.POST.get('email')
-	id = request.POST.get('id')
-	
-	idE = id if id else request.user.id
-	
-	dataBase.execute(f'select id_user from auth_user where username=\'{username}\'')
-	idUserEnt = dataBase.fetchall()
-	if idUserEnt == []:
-		return returnJson(status='error', message='Такого пользователя не существует')
-	idUserEnt = idUserEnt[0][0]
-	dataBase.execute(f'select id_enterprise from users where id_user={idUserEnt}')
-	idEnterprise = dataBase.fetchall()[0][0]
-	if idEnterprise == None:
-		return returnJson(status='error', message='Такого клиента не существует')
-	
-	dataBase.execute(f'select id_user from auth_user where id={idE}')
-	idUserEmp = dataBase.fetchall()[0][0]
-	dataBase.execute(f'select id_employee from users where id_user={idUserEmp}')
-	idEmployee = dataBase.fetchall()[0][0]
-	
-	dataBase.execute(f'select id_employee from portfolios where id_enterprise={idEnterprise}')
-	idEmployeePortfolio = dataBase.fetchall()[0][0]
-	if idEmployeePortfolio != None:
-		if idEmployeePortfolio == idEmployee:
-			return returnJson(status='error', message='Клиент уже работает с вами')
-		return returnJson(status='error', message='Клиент уже работает с другим менеджером')
-	
-	dataBase.execute(f'update portfolios set id_employee={idEmployee} where id_enterprise={idEnterprise}')
-	
-	dataBase.execute(f'select * from portfolios where id_enterprise={idEnterprise}')
-	portfolio = getPortfolioData(dataBase.fetchall()[0])
-	portfolio['status'] = 'success'
-	portfolio['message'] = 'Клиент добавлен'
-	
-	connection.commit()
-	dataBase.close()
-	connection.close()
-	return returnJson(data=portfolio)
+    username = request.POST.get("email")
+    django_user_id = request.POST.get("id") or request.user.id
+
+    try:
+        client_auth = (
+            AuthUserExtra.objects
+            .select_related("legacy_user", "legacy_user__enterprise")
+            .get(username=username)
+        )
+    except AuthUserExtra.DoesNotExist:
+        return returnJson(status="error", message="Такого пользователя не существует")
+
+    client_legacy_user = client_auth.legacy_user
+
+    if not client_legacy_user or not client_legacy_user.enterprise_id:
+        return returnJson(status="error", message="Такого клиента не существует")
+
+    try:
+        employee_auth = (
+            AuthUserExtra.objects
+            .select_related("legacy_user", "legacy_user__employee")
+            .get(pk=django_user_id)
+        )
+    except AuthUserExtra.DoesNotExist:
+        return returnJson(status="error", message="Сотрудник не найден")
+
+    employee_legacy_user = employee_auth.legacy_user
+
+    if not employee_legacy_user or not employee_legacy_user.employee_id:
+        return returnJson(status="error", message="Сотрудник не найден")
+
+    with transaction.atomic():
+        portfolio = (
+            Portfolio.objects
+            .select_for_update()
+            .select_related("employee", "enterprise")
+            .get(enterprise=client_legacy_user.enterprise)
+        )
+
+        if portfolio.employee_id is not None:
+            if portfolio.employee_id == employee_legacy_user.employee_id:
+                return returnJson(status="error", message="Клиент уже работает с вами")
+
+            return returnJson(status="error", message="Клиент уже работает с другим менеджером")
+
+        portfolio.employee = employee_legacy_user.employee
+        portfolio.save(update_fields=["employee"])
+
+    portfolio_data = getPortfolioData(portfolio)
+    portfolio_data["status"] = "success"
+    portfolio_data["message"] = "Клиент добавлен"
+
+    return returnJson(data=portfolio_data)

@@ -1,57 +1,59 @@
-from connection import connection_db
-from .securitiesInfo import *
+from app.models import AuthUserExtra, Portfolio, PortfolioToSecuritie
 from app.scripts.funcs import fti
+from .securitiesInfo import securitiesInfo
+
+
+def _short_name(auth_user):
+    name = f"{auth_user.last_name} {auth_user.first_name[0]}."
+
+    if auth_user.patronymic:
+        name += f" {auth_user.patronymic[0]}."
+
+    return name
 
 
 def enterpriseMainPage(request, uid=False):
     try:
-        id = uid if uid else request.user.id
-        name = ''
+        user_id = uid if uid else request.user.id
+        name = ""
 
-        connection = connection_db()
-        dataBase = connection.cursor()
-    
-        dataBase.execute(f'select id_user, first_name, last_name, patronymic from auth_user where id={id}')
-        data = dataBase.fetchall()[0]
-        id_user = data[0]
+        auth_user = (
+            AuthUserExtra.objects
+            .select_related("legacy_user", "legacy_user__enterprise")
+            .get(pk=user_id)
+        )
+
         if uid:
-            name += f'{data[2]} {data[1][0]}.'
-            if data[3] != None:
-                name += f' {data[3][0]}.'
+            name = _short_name(auth_user)
 
-        dataBase.execute(f'select id_enterprise from users where id_user={id_user}')
-        data = dataBase.fetchall()[0]
-        id_enterprise = data[0]
+        enterprise = auth_user.legacy_user.enterprise
 
-        dataBase.execute(f'select * from portfolios where id_enterprise={id_enterprise}')
-        data = dataBase.fetchall()[0]
-        balance = data[1]
-        deposition = data[3]
-        id_portfolio = data[0]
-        balanceChange = balance - deposition
-        balanceChangePercentage = 0
+        portfolio = Portfolio.objects.get(enterprise=enterprise)
+
+        balance = portfolio.balance
+        deposition = portfolio.deposition
+
+        balance_change = balance - deposition
+        balance_change_percentage = 0
+
         if deposition != 0:
-            balanceChangePercentage = float(balanceChange) / (float(deposition) * 0.01)
+            balance_change_percentage = float(balance_change) / (float(deposition) * 0.01)
 
-        balanceInfo = {
-            'balance': fti(balance),
-            'var_balance': fti(balanceChange),
-            'balance_proc': fti(balanceChangePercentage)
+        balance_info = {
+            "balance": fti(balance),
+            "var_balance": fti(balance_change),
+            "balance_proc": fti(balance_change_percentage),
         }
 
-        data = balanceInfo
+        securities = (
+            PortfolioToSecuritie.objects
+            .filter(portfolio=portfolio)
+            .select_related("securitie", "securitie__catalog")
+        )
 
-        dataBase.execute(f'select * from portfolio_to_securitie where id_portfolio={id_portfolio}')
-        securities = dataBase.fetchall()
+        balance_data = securitiesInfo(securities)
 
-        if securities == None:
-            dataBase.close()
-            connection.close()
-            return data
+        return balance_info, balance_data, name
 
-        balanceData = securitiesInfo(securities)
-        dataBase.close()
-        connection.close()
-        return data, balanceData, name
-    except:
-        return ['', '', 'Error']
+    except Exception:
+        return "", "", "Error"

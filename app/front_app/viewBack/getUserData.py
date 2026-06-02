@@ -1,65 +1,52 @@
-from connection import connection_db
-from app.scripts.funcs import *
+from app.models import AuthUserExtra, Portfolio, PortfolioToSecuritie
+from app.scripts.funcs import fti
 
-def getUserData(request, uid = False, initial=False):
-	# try:
-		connection = connection_db()
-		dataBase = connection.cursor()
-		
-		id = uid if uid else request.user.id
-		
-		dataBase.execute(f'select id_user, last_name, first_name, patronymic from auth_user where id={id}')
-		data = dataBase.fetchall()[0]
-		if initial:
-			name = f'{data[1]} {data[2][0]}.'
-			if data[3] != None:
-				name += f' {data[3][0]}.'
-		else:
-			name = f'{data[1]} {data[2]}'
-			if data[3] != None:
-				name += f' {data[3]}'
-		userId = id
-		dataBase.execute(f'select id_employee, id_enterprise from users where id_user={data[0]}')
-		data = dataBase.fetchall()[0]
-		if (data[0] == None):
-			dataBase.execute(f'select id_user from auth_user where id={userId}')
-			idUser = dataBase.fetchall()[0][0]
-			
-			dataBase.execute(f'select id_portfolio from portfolios as p join users as u on p.id_enterprise=u.id_enterprise where u.id_user={idUser}')
-			idPortfolio = dataBase.fetchall()[0][0]
-			
-			dataBase.execute(f'select total_quantity from portfolio_to_securitie where id_portfolio={idPortfolio} and id_securitie=36')
-			totalQuantity = dataBase.fetchall()[0][0]
-			
-			dataBase.close()
-			connection.close()
-			return {
-				'id': id,
-				'name': name,
-				'role': 'enterprise',
-				'balance': f"{fti(totalQuantity):,.0f}".replace(',', ' ')
-			}
-		dataBase.execute(f'select id_post from employees where id_employee={data[0]}')
-		data = dataBase.fetchall()[0][0]
-		dataBase.execute(f'select post_name from posts where id_post={data}')
-		role = dataBase.fetchall()[0][0]
-		if role == 'Администратор':
-			role = 'Admin'
-		else:
-			role = 'Manager'
-		dataBase.close()
-		connection.close()
-		return {
-			'id': id,
-			'name': name,
-			'role': role
-		}
-	# except:
-	# 	return 'error'
-	
-	
-	
-	# return {
-	# 	'name': 'Иванов Иван Иванович',
-	# 	'role': 'enterprise'
-	# }
+
+def getUserData(request, uid=False, initial=False):
+    user_id = uid if uid else request.user.id
+
+    auth_user = (
+        AuthUserExtra.objects
+        .select_related(
+            "legacy_user",
+            "legacy_user__employee",
+            "legacy_user__employee__post",
+            "legacy_user__enterprise",
+        )
+        .get(pk=user_id)
+    )
+
+    if initial:
+        name = f"{auth_user.last_name} {auth_user.first_name[0]}."
+        if auth_user.patronymic:
+            name += f" {auth_user.patronymic[0]}."
+    else:
+        name = f"{auth_user.last_name} {auth_user.first_name}"
+        if auth_user.patronymic:
+            name += f" {auth_user.patronymic}"
+
+    legacy_user = auth_user.legacy_user
+
+    if legacy_user.employee_id is None:
+        portfolio = Portfolio.objects.get(enterprise=legacy_user.enterprise)
+
+        rub_link = PortfolioToSecuritie.objects.get(
+            portfolio=portfolio,
+            securitie_id=36,
+        )
+
+        return {
+            "id": user_id,
+            "name": name,
+            "role": "enterprise",
+            "balance": f"{fti(rub_link.total_quantity):,.0f}".replace(",", " "),
+        }
+
+    post_name = legacy_user.employee.post.post_name
+    role = "Admin" if post_name == "Администратор" else "Manager"
+
+    return {
+        "id": user_id,
+        "name": name,
+        "role": role,
+    }

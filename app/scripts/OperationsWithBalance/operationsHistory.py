@@ -1,52 +1,61 @@
-from connection import connection_db
+from app.models import AuthUserExtra, OperationHistory, Portfolio
+
+
+def _short_name(auth_user):
+    name = f"{auth_user.last_name} {auth_user.first_name[0]}."
+
+    if auth_user.patronymic:
+        name += f" {auth_user.patronymic[0]}."
+
+    return name
+
 
 def history(request, uid=False):
     try:
-        id = uid if uid else request.user.id
-        name = ''
+        user_id = uid if uid else request.user.id
+        name = ""
 
-        connection = connection_db()
-        dataBase = connection.cursor()
-    
-        dataBase.execute(f'select id_user, first_name, last_name, patronymic from auth_user where id={id}')
-        data = dataBase.fetchall()[0]
-        id_user = data[0]
+        auth_user = (
+            AuthUserExtra.objects
+            .select_related("legacy_user", "legacy_user__enterprise")
+            .get(pk=user_id)
+        )
+
         if uid:
-            name += f'{data[2]} {data[1][0]}.'
-            if data[3] != None:
-                name += f' {data[3][0]}.'
-    
-        dataBase.execute(f'select id_enterprise from Users where id_user={id_user}')
-        id_enterprise = dataBase.fetchall()[0][0]
-        dataBase.execute(f'select id_portfolio from Portfolios where id_enterprise={id_enterprise}')
-        id_portfolio = dataBase.fetchall()[0][0]
-        dataBase.execute(f'select * from Operations_History where id_portfolio={id_portfolio}')
-        operations = dataBase.fetchall()
-    
+            name = _short_name(auth_user)
+
+        portfolio = Portfolio.objects.get(
+            enterprise=auth_user.legacy_user.enterprise
+        )
+
+        operations = (
+            OperationHistory.objects
+            .filter(
+                portfolio=portfolio,
+                oper_status=True,
+            )
+            .order_by("-oper_date")
+        )
+
         data = []
-    
-        if operations == None:
-            dataBase.close()
-            connection.close()
-            return data
+
+        operation_types = ["Вывод", "Пополнение"]
+
         for operation in operations:
-            operationType = operation[1]
-            operationStatus = operation[2]
-            operationDate = operation[3].strftime('%d.%m.%Y %H:%M')
-            operationAmount = float(operation[4])
-            if operationAmount == int(operationAmount):
-                operationAmount = int(operationAmount)
-    
-            if(operationStatus):
-                operationTypes = ['Вывод', 'Пополнение']
-                operationData = {
-                    'type': operationTypes[int(operationType)],
-                    'date': operationDate,
-                    'price': operationAmount
+            operation_amount = float(operation.amount)
+
+            if operation_amount == int(operation_amount):
+                operation_amount = int(operation_amount)
+
+            data.append(
+                {
+                    "type": operation_types[int(operation.oper_type)],
+                    "date": operation.oper_date.strftime("%d.%m.%Y %H:%M"),
+                    "price": operation_amount,
                 }
-                data.append(operationData)
-        dataBase.close()
-        connection.close()
-        return [name, data[::-1]]
-    except:
-        return ['', 'Error']
+            )
+
+        return [name, data]
+
+    except Exception:
+        return ["", "Error"]

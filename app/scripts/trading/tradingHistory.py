@@ -1,53 +1,47 @@
-from connection import connection_db
+from app.models import AuthUserExtra, Portfolio, Request
 from app.scripts.funcs import fti
 
+
 def trading_history(uid):
-    connection = connection_db()
-    dataBase = connection.cursor()
+    auth_user = (
+        AuthUserExtra.objects
+        .select_related("legacy_user", "legacy_user__enterprise")
+        .get(pk=uid)
+    )
 
-    dataBase.execute(f"select id_user from auth_user where id={uid}")
-    idUserClient = dataBase.fetchall()[0][0]
+    portfolio = Portfolio.objects.get(
+        enterprise=auth_user.legacy_user.enterprise
+    )
 
-    dataBase.execute(f"select id_enterprise from users where id_user={idUserClient}")
-    idEnterprise = dataBase.fetchall()[0][0]
+    requests = (
+        Request.objects
+        .filter(
+            portfolio=portfolio,
+            req_status=True,
+        )
+        .select_related("securitie")
+        .order_by("-req_date")
+    )
 
-    dataBase.execute(f"select id_portfolio from portfolios where id_enterprise={idEnterprise}")
-    idPortfolio = dataBase.fetchall()[0][0]
-
-    dataBase.execute(f"select id_securitie, req_type, req_status, quantity, req_date, total_price from requests where id_portfolio={idPortfolio}")
-    requestsInfo = dataBase.fetchall()
+    request_types = ["Продажа", "Покупка"]
 
     data = []
 
-    for request in requestsInfo:
-        if(request[2]):
-            idSecuritie = request[0]
-            requestsTypes = ['Продажа', 'Покупка']
-            requestType = requestsTypes[int(request[1])]
-            quantity = request[3]
-            requestDate = request[4]
-            totalPrice = request[5]
-            dataBase.execute(f"select sec_name, ticker, icon from securities where id_securitie='{idSecuritie}'")
-            securitie = dataBase.fetchall()[0]
-            securitieName = securitie[0]
-            ticker = securitie[1]
-            iconPath = securitie[2]
-            requestInfo = {
-                'name': securitieName,
-                'short_name': ticker,
-                'img': iconPath,
-                'type': requestType,
-                'price': fti(totalPrice),
-                'count': fti(quantity),
-                'datetime': requestDate,
-                'date': requestDate.strftime('%d.%m.%Y'),
-                'time': requestDate.strftime('%H:%M')
+    for request in requests:
+        security = request.securitie
+
+        data.append(
+            {
+                "name": security.sec_name,
+                "short_name": security.ticker,
+                "img": security.icon,
+                "type": request_types[int(request.req_type)],
+                "price": fti(request.total_price),
+                "count": fti(request.quantity),
+                "datetime": request.req_date,
+                "date": request.req_date.strftime("%d.%m.%Y"),
+                "time": request.req_date.strftime("%H:%M"),
             }
-            data.append(requestInfo)
+        )
 
-    if data:
-        data.sort(key=lambda x: x['datetime'], reverse=True)
-
-    dataBase.close()
-    connection.close()
     return data

@@ -1,35 +1,26 @@
-from connection import connection_db
-from .managerMainModule import *
+from app.models import AuthUserExtra, Portfolio
+from .managerMainModule import getPortfolioData
 
 
 def managerMainPage(request, uid=False):
     try:
-        id = uid if uid else request.user.id
+        user_id = uid if uid else request.user.id
 
-        connection = connection_db()
-        dataBase = connection.cursor()
+        auth_user = (
+            AuthUserExtra.objects
+            .select_related("legacy_user", "legacy_user__employee")
+            .get(pk=user_id)
+        )
 
-        dataBase.execute(f'select id_user from auth_user where id={id}')
-        user_id = dataBase.fetchall()[0][0]
-        
-        data = []
+        employee = auth_user.legacy_user.employee
 
-        dataBase.execute(f'select id_employee from Users where id_user={user_id}')
-        idEmployee = dataBase.fetchall()[0][0]
+        portfolios = (
+            Portfolio.objects
+            .filter(employee=employee)
+            .select_related("enterprise")
+        )
 
-        dataBase.execute(f'select * from Portfolios where id_employee={idEmployee}')
-        portfolios = dataBase.fetchall()
+        return [getPortfolioData(portfolio) for portfolio in portfolios]
 
-        if portfolios == None:
-            dataBase.close()
-            connection.close()
-            return data
-        for portfolio in portfolios:
-            portfolioInfo = getPortfolioData(portfolio)
-            data.append(portfolioInfo)
-
-        dataBase.close()
-        connection.close()
-        return data
-    except:
-        return 'Error'
+    except Exception:
+        return "Error"

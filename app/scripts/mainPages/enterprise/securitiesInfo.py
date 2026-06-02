@@ -1,51 +1,55 @@
-from connection import connection_db
+from app.models import Request
 from app.scripts.funcs import fti
 
 
 def securitiesInfo(securities):
-    connection = connection_db()
-    dataBase = connection.cursor()
-    
     info = {
-        'stocks_data': [],
-        'bonds_data': [],
-        'funds_data': [],
-        'curr_metals_data': []
-    }
-    
-    infoIndices = {
-        1: 'stocks_data',
-        2: 'bonds_data',
-        3: 'funds_data',
-        4: 'curr_metals_data',
+        "stocks_data": [],
+        "bonds_data": [],
+        "funds_data": [],
+        "curr_metals_data": [],
     }
 
-    for securitie in securities:
-        idSecuritie = securitie[1]
-        totalQuantity = securitie[2]
+    info_indices = {
+        1: "stocks_data",
+        2: "bonds_data",
+        3: "funds_data",
+        4: "curr_metals_data",
+    }
 
-        dataBase.execute(f'select id_catalog, sec_name, ticker, quotation, icon from securities where id_securitie={idSecuritie}')
-        idCatalog, securitieName, ticker, currentQuotation, iconPath = dataBase.fetchall()[0]
+    for portfolio_security in securities:
+        security = portfolio_security.securitie
+        total_quantity = portfolio_security.total_quantity
 
-        if ticker != 'RUB':
-            currentTotalPrice = currentQuotation * totalQuantity
+        if security.ticker == "RUB":
+            continue
 
-            dataBase.execute(f'select quantity, total_price from requests where id_securitie={idSecuritie}')
-            data = dataBase.fetchall()[0]
-            oldQuantity = data[0]
-            oldTotalPrice = data[1]
-            oldQuotation = oldTotalPrice / oldQuantity
-            securitieInfo = {
-                'name': securitieName,
-                'short_name': ticker,
-                'img': iconPath,
-                'price_buy': fti(oldQuotation),
-                'price_now': fti(currentQuotation),
-                'price_count_buy': fti(currentTotalPrice),
-                'count_buy': fti(totalQuantity),
-                'price_end': fti((currentQuotation - oldQuotation) * totalQuantity),
-                'proc_end': fti((float(currentQuotation) / float(oldQuotation) - 1) * 100)
-            }
-            info[infoIndices[idCatalog]].append(securitieInfo)
+        request = (
+            Request.objects
+            .filter(securitie=security)
+            .order_by("-req_date")
+            .first()
+        )
+
+        if request is None or request.quantity == 0:
+            continue
+
+        old_quotation = request.total_price / request.quantity
+        current_quotation = security.quotation
+        current_total_price = current_quotation * total_quantity
+
+        securitie_info = {
+            "name": security.sec_name,
+            "short_name": security.ticker,
+            "img": security.icon,
+            "price_buy": fti(old_quotation),
+            "price_now": fti(current_quotation),
+            "price_count_buy": fti(current_total_price),
+            "count_buy": fti(total_quantity),
+            "price_end": fti((current_quotation - old_quotation) * total_quantity),
+            "proc_end": fti((float(current_quotation) / float(old_quotation) - 1) * 100),
+        }
+
+        info[info_indices[security.catalog_id]].append(securitie_info)
 
     return info
